@@ -1,0 +1,1174 @@
+<!-- Target: src/partials/home/home-03-menu-carousel-desktop.html | Desktop 1440px -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menu Highlights – Party Flow</title>
+  <style>
+    @font-face{
+      font-family:"AshwoodCondensed";
+      src:url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Newslab";
+      src:url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"AshwoodExtraBold";
+      src:url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Buttergone";
+      src:url("../../assets/fonts/Buttergone OTF.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      color-scheme: dark;
+      /* Shared background variables copied from slide 02 */
+      --bg-deep: #010915;
+      --bg-mid:  #03172b;
+      --bg-highlight: #06263d;
+      --accent-red:  #f40012;
+      --accent-teal: #7dc3b8;
+      --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+
+      /* Ink color unified with slide 02 */
+      --ink:#ffffff;
+
+      /* Layout breathing room top/bottom only (left/right must be flush) */
+      --vPad: 26px;
+
+      /* Carousel geometry */
+      --capH: 112px;
+      --titleH: clamp(64px, 4.4vw, 92px); /* taller slot to avoid clipping top/bottom */
+      --descH: 56px;       /* fixed slot for description start alignment */
+      --captionGap: 8px;   /* space between desc and title */
+      --panelW: clamp(280px, 26vw, 440px);
+      --sep: 2px; /* thin black divider between panels */
+      --leftSafe: clamp(360px, 38vw, 620px);
+      --slideH: clamp(720px, 90vh, 1000px);
+      /* Progress bar area height at bottom */
+      --progAreaH: clamp(48px, 6vh, 72px);
+      --bottomPad: clamp(48px, 6vh, 120px);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:auto; }
+    html{ scroll-behavior:smooth; background-color: #000; }
+    body{
+      margin:0;
+      color:#fff;
+      line-height:1.5;
+      padding-bottom: var(--bottomPad);
+      min-height:0;
+      overflow:hidden; /* we keep hidden to avoid stray scrollbars in iframe */
+      position:relative;
+      isolation:isolate;
+      background-color: #000; /* plain black background for this slide */
+      background-image: none;
+    }
+
+    /* Fixed overlays copied from slide 02 for identical look */
+    body::before{ display:none; }
+    body::after{ display:none; }
+
+    .slide{
+      position:relative;
+      width:100vw;
+      height: var(--slideH);
+      overflow:hidden;
+      background:#000; /* ensure the slide area itself is black */
+    }
+    .slide::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.92), transparent);
+      box-shadow:
+        0 0 8px rgba(255,255,255,0.65),
+        0 0 16px rgba(255,255,255,0.35);
+      pointer-events:none;
+      z-index: 7;
+    }
+
+    /* FULL-BLEED carousel: flush left & right; airy top/bottom via inset */
+    .track{
+      position:absolute;
+      /* Reserve space at bottom for progress indicator */
+      inset: 0 0 var(--progAreaH) 0;
+      display:flex;
+      height:auto;
+      width:100%;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling: touch;
+      padding:0;
+      margin:0;
+      scroll-behavior:auto;
+      scrollbar-width:none;
+      cursor: grab;
+      user-select:none;
+      /* Ensure the carousel container has no background of its own */
+      background: transparent;
+      /* Keep horizontal scroll self-contained; let vertical scroll bubble */
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      /* Promote to its own compositor layer for smoother updates */
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    .track::-webkit-scrollbar{ display:none; }
+    .track.dragging{ cursor: grabbing; }
+
+    .panel{
+      position:relative;
+      flex:0 0 var(--panelW);
+      height:100%;
+      overflow:hidden;
+      /* Transparent so the single shared slide background shows through */
+      background: transparent;
+      border-radius:0; /* square angles */
+      /* Isolate paint to reduce large repaints during scroll */
+      contain: paint;
+    }
+    /* Thin black divider between photos */
+    .panel:not(:last-child)::after{
+      content:"";
+      position:absolute;
+      top:0; right:0;
+      width:var(--sep);
+      height:100%;
+      background:#000; /* fine black bar */
+      pointer-events:none;
+    }
+
+    .media{
+      position:absolute;
+      inset:0; /* occupy full panel; caption will overlay on top of media */
+      overflow:hidden;
+      /* No extra background — keep it transparent to avoid a second background layer */
+      background: transparent;
+      z-index: 0;
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      /* Default: black & white */
+      filter: grayscale(1) contrast(1.05);
+      transform: scale(1);
+      transition: transform .24s ease, filter .24s ease;
+      will-change: transform, filter;
+    }
+    /* Hover: color + gentle scale for a satisfying emphasis */
+    .panel:hover .media img{
+      filter: grayscale(0) saturate(1.08) contrast(1.06);
+      transform: scale(1.06);
+    }
+    /* While dragging the carousel, avoid hover animations */
+    .track.dragging .panel .media img{ transition: none; }
+    .media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(120% 90% at 40% 40%, transparent 34%, rgba(0,0,0,.52) 78%),
+        linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.64));
+      pointer-events:none;
+    }
+
+    .caption{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      min-height: var(--capH);
+      padding: 16px 18px 18px;
+      display:grid;
+      grid-template-rows: var(--titleH) var(--descH);
+      align-content: end; /* pin rows to bottom */
+      justify-items: center;
+      row-gap: var(--captionGap);
+      background: transparent; /* overlay effect handled by ::before */
+      z-index: 2;
+      pointer-events: none; /* keep drag smooth over text */
+    }
+    /* Soft blurred gradient under the caption for readability without a hard edge */
+    .caption::before{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: max(48%, calc(var(--capH) + 40px));
+      background:
+        linear-gradient(180deg,
+          rgba(0, 0, 0, 0.00) 0%,
+          rgba(0, 0, 0, 0.28) 35%,
+          rgba(0, 0, 0, 0.46) 65%,
+          rgba(0, 0, 0, 0.70) 100%);
+      /* Remove heavy backdrop blur for smoother scrolling */
+      /* Fade the top edge smoothly to avoid a hard cutoff */
+      mask-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+      z-index: -1;
+      pointer-events:none;
+    }
+    .capTitle{
+      grid-row: 1;
+      height: var(--titleH);
+      /* allow up to two lines, centered */
+      position: relative;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* WebKit/Chromium */
+      line-clamp: 2; /* modern fallback */
+      text-align: center;
+      margin: 2px 18px 4px;
+      max-width: calc(100% - 36px);
+      font-family:"Buttergone", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing:.06em;
+      text-transform: none; /* JS below enforces First letter upper, rest lower */
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height:1.18;
+      color: #ffebee;
+      /* No surrounding pill/background/border */
+      padding: 2px 0 2px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden; /* enforce 2-line clamp */
+      /* Do not split words; wrap to next line instead */
+      word-break: normal;
+      overflow-wrap: normal;
+      hyphens: none;
+      /* Neon red text-only glow */
+      transition: text-shadow .18s ease, color .18s ease;
+      text-shadow:
+        0 0 1px rgba(255, 64, 64, 0.75),
+        0 0 4px rgba(255, 64, 64, 0.70),
+        0 0 8px rgba(244, 0, 18, 0.60),
+        0 0 14px rgba(244, 0, 18, 0.45);
+    }
+    /* Hover: switch neon from red to white, slightly stronger */
+    .panel:hover .capTitle{
+      color: #ffffff;
+      text-shadow:
+        0 0 2px rgba(255,255,255,0.85),
+        0 0 6px rgba(255,255,255,0.80),
+        0 0 12px rgba(255,255,255,0.70),
+        0 0 18px rgba(255,255,255,0.55);
+    }
+    .capDesc{
+      grid-row: 2;
+      height: var(--descH);
+      align-self: stretch;
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size:12px;
+      letter-spacing:.02em;
+      color: rgba(255,255,255,.74);
+      line-height:1.35;
+      display:-webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      text-shadow: 0 1px 10px rgba(0,0,0,.55);
+    }
+
+    /* Fixed left overlay text (does NOT move) */
+    .fixedLeft{
+      position:absolute;
+      top:0; left:0;
+      height:100%;
+      width:var(--leftSafe);
+      display:flex;
+      align-items:flex-start; /* place content at top */
+      justify-content:flex-start;
+      padding: 0 34px 0 42px; /* no top padding to stay flush with top of carousel */
+      z-index: 5;
+      pointer-events:none;
+    }
+    .fixedLeft::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,
+          rgba(0,0,0,.84) 0%,
+          rgba(0,0,0,.70) 36%,
+          rgba(0,0,0,.38) 66%,
+          rgba(0,0,0,0) 100%);
+      z-index:-1;
+    }
+    .titleBox{
+      max-width: 560px;
+      transform: translateY(24px); /* lowered further from the top */
+      /* Allow pointer events for title hover animation while keeping the overlay non-blocking */
+      pointer-events: auto;
+    }
+    .menu-title{ margin:6px 0 12px 0; position:relative; z-index:6; text-align:left; }
+    /* Replace block glow with per-letter glow; hide former block */
+    .menu-title::before{ display:none; }
+    /* Removed red underline per request */
+    .menu-title::after{ display:none; }
+    .menu-title-line{
+      display:block;
+      font-family:"AshwoodCondensed", serif;
+      font-size: clamp(56px, 7.8vw, 118px); /* bigger for prominence */
+      letter-spacing:.12em;
+      line-height:.90;
+      text-transform:uppercase;
+      color: rgba(255,255,255,0.96);
+      text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 10px rgba(244, 0, 18, 0.35);
+      overflow: visible;
+      will-change: transform;
+      white-space: nowrap; /* avoid wrapping letters to a new line */
+    }
+    /* Slightly smaller for the second line to create hierarchy */
+    .menu-title-line:nth-child(2){ font-size: clamp(48px, 7.2vw, 104px); }
+    /* Per-letter hover styling, same spirit as slide 02 */
+    .mn-letter{
+      display:inline-block;
+      position:relative;
+      padding:0 0.02em;
+      transform: translateZ(0) scale(var(--scale, 1)) translateY(var(--dy, 0px)) rotate(var(--rot, 0deg));
+      transform-origin: 50% 82%;
+      transition: transform 0s, text-shadow 0.15s ease, filter 0.15s ease;
+      will-change: transform, filter;
+      z-index: var(--z, 0);
+      text-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.85),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 36px)) rgba(244, 0, 18, 0.60),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 20px)) rgba(244, 0, 18, 0.22);
+    }
+    /* Neon red per-letter glow behind each letter */
+    .mn-letter::before{
+      content:"";
+      position:absolute;
+      left:50%; top:52%;
+      transform: translate(-50%, -50%) scale(calc(1 + (var(--scale, 1) - 1) * 1.4));
+      width: 1.22em; height: 1.08em;
+      pointer-events:none;
+      border-radius: 50%;
+      background:
+        radial-gradient(48% 46% at 50% 50%, rgba(244, 0, 18, 0.95) 0%, rgba(244, 0, 18, 0.45) 40%, rgba(244, 0, 18, 0) 72%);
+      filter: blur(14px) saturate(120%);
+      opacity: calc(var(--glow, 0) * 0.95);
+      mix-blend-mode: screen;
+      z-index: -1;
+      transition: opacity .18s ease-out, filter .20s ease-out, transform .20s ease-out;
+    }
+    .menu-title-line:hover .mn-letter::before{
+      filter: blur(18px) saturate(135%);
+      opacity: calc(var(--glow, 0) * 1.15);
+    }
+    .menu-title-line:hover .mn-letter{ filter:saturate(1.05); }
+    @media (prefers-reduced-motion: reduce){
+      .mn-letter{ transition:none; transform:none !important; }
+      .menu-title::before{ animation:none; }
+      .mn-letter::before{ filter: blur(10px); }
+    }
+
+    @keyframes neonPulse{
+      0% { opacity: 0.78; filter: blur(24px) saturate(112%); }
+      50%{ opacity: 0.90; filter: blur(26px) saturate(120%); }
+      100%{ opacity: 0.82; filter: blur(25px) saturate(116%); }
+    }
+    .titleBox .sub{
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: clamp(16px, 1.4vw, 22px); /* smaller subtitle */
+      margin:2px 0 12px 0;
+      color: rgba(242,239,231,.92);
+      text-shadow: 0 2px 14px rgba(0,0,0,.55);
+      font-style: italic;
+    }
+
+    /* CTA under the title: premium pill, matching site buttons with a carousel vibe */
+    .menu-cta{
+      --glow: rgba(244, 0, 18, 0.68);
+      --border: rgba(244, 0, 18, 0.95);
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 22px;
+      min-height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color:#ff1f2b;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      font-size: clamp(12px, 1.05vw, 14px);
+      text-decoration:none;
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.65),
+        0 0 16px rgba(244, 0, 18, 0.56),
+        0 0 36px rgba(244, 0, 18, 0.32),
+        inset 0 0 12px rgba(244, 0, 18, 0.30);
+      text-shadow: 0 0 10px rgba(244, 0, 18, 0.24);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .16s ease, box-shadow .16s ease, letter-spacing .18s ease, border-color .16s ease, color .18s ease;
+    }
+    .menu-cta::before{
+      content:""; position:absolute; inset:2px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10); pointer-events:none; opacity:.85;
+    }
+    .menu-cta::after{
+      content:""; position:absolute; inset:-30%; border-radius:999px; pointer-events:none;
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+      opacity:0; filter: blur(18px); transition: opacity .22s ease, filter .22s ease;
+      z-index:-1;
+    }
+    .menu-cta:hover{
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: .08em;
+      border-color: rgba(255, 120, 126, 1);
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.55),
+        0 0 22px rgba(244, 0, 18, 0.78),
+        0 0 46px rgba(244, 0, 18, 0.45),
+        inset 0 0 16px rgba(244, 0, 18, 0.36);
+      color: #ffd5d9;
+    }
+    .menu-cta:hover::after{ opacity:.85; filter: blur(22px); }
+    .menu-cta:active{ transform: translateY(0); }
+    .menu-cta:focus{ outline: none; }
+    .menu-cta:focus-visible{
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 120, 126, 0.85),
+        0 14px 28px rgba(0,0,0,0.55);
+    }
+    .menu-cta .arrow{ display:inline-block; transition: transform .16s ease; }
+    .menu-cta:hover .arrow{ transform: translateX(2px); }
+    @media (prefers-reduced-motion: reduce){
+      .track{ scroll-behavior:auto; }
+    }
+    @media (max-width: 1100px){
+      :root{ --sep: 2px; --vPad: 22px; }
+      .fixedLeft{ padding-left:28px; padding-right:28px; }
+    }
+
+    .srOnly{
+      position:absolute !important;
+      width:1px;height:1px;
+      padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+
+    /* ========================
+       Neon progress indicator
+       ======================== */
+    .progressWrap{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: var(--progAreaH);
+      display:flex;
+      align-items:flex-end; /* push the bar to the very bottom */
+      justify-content:center;
+      padding-bottom: 8px; /* visual gap between carousel and bar */
+      pointer-events:none; /* let only the inner bar receive events */
+      z-index: 6;
+      background: none; /* keep the bottom area clean */
+    }
+    .progress{
+      position:relative;
+      width: min(84vw, 1200px);
+      max-width: 1200px;
+      height: 18px; /* slightly slimmer */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      filter: saturate(115%);
+      pointer-events:auto; /* enable interactions on the bar */
+    }
+    .progress-rail{
+      position:relative;
+      width:100%;
+      height: 2px; /* slimmer rail */
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, rgba(125,195,184,0.10), rgba(125,195,184,0.20), rgba(125,195,184,0.10));
+      box-shadow:
+        0 0 10px rgba(125,195,184,0.25),
+        0 0 20px rgba(125,195,184,0.15);
+      overflow:hidden;
+    }
+    .progress-knob{
+      position:absolute; top:50%; left:0; transform: translate(-50%, -50%);
+      width: 14px; height: 14px; /* smaller knob */
+      border-radius: 999px;
+      background:
+        radial-gradient(45% 45% at 50% 50%, #7DC3B8, rgba(125,195,184,0.65) 60%, rgba(125,195,184,0.0) 72%);
+      box-shadow:
+        0 0 10px rgba(125,195,184,0.85),
+        0 0 22px rgba(125,195,184,0.55),
+        0 0 36px rgba(125,195,184,0.35);
+      pointer-events:auto; /* allow dragging the knob */
+      will-change: transform;
+    }
+    /* subtle shimmer along the rail */
+    .progress-rail::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: translateX(-120%);
+      animation: progShimmer 4s ease-in-out infinite;
+      opacity:.25; pointer-events:none;
+    }
+    @keyframes progShimmer{
+      0%{ transform: translateX(-120%); }
+      55%{ transform: translateX(120%); }
+      100%{ transform: translateX(120%); }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="slide" aria-label="Menu Highlights">
+    <!-- FIXED LEFT TEXT -->
+    <aside class="fixedLeft" aria-hidden="false">
+      <div class="titleBox" aria-label="Menu highlights text">
+        <div class="menu-title">
+          <span class="menu-title-line">MENU</span>
+          <span class="menu-title-line">HIGHLIGHTS</span>
+        </div>
+        <p class="sub">Scroll to explore our top picks.</p>
+        <a class="menu-cta" href="#" aria-label="Explore full menu">Explore Full Menu <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </aside>
+
+    <!-- FULL-BLEED INFINITE CAROUSEL -->
+    <section class="track" id="menuTrack" role="list" aria-label="Carousel menu highlights">
+      <!-- 10 items (will be cloned by JS for infinite loop) -->
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="&quot;NASHVILLE HOT&quot; HALF BIRD" loading="lazy"
+               data-src="../../assets/img/home/menu/HALF_BIRD.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">&quot;NASHVILLE HOT&quot; HALF BIRD</div>
+          <div class="capDesc">The OG Nashville hot experience: crispy, juicy, and built to make you sweat in the best way. Welcome to the party.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="HOT CHICKEN AND BEIGNETS" loading="lazy"
+               data-src="../../assets/img/home/menu/HOT_CHICKEN_AND_BEIGNETS.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">HOT CHICKEN AND BEIGNETS</div>
+          <div class="capDesc">Sweet + spicy chaos done right. Hot chicken meets powdered-sugar beignets for maximum weekend energy.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="HOT CHICKEN N' CHEDDAR" loading="lazy"
+               data-src="../../assets/img/home/menu/HOT_CHICKEN_N_CHEDDAR.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">HOT CHICKEN N' CHEDDAR</div>
+          <div class="capDesc">Crispy hot chicken stacked with cheddar and all the fixins. Messy, loud, and worth it.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="CHICKEN FRIED CHICKEN" loading="lazy"
+               data-src="../../assets/img/home/menu/NASHVILLE_HOT_CHICKEN_FRIED CHICKEN.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">CHICKEN FRIED CHICKEN</div>
+          <div class="capDesc">Double-breaded comfort with a heat level that doesn’t apologize. Gravy, mash, and full send.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="HOT STUFFED QUESADILLA" loading="lazy"
+               data-src="../../assets/img/home/menu/HOT_STUFFED_QUESADILLA.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">HOT STUFFED QUESADILLA</div>
+          <div class="capDesc">Crispy tortilla, melty cheese, and your choice of protein. Dip it, dunk it, repeat.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="BRUNCH FOR TWO" loading="lazy"
+               data-src="../../assets/img/home/menu/BRUNCH_FOR_TWO.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">BRUNCH FOR TWO</div>
+          <div class="capDesc">A 55 oz Bloody Mary situation that’s basically a meal with attitude. Go big or go home.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="LOADED HOT CHICKEN BISCUIT" loading="lazy"
+               data-src="../../assets/img/home/menu/LOADED_HOT_CHICKEN_BISCUIT.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">LOADED HOT CHICKEN BISCUIT</div>
+          <div class="capDesc">Open-face biscuits, hot chicken, sawmill gravy, and eggs your way. The cure for last night’s decisions.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="NASHVILLE HOT COBB" loading="lazy"
+               data-src="../../assets/img/home/menu/NASHVILLE_HOT_COBB.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">NASHVILLE HOT COBB</div>
+          <div class="capDesc">A cobb salad that refuses to be boring: bacon, egg, avocado, and hot chicken bringing the heat.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="ONION LOAF" loading="lazy"
+               data-src="../../assets/img/home/menu/ONION_LOAF.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">ONION LOAF</div>
+          <div class="capDesc">Thin-sliced onions, fried until reckless, served for sharing… technically. Dip in chipotle ranch and disappear.</div>
+        </div>
+      </article>
+
+      <article class="panel" role="listitem">
+        <div class="media">
+          <img alt="FRENCH TOAST BITES" loading="lazy"
+               data-src="../../assets/img/home/menu/FRENCH_TOAST_BITES.png" />
+        </div>
+        <div class="caption">
+          <div class="capTitle">FRENCH TOAST BITES</div>
+          <div class="capDesc">Bite-sized french toast tossed in cinnamon sugar with bourbon glaze. Sweet, sinful, and gone in 60 seconds.</div>
+        </div>
+      </article>
+
+      <p class="srOnly" id="srHint">
+        Faites glisser, utilisez le trackpad ou la molette pour défiler horizontalement. Le carrousel boucle à l’infini.
+      </p>
+    </section>
+
+    <!-- Neon turquoise progress indicator tied to carousel scroll -->
+    <div class="progressWrap" aria-hidden="true">
+      <div class="progress" id="menuProgress">
+        <div class="progress-rail"></div>
+        <div class="progress-knob" id="menuProgressKnob"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const track = document.getElementById('menuTrack');
+
+      // ---------------------------
+      // Local image resolver (try local, else fallback)
+      // ---------------------------
+      const inlineFallback = (() => {
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#070812"/>
+                <stop offset="0.55" stop-color="#0b0c14"/>
+                <stop offset="1" stop-color="#05060a"/>
+              </linearGradient>
+              <radialGradient id="r" cx="30%" cy="22%" r="70%">
+                <stop offset="0" stop-color="rgba(0,229,255,.22)"/>
+                <stop offset="0.55" stop-color="rgba(124,77,255,.12)"/>
+                <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#g)"/>
+            <rect width="100%" height="100%" fill="url(#r)"/>
+            <g fill="rgba(242,239,231,.70)" font-family="Arial, sans-serif">
+              <text x="70" y="120" font-size="44">Image placeholder</text>
+              <text x="70" y="182" font-size="28" fill="rgba(242,239,231,.45)">Add ../../assets/img/home/...</text>
+            </g>
+          </svg>`;
+        return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.trim());
+      })();
+
+      function resolveImg(img){
+        const local = img.getAttribute('data-src');
+        const fb = img.getAttribute('data-fallback');
+
+        const setInline = () => {
+          img.onerror = null;
+          img.src = inlineFallback;
+        };
+
+        const setFallback = () => {
+          if (fb && fb !== 'TODO') {
+            img.onerror = setInline;
+            img.src = fb;
+          } else {
+            setInline();
+          }
+        };
+
+        if (local) {
+          img.onerror = setFallback;
+          img.src = local;
+        } else {
+          setFallback();
+        }
+      }
+
+      // Charger toutes les images immédiatement afin d'éviter des recalculs
+      // d'intersection coûteux pendant l'animation continue.
+      function resolveAllImgs(){
+        Array.from(track.querySelectorAll('img[data-src]')).forEach(resolveImg);
+      }
+      resolveAllImgs();
+
+      // ---------------------------
+      // Wheel handling: lock to horizontal when there is real horizontal intent
+      // - Route horizontal gestures to the carousel and block vertical chaining
+      // - Let vertical scroll bubble to the page
+      // ---------------------------
+      const wheelLock = { axis: null, until: 0 };
+      const wheelLockMs = 180;
+      const horizRatio = 0.6;
+
+      function resolveWheelAxis(absX, absY, isShift){
+        if (isShift && absY > 0) return 'x';
+        if (absX === 0 && absY === 0) return null;
+        if (absX === 0) return 'y';
+        if (absY === 0) return 'x';
+        return (absX / absY) >= horizRatio ? 'x' : 'y';
+      }
+
+      track.addEventListener('wheel', (e) => {
+        const absX = Math.abs(e.deltaX);
+        const absY = Math.abs(e.deltaY);
+        const now = performance.now();
+
+        if (wheelLock.axis && now > wheelLock.until) {
+          wheelLock.axis = null;
+        }
+        if (!wheelLock.axis) {
+          const axis = resolveWheelAxis(absX, absY, e.shiftKey);
+          if (!axis) return;
+          wheelLock.axis = axis;
+        }
+        wheelLock.until = now + wheelLockMs;
+
+        if (wheelLock.axis !== 'x') return;
+        e.preventDefault();
+        const dx = (e.shiftKey && absX < 1) ? e.deltaY : e.deltaX;
+        track.scrollLeft += dx;
+        updateProgressBar();
+      }, { passive:false });
+
+      // Forward vertical scroll intent to the parent page so the slide never traps scrolling.
+      (function enableParentScroll(){
+        let axis = null;
+        let until = 0;
+        const lockMs = 160;
+        const intentRatio = 0.6;
+        const pickAxis = (absX, absY, isShift) => {
+          if (isShift && absY > 0) return 'x';
+          if (absX === 0 && absY === 0) return null;
+          if (absX === 0) return 'y';
+          if (absY === 0) return 'x';
+          return (absX / absY) >= intentRatio ? 'x' : 'y';
+        };
+
+        window.addEventListener('wheel', (e) => {
+          if (e.defaultPrevented) return;
+          const absX = Math.abs(e.deltaX);
+          const absY = Math.abs(e.deltaY);
+          if (absX === 0 && absY === 0) return;
+          const now = performance.now();
+          if (axis && now > until) axis = null;
+          if (!axis) axis = pickAxis(absX, absY, e.shiftKey);
+          until = now + lockMs;
+          if (axis !== 'y') return;
+          try{
+            if (window.parent && window.parent !== window) {
+              window.parent.scrollBy({ top: e.deltaY, left: 0, behavior: 'auto' });
+            }
+          }catch(_){ /* ignore cross-origin */ }
+        }, { passive:true });
+      })();
+
+      // ---------------------------
+      // Drag-to-scroll
+      // ---------------------------
+      let isDown = false, startX = 0, startLeft = 0, pid = null;
+      track.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        pid = e.pointerId;
+        track.setPointerCapture(pid);
+        startX = e.clientX;
+        startLeft = track.scrollLeft;
+        track.style.scrollBehavior = 'auto';
+        track.classList.add('dragging');
+      });
+      track.addEventListener('pointermove', (e) => {
+        if(!isDown) return;
+        const dx = e.clientX - startX;
+        track.scrollLeft = startLeft - dx;
+        updateProgressBar();
+      });
+      const endDrag = () => {
+        if(!isDown) return;
+        isDown = false;
+        pid = null;
+        // Garder un comportement instantané pour éviter des micro à-coups
+        track.style.scrollBehavior = 'auto';
+        track.classList.remove('dragging');
+      };
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+      track.addEventListener('pointerleave', endDrag);
+
+      // ---------------------------
+      // Infinite loop carousel (both directions)
+      // ---------------------------
+      const originalPanels = Array.from(track.querySelectorAll('.panel'));
+      const n = originalPanels.length;
+
+      const clonesBefore = originalPanels.map(p => p.cloneNode(true));
+      const clonesAfter  = originalPanels.map(p => p.cloneNode(true));
+      clonesBefore.forEach(p => p.dataset.clone = "before");
+      clonesAfter.forEach(p => p.dataset.clone = "after");
+
+      clonesBefore.slice().reverse().forEach(cl => track.insertBefore(cl, track.firstChild));
+      clonesAfter.forEach(cl => track.appendChild(cl));
+
+      // Charger les images dans les clones également
+      resolveAllImgs();
+
+      // Éviter les mesures layout à chaque frame: on mise en cache la largeur d'un panneau
+      let panelW = 0;
+      function computePanelWidth(){
+        const p = track.querySelector('.panel');
+        panelW = p ? p.offsetWidth : 0; // offsetWidth est suffisant et plus léger
+        return panelW;
+      }
+
+      function snapToRealStart(){
+        const w = panelW || computePanelWidth();
+        if(!w) return;
+        const peek = Math.min(160, Math.max(72, Math.round(w * 0.22)));
+        const offset = Math.max(0, w - peek);
+        track.scrollLeft = (w * n) + offset; // start near slide 02 with a subtle left/right peek
+        updateProgressBar();
+      }
+
+      // Gestion du bouclage en douceur (sans écouteur scroll à chaque frame)
+      function wrapIfNeeded(){
+        const w = panelW || computePanelWidth();
+        if(!w) return;
+        const totalReal = w * n;
+        const leftBoundary  = totalReal * 0.5;
+        const rightBoundary = totalReal * 2.5;
+        if(track.scrollLeft < leftBoundary){
+          track.scrollLeft += totalReal;
+        } else if(track.scrollLeft > rightBoundary){
+          track.scrollLeft -= totalReal;
+        }
+      }
+
+      let resizeTO = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTO);
+        resizeTO = setTimeout(() => { computePanelWidth(); snapToRealStart(); }, 100);
+      });
+
+      // Mesure initiale + positionnement
+      requestAnimationFrame(() => { computePanelWidth(); snapToRealStart(); });
+
+      // ---------------------------
+      // Gentle auto-scroll loop (continuous, subtle)
+      // Always runs (hover or not, anywhere on page)
+      // ---------------------------
+      const auto = {
+        speed: 90, // px/sec (un peu plus lent et fluide)
+        raf: 0,
+        iv: 0,
+        last: 0,
+        pausedUntil: 0,
+        running: false,
+        pause(ms){ this.pausedUntil = performance.now() + Math.max(0, ms|0); }
+      };
+      // Respecte l’accessibilité si l’utilisateur préfère moins d’animations
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Réduire la vitesse si PRM est activé, mais ne pas désactiver totalement l’auto défilement
+      if (prefersReducedMotion) auto.speed = Math.max(10, auto.speed * 0.45);
+      // Ensure immediate scroll updates (no CSS smooth) during auto-run
+      track.style.scrollBehavior = 'auto';
+
+      function step(dtSec){
+        if (!auto.running) return;
+        const now = performance.now();
+        if (now >= auto.pausedUntil) {
+          track.scrollLeft += auto.speed * dtSec; // boundary handler above wraps around
+        }
+        wrapIfNeeded();
+        updateProgressBar();
+      }
+      function autoTick(t){
+        if (!auto.running) return;
+        const last = auto.last || (t - 16);
+        const dtSec = Math.min(0.08, Math.max(0, (t - last) / 1000)) || (1/60);
+        auto.last = t;
+        step(dtSec);
+        auto.raf = requestAnimationFrame(autoTick);
+      }
+      function startAuto(){
+        if (auto.running) return;
+        auto.running = true;
+        auto.last = performance.now();
+        auto.raf = requestAnimationFrame(autoTick);
+      }
+      function stopAuto(){
+        if (!auto.running) return;
+        auto.running = false;
+        if (auto.raf) cancelAnimationFrame(auto.raf);
+        auto.raf = 0;
+        if (auto.iv) clearInterval(auto.iv);
+        auto.iv = 0;
+      }
+
+      // Ne jamais mettre en pause sur interactions (survol, clic, wheel, drag).
+      // L’auto‑défilement reste actif en permanence.
+
+      // Pause/stop when tab/iframe not visible; resume only if also in view
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopAuto();
+        } else {
+          startAuto();
+        }
+      });
+
+      // ============================
+      // Progress bar sync logic
+      // ============================
+      const prog = {
+        rail: document.querySelector('#menuProgress .progress-rail'),
+        knob: document.getElementById('menuProgressKnob'),
+        railW: 0,
+        knobW: 0
+      };
+      function measureProgress(){
+        if (!prog.rail) return;
+        prog.railW = prog.rail.clientWidth || 0;
+        prog.knobW = prog.knob ? prog.knob.offsetWidth || 0 : 0;
+      }
+      function normalizedProgress(){
+        const w = panelW || computePanelWidth();
+        if (!w || !n) return 0;
+        const totalReal = w * n;
+        let s = track.scrollLeft % totalReal;
+        if (s < 0) s += totalReal;
+        return totalReal ? (s / totalReal) : 0;
+      }
+      function updateProgressBar(){
+        if (!prog.rail || !prog.knob) return;
+        const p = Math.max(0, Math.min(1, normalizedProgress()));
+        if (prog.railW <= 0 || prog.knobW <= 0) measureProgress();
+        const r = prog.knobW * 0.5;
+        const cx = Math.max(r, Math.min(prog.railW - r, p * prog.railW));
+        prog.knob.style.left = cx.toFixed(2) + 'px';
+        prog.knob.style.transform = 'translate(-50%, -50%)';
+      }
+
+      function scrollToProgress(p){
+        const w = panelW || computePanelWidth();
+        if (!w || !n) return;
+        const totalReal = w * n;
+        const base = w * n; // start of the real set after before-clones
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = base + Math.max(0, Math.min(1, p)) * totalReal;
+        wrapIfNeeded();
+        updateProgressBar();
+      }
+
+      // Interactions: click & drag on progress rail/knob to scrub
+      const progressEl = document.getElementById('menuProgress');
+      let scrubPID = null;
+      let scrubbing = false;
+      function pFromEvent(ev){
+        const r = prog.rail.getBoundingClientRect();
+        const x = Math.max(0, Math.min(r.width, (ev.clientX - r.left)));
+        return r.width ? (x / r.width) : 0;
+      }
+      function beginScrub(ev){
+        if (!prog.rail) return;
+        scrubbing = true;
+        auto.pause(2000);
+        const p = pFromEvent(ev);
+        scrollToProgress(p);
+        if (ev.pointerId != null){
+          scrubPID = ev.pointerId;
+          (prog.knob || progressEl).setPointerCapture(scrubPID);
+        }
+        ev.preventDefault();
+      }
+      function moveScrub(ev){
+        if (!scrubbing) return;
+        const p = pFromEvent(ev);
+        scrollToProgress(p);
+        ev.preventDefault();
+      }
+      function endScrub(){
+        if (!scrubbing) return;
+        scrubbing = false; scrubPID = null;
+      }
+
+      if (progressEl && prog.rail && prog.knob){
+        // Click on rail
+        prog.rail.addEventListener('pointerdown', beginScrub);
+        prog.rail.addEventListener('pointermove', moveScrub);
+        window.addEventListener('pointerup', endScrub);
+        window.addEventListener('pointercancel', endScrub);
+        // Drag knob
+        prog.knob.addEventListener('pointerdown', beginScrub);
+        prog.knob.addEventListener('pointermove', moveScrub);
+      }
+      window.addEventListener('resize', () => { measureProgress(); updateProgressBar(); }, { passive:true });
+
+      // Initial measures and start
+      measureProgress();
+      updateProgressBar();
+      // Démarrer immédiatement
+      startAuto();
+    })();
+  </script>
+
+  <!-- Title per-letter hover animation for two-line title (safe, no layout shift) -->
+  <script>
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pointerFine = window.matchMedia('(pointer: fine)').matches;
+      if (prefersReduced || !pointerFine) return;
+
+      const lines = Array.from(document.querySelectorAll('.menu-title-line'));
+      if (!lines.length) return;
+
+      function attachWave(titleEl){
+        if (!titleEl || titleEl.dataset.splitLetters === '1') return;
+        titleEl.dataset.splitLetters = '1';
+        const raw = titleEl.textContent || '';
+        titleEl.textContent = '';
+        const frag = document.createDocumentFragment();
+        const letters = [];
+        for (const ch of raw){
+          const s = document.createElement('span');
+          s.className = 'mn-letter';
+          s.textContent = (ch === ' ') ? '\u00A0' : ch;
+          frag.appendChild(s);
+          letters.push(s);
+        }
+        titleEl.appendChild(frag);
+
+        const N = letters.length;
+        const state = new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        const target= new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        let rafId = 0, inside = false;
+
+        function computeTargets(idx){
+          const baseMaxBoost = 0.35; // softer to avoid overlap below
+          const falloff = 0.92;
+          const maxTilt = 2.0;
+          const rect = titleEl.getBoundingClientRect();
+          const headroom = Math.max(0, rect.top);
+          const safety = Math.max(0.86, Math.min(1, headroom / 90));
+          const maxBoost = baseMaxBoost * safety;
+          for(let j=0;j<N;j++){
+            const d = idx < 0 ? Infinity : Math.abs(j-idx);
+            const boost = idx < 0 ? 0 : maxBoost * Math.exp(-d * falloff);
+            const s = 1 + boost;
+            const dy = idx < 0 ? 0 : 1.5 * Math.exp(-d * 1.08) * (boost / Math.max(0.0001, maxBoost));
+            const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
+            const z = 50 - (idx < 0 ? 0 : d);
+            const g = idx < 0 ? 0 : Math.max(0, Math.min(1, (boost / Math.max(0.0001, maxBoost)) * 1.0));
+            target[j].s=s; target[j].dy=dy; target[j].rot=rot; target[j].z=z; target[j].g=g;
+          }
+        }
+
+        function animate(){
+          let moving=false; const k=0.22;
+          for(let j=0;j<N;j++){
+            const st=state[j], tg=target[j];
+            st.s += (tg.s - st.s) * k;
+            st.dy+= (tg.dy- st.dy)* k;
+            st.rot+=(tg.rot-st.rot)* k;
+          st.z  += (tg.z - st.z) * k;
+          st.g  += (tg.g - st.g) * 0.28;
+          const el = letters[j];
+          el.style.setProperty('--scale', st.s.toFixed(3));
+          el.style.setProperty('--dy', st.dy.toFixed(2)+'px');
+          el.style.setProperty('--rot', st.rot.toFixed(2)+'deg');
+          el.style.setProperty('--z', String(st.z.toFixed(0)));
+          el.style.setProperty('--glow', st.g.toFixed(3));
+            if (Math.abs(tg.s-st.s)>0.002 || Math.abs(tg.dy-st.dy)>0.02 || Math.abs(tg.rot-st.rot)>0.02){ moving=true; }
+          }
+          if(moving||inside){ rafId=requestAnimationFrame(animate); } else { rafId=0; }
+        }
+        function ensure(){ if(!rafId) rafId=requestAnimationFrame(animate); }
+
+        function nearestIndexFromClientX(x){
+          let best=-1, bestD=Infinity; for(let j=0;j<N;j++){
+            const r = letters[j].getBoundingClientRect();
+            const cx = r.left + r.width/2; const d = Math.abs(x-cx);
+            if(d<bestD){ bestD=d; best=j; }
+          } return best;
+        }
+
+        titleEl.addEventListener('pointerenter', () => { inside=true; });
+        titleEl.addEventListener('pointermove', (e) => { inside=true; computeTargets(nearestIndexFromClientX(e.clientX)); ensure(); });
+        titleEl.addEventListener('pointerleave', () => { inside=false; computeTargets(-1); ensure(); });
+
+        computeTargets(-1);
+      }
+
+      lines.forEach(attachWave);
+    })();
+  </script>
+
+  <!-- Normalize dish titles: first letter uppercase, rest lowercase; no extra wrappers -->
+  <script>
+    (function(){
+      try{
+        const isFine = window.matchMedia('(pointer: fine)').matches;
+        const titles = Array.from(document.querySelectorAll('.capTitle'));
+        const reLetter = /[A-Za-zÀ-ÖØ-öø-ÿ]/;
+        titles.forEach((el) => {
+          const raw = (el.textContent || '').trim();
+          if (!raw) return;
+          const lower = raw.toLowerCase();
+          const arr = Array.from(lower);
+          let idx = -1;
+          for (let i=0;i<arr.length;i++){ if (reLetter.test(arr[i])) { idx = i; break; } }
+          if (idx >= 0){ arr[idx] = arr[idx].toUpperCase(); }
+          el.textContent = arr.join('');
+        });
+      }catch(_){ /* ignore */ }
+    })();
+  </script>
+</body>
+</html>

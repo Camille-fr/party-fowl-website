@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Party Fowl – Home Above the Fold</title>
+
+  <style>
+    /* Local font faces to avoid missing paths when included */
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Alias Google Nunito Sans → local Adrenaline */
+    @font-face {
+      font-family: "Nunito Sans";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: dark;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+    --bg-highlight: #06263d;
+    --accent-red: #f40012;
+    --accent-teal: #7dc3b8;
+    --shell-max: 1440px;
+    --shell-pad: clamp(24px, 4vw, 56px);
+    --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+  }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep);
+    }
+
+    body {
+      font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-mid);
+      background-image:
+        radial-gradient(circle at 18% 0%, rgba(244, 0, 18, 0.06), transparent 42%),
+        radial-gradient(circle at 70% 16%, rgba(125, 195, 184, 0.08), transparent 55%),
+        linear-gradient(180deg, rgba(1, 20, 36, 0.95) 0%, rgba(2, 9, 17, 0.9) 46%, rgba(1, 2, 5, 1) 100%);
+      color: #fff;
+      line-height: 1.5;
+      min-height: 100%;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: var(--noise-texture);
+      opacity: 0.35;
+      mix-blend-mode: screen;
+      z-index: -1;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(244, 0, 18, 0.22), transparent 38%),
+        radial-gradient(circle at 10% 10%, rgba(125, 195, 184, 0.16), transparent 30%);
+      opacity: 0.5;
+      z-index: -2;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .container {
+      width: min(var(--shell-max), 100%);
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 var(--shell-pad);
+    }
+
+    .desktop-preview {
+      width: 100%;
+      margin: 0;
+    }
+
+    body.has-anim-intro .scene {
+      opacity: 0;
+      transform: translateY(36px) scale(0.985);
+      filter: blur(6px);
+      transition:
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.9s ease-out;
+    }
+
+    body.has-anim-intro .scene.is-visible {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    body.motion-disabled .scene {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0ms !important;
+      }
+      body.has-anim-intro .scene {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+    }
+
+    /* ------------------------------
+       HERO SECTION
+    --------------------------------*/
+    @keyframes heroWordGlow {
+      0%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.65),
+          0 0 20px rgba(244, 0, 18, 0.35);
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.15));
+      }
+      45% {
+        opacity: 1;
+        text-shadow:
+          0 12px 28px rgba(0, 0, 0, 0.65),
+          0 0 26px rgba(244, 0, 18, 0.6);
+        filter: drop-shadow(0 0 12px rgba(244, 0, 18, 0.35));
+      }
+    }
+
+    @keyframes heroBadgePulse {
+      0%, 100% {
+        transform: translateZ(0) scale(1);
+        filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7));
+      }
+      40% {
+        transform: translateZ(0) scale(1.03) rotate(-1deg);
+        filter:
+          drop-shadow(0 18px 30px rgba(0, 0, 0, 0.65))
+          drop-shadow(0 0 24px rgba(244, 0, 18, 0.35));
+      }
+    }
+
+    @keyframes chillRotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      padding: 0;
+      background-color: #000814;
+      isolation: isolate;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      /* Fill screen width without side bars; minimal crop */
+      object-fit: cover;
+      object-position: center center;
+      z-index: 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(0, 0, 0, 0.05) 0%,
+          rgba(0, 0, 0, 0.35) 65%,
+          rgba(0, 0, 0, 0.7) 100%
+        ),
+        linear-gradient(
+          to bottom,
+          rgba(1, 30, 50, 0.4) 0%,
+          rgba(1, 30, 50, 0.3) 40%,
+          rgba(15, 4, 0, 0.7) 100%
+        );
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 60% 20%, rgba(244, 0, 18, 0.18), transparent 55%),
+        radial-gradient(circle at 20% 40%, rgba(125, 195, 184, 0.12), transparent 52%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      padding-top: calc(clamp(140px, 18vh, 220px) + 40px);
+      padding-bottom: clamp(12px, 3vh, 32px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 32px;
+      text-align: left;
+      --tilt-x: 0deg;
+      --tilt-y: 0deg;
+      transform: perspective(1400px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x));
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease-out;
+    }
+
+    .hero-main {
+      max-width: 1100px;
+      margin: 0;
+    }
+
+    .hero-kicker {
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.88);
+      max-width: 720px;
+      margin: 0 0 18px 0;
+    }
+
+    .hero-title-main {
+      font-size: 104px;
+      line-height: 1.02;
+      letter-spacing: 0.06em;
+      margin: 0;
+      text-align: left;
+      text-transform: none;
+      display: inline-block;
+    }
+
+    .hero-title-main > span {
+      display: block;
+      margin: 4px 0;
+      position: relative;
+      padding-right: 12px;
+      text-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.85),
+        0 0 20px rgba(0, 0, 0, 0.5);
+      animation: heroWordGlow 8s ease-in-out infinite;
+    }
+
+    /* Interactive per-letter hover effect */
+    .hero-title-main {
+      /* allow glow/scaling to overflow safely */
+      overflow: visible;
+    }
+
+    .hero-letter {
+      display: inline-block;
+      position: relative;
+      padding: 0 0.02em;
+      transform: translateZ(0) scale(var(--scale, 1)) translateY(var(--dy, 0px)) rotate(var(--rot, 0deg));
+      /* Anchor closer to the baseline to avoid top clipping */
+      transform-origin: 50% 82%;
+      transition:
+        transform 0s,
+        text-shadow 0.15s ease,
+        filter 0.15s ease;
+      will-change: transform, filter;
+      z-index: var(--z, 0);
+      /* extra glow scales with intensity */
+      text-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.85),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 40px)) rgba(244, 0, 18, 0.65),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 22px)) rgba(125, 195, 184, 0.35);
+    }
+
+    /* Ensure each line container itself doesn't clip */
+    .hero-title-main > span {
+      overflow: visible;
+    }
+
+    /* Slight neighbor emphasis when hovering a line */
+    .hero-title-main:hover .hero-letter {
+      filter: saturate(1.05);
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-letter {
+        transition: none;
+        transform: none !important;
+      }
+    }
+
+    .hero-line-ashwood {
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      animation-delay: 0.3s;
+      /* Add a bit more headroom for hover scaling */
+      margin-top: 10px;
+    }
+
+    .hero-line-extrabold {
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      animation-delay: 0.9s;
+    }
+
+    .hero-line-cheap {
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+      animation-delay: 1.4s;
+    }
+
+    .hero-badge-wrap {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-badge {
+      display: none;
+      width: 220px;
+      height: 220px;
+      background: none;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7));
+      transform-origin: center;
+      animation: heroBadgePulse 14s ease-in-out infinite;
+    }
+
+    .hero-chill {
+      position: absolute;
+      right: 64px;
+      bottom: clamp(48px, 4vh, 84px);
+      width: 180px;
+      height: auto;
+      z-index: 3;
+      opacity: 0.95;
+      animation: chillRotate 38s linear infinite;
+      pointer-events: none;
+    }
+
+    .hero-neon-separator {
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      transform: none;
+      width: 100vw;
+      max-width: none;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(244, 0, 18, 0) 0%,
+        rgba(244, 0, 18, 0.85) 30%,
+        rgba(244, 0, 18, 1) 50%,
+        rgba(244, 0, 18, 0.85) 70%,
+        rgba(244, 0, 18, 0) 100%
+      );
+      box-shadow:
+        0 0 6px rgba(244, 0, 18, 0.85),
+        0 0 14px rgba(244, 0, 18, 0.45);
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hero-bottom-rip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 54px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .hero-bottom-rip::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 50px;
+      background: none;
+      z-index: 1;
+    }
+
+    .hero-bottom-rip::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        rgba(244, 0, 18, 0) 0%,
+        rgba(244, 0, 18, 0.75) 20%,
+        rgba(244, 0, 18, 1) 50%,
+        rgba(244, 0, 18, 0.75) 80%,
+        rgba(244, 0, 18, 0) 100%
+      );
+      box-shadow:
+        0 0 8px rgba(244, 0, 18, 0.8),
+        0 0 16px rgba(244, 0, 18, 0.65);
+      border-radius: 999px;
+      z-index: 0;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-inner {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: clamp(32px, 6vw, 120px);
+      }
+
+      .hero-main {
+        max-width: 900px;
+      }
+
+      .hero-badge-wrap {
+        align-self: flex-end;
+        margin-left: auto;
+      }
+
+      .hero-line-ashwood {
+        font-size: 86px;
+        white-space: nowrap;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .hero-title-main {
+        font-size: 104px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero-main {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-title-main {
+        font-size: 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="desktop-preview">
+    <section class="hero scene">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="../../assets/img/home/herov2.mp4" type="video/mp4" />
+      </video>
+
+      <div class="container hero-inner">
+        <div class="hero-main">
+          <p class="hero-kicker">
+            Known for its legendary Nashville Hot Chicken and late-night party energy. <br />
+            Party Fowl is where groups come to eat, drink,
+            and push their limits together.
+          </p>
+
+          <h1 class="hero-title-main">
+            <span class="hero-line-ashwood">NASHVILLE HOT CHICKEN.</span>
+            <span class="hero-line-extrabold">BOZZY SLUSHIES.</span>
+            <span class="hero-line-cheap">ZERO CHILL.</span>
+          </h1>
+        </div>
+
+        <div class="hero-badge-wrap">
+          <div class="hero-badge" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <img
+        src="../../assets/img/home/chill.png"
+        alt="Party Fowl – Chill Badge"
+        class="hero-chill"
+      />
+
+      <div class="hero-neon-separator" aria-hidden="true"></div>
+      <div class="hero-bottom-rip" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const body = document.body;
+      const hero = document.querySelector('.hero');
+      const heroInner = hero ? hero.querySelector('.hero-inner') : null;
+
+      if (body) body.classList.add('has-anim-intro');
+      if (hero) hero.classList.add('is-visible');
+
+      // Desktop hover/tilt interaction intentionally disabled for a static title
+      if (heroInner) {
+        heroInner.style.setProperty('--tilt-x', '0deg');
+        heroInner.style.setProperty('--tilt-y', '0deg');
+      }
+
+      // ==============================
+      // Per-letter hover wave effect
+      // ==============================
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pointerFine = window.matchMedia('(pointer: fine)').matches;
+      if (!prefersReduced && pointerFine) {
+        const title = document.querySelector('.hero-title-main');
+        if (title && title.dataset.splitLetters !== '1') {
+          title.dataset.splitLetters = '1';
+          const lines = Array.from(title.querySelectorAll(':scope > span'));
+
+          // Split each line into letter spans
+          lines.forEach((line) => {
+            if (line.firstElementChild && line.firstElementChild.classList.contains('hero-letter')) {
+              return; // already split
+            }
+            const text = line.textContent || '';
+            line.textContent = '';
+
+            const frag = document.createDocumentFragment();
+            const letters = [];
+
+            for (const ch of text) {
+              const s = document.createElement('span');
+              s.className = 'hero-letter';
+              s.textContent = ch === ' ' ? '\u00A0' : ch;
+              frag.appendChild(s);
+              letters.push(s);
+            }
+            line.appendChild(frag);
+
+            // Fluid RAF-driven hover wave
+            const N = letters.length;
+            const state = new Array(N).fill(0).map(() => ({
+              s: 1, dy: 0, rot: 0, z: 0,
+            }));
+            const target = new Array(N).fill(0).map(() => ({
+              s: 1, dy: 0, rot: 0, z: 0,
+            }));
+
+            let hoverIdx = -1;
+            let rafId = 0;
+            let inside = false;
+
+            function computeTargets(idx) {
+              const baseMaxBoost = 0.62;  // slightly softer than before for premium feel
+              const falloff = 0.92;
+              const maxTilt = 3.2;        // reduce tilt for elegance
+
+              const rect = line ? line.getBoundingClientRect() : null;
+              const lineRect = rect || { top: 1000 };
+              const headroom = Math.max(0, lineRect.top);
+              const safety = Math.max(0.86, Math.min(1, headroom / 90));
+              const maxBoost = baseMaxBoost * safety;
+
+              for (let j = 0; j < N; j++) {
+                const d = idx < 0 ? Infinity : Math.abs(j - idx);
+                const boost = idx < 0 ? 0 : maxBoost * Math.exp(-d * falloff);
+                const s = 1 + boost;
+                const dy = idx < 0 ? 0 : 3 * Math.exp(-d * 1.08) * (boost / Math.max(0.0001, maxBoost));
+                const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
+                const z = 50 - (idx < 0 ? 0 : d);
+                target[j].s = s;
+                target[j].dy = dy;
+                target[j].rot = rot;
+                target[j].z = z;
+              }
+            }
+
+            function animate() {
+              let moving = false;
+              const k = 0.22; // smoothing factor
+              for (let j = 0; j < N; j++) {
+                const st = state[j];
+                const tg = target[j];
+                st.s += (tg.s - st.s) * k;
+                st.dy += (tg.dy - st.dy) * k;
+                st.rot += (tg.rot - st.rot) * k;
+                st.z += (tg.z - st.z) * k;
+
+                // Apply styles
+                const el = letters[j];
+                el.style.setProperty('--scale', st.s.toFixed(3));
+                el.style.setProperty('--dy', st.dy.toFixed(2) + 'px');
+                el.style.setProperty('--rot', st.rot.toFixed(2) + 'deg');
+                el.style.setProperty('--z', String(st.z.toFixed(0)));
+
+                if (Math.abs(tg.s - st.s) > 0.002 || Math.abs(tg.dy - st.dy) > 0.02 || Math.abs(tg.rot - st.rot) > 0.02) {
+                  moving = true;
+                }
+              }
+              if (moving || inside) {
+                rafId = requestAnimationFrame(animate);
+              } else {
+                rafId = 0;
+              }
+            }
+
+            function ensureAnim() {
+              if (!rafId) rafId = requestAnimationFrame(animate);
+            }
+
+            function nearestIndexFromClientX(clientX) {
+              let best = -1;
+              let bestDist = Infinity;
+              for (let j = 0; j < N; j++) {
+                const r = letters[j].getBoundingClientRect();
+                const cx = r.left + r.width / 2;
+                const d = Math.abs(clientX - cx);
+                if (d < bestDist) { bestDist = d; best = j; }
+              }
+              return best;
+            }
+
+            line.addEventListener('pointerenter', () => { inside = true; });
+            line.addEventListener('pointermove', (e) => {
+              inside = true;
+              const idx = nearestIndexFromClientX(e.clientX);
+              hoverIdx = idx;
+              computeTargets(hoverIdx);
+              ensureAnim();
+            });
+            line.addEventListener('pointerleave', () => {
+              inside = false;
+              hoverIdx = -1;
+              computeTargets(hoverIdx);
+              ensureAnim();
+            });
+
+            // Initialize neutral state and stop
+            computeTargets(-1);
+          });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

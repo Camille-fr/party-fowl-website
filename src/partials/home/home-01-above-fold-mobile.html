@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===== HEADER START: Meta & SEO de base (tu peux adapter) ===== -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Party Fowl – Mobile Hero</title>
+  <meta name="description" content="Legendary Nashville Hot Chicken, boozy slushies & late-night party energy. Mobile hero slide." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Local fonts only -->
+
+  <!-- Favicon minimal (optionnel) -->
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon/favicon.ico" />
+
+  <style>
+    /* ==============================
+       MOBILE-FIRST RESET / BASE
+    =============================== */
+    @font-face {
+      font-family: "BartenderBold";
+      src: url("../../assets/fonts/Bartender-BoldSansLetterpress.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Alias Google Nunito Sans → local Adrenaline */
+    @font-face {
+      font-family: "Nunito Sans";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodExtraBold";
+      src: url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    button, a { touch-action: manipulation; }
+
+    :root {
+      color-scheme: dark;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+      --bg-highlight: #06263d;
+      --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+    }
+
+    body {
+      font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-mid);
+      background-image:
+        radial-gradient(circle at 18% 0%, rgba(244, 0, 18, 0.08), transparent 42%),
+        radial-gradient(circle at 70% 16%, rgba(125, 195, 184, 0.10), transparent 55%),
+        linear-gradient(180deg, rgba(1, 20, 36, 0.95) 0%, rgba(2, 9, 17, 0.9) 48%, rgba(1, 2, 5, 1) 100%);
+      color: #fff;
+      line-height: 1.5;
+      overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
+      min-height: 100%;
+      position: relative;
+      isolation: isolate;
+      overscroll-behavior-y: auto;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    body::before {
+      background-image: var(--noise-texture);
+      opacity: 0.35;
+      mix-blend-mode: screen;
+    }
+    body::after {
+      z-index: -2;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(244, 0, 18, 0.24), transparent 38%),
+        radial-gradient(circle at 8% 12%, rgba(125, 195, 184, 0.16), transparent 35%),
+        radial-gradient(circle at 90% 6%, rgba(244, 0, 18, 0.12), transparent 40%);
+      opacity: 0.55;
+    }
+
+    img, video { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    ul { list-style: none; }
+    :focus-visible {
+      outline: 2px solid rgba(125,195,184,0.85);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    /* Safe-area helpers */
+    .safe-top { padding-top: env(safe-area-inset-top); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+    .wrap {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 32px);
+    }
+
+    /* ==============================
+       HERO (SLIDE 1 – MOBILE)
+    =============================== */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 100svh;
+      background: #000814;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 102%;
+      height: 102%;
+      min-width: 102%;
+      min-height: 102%;
+      object-fit: cover;
+      z-index: 0;
+      transform: translate(-50%, -50%) scale(0.985);
+      transform-origin: center;
+    }
+
+    .hero::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.88) 0%,
+          rgba(0,0,0,0.72) 18%,
+          rgba(0,0,0,0.52) 38%,
+          rgba(0,0,0,0.32) 58%,
+          rgba(0,0,0,0.18) 72%,
+          rgba(0,0,0,0.0) 90%
+        );
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .hero-inner {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      height: 100%;
+      width: 100%;
+      padding-top: calc(env(safe-area-inset-top) + 72px);
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    .hero-stack::before {
+      content: "";
+      position: absolute;
+      inset: -18px -12px;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(0,0,0,0.55),
+          rgba(0,0,0,0.25) 55%,
+          rgba(0,0,0,0.0) 75%
+        );
+      z-index: -1;
+      filter: blur(6px);
+      pointer-events: none;
+    }
+
+    .hero-stack {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: clamp(24px, 6vh, 64px);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      padding: 0 16px;
+      margin: 0;
+      pointer-events: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .hero-title-main {
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      font-size: clamp(40px, 11vw, 70px);
+      line-height: 1.08;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-shadow:
+        0 10px 30px rgba(0,0,0,0.86),
+        0 0 26px rgba(244,0,18,0.30),
+        0 0 44px rgba(125,195,184,0.20);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,190,186,0.65));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-title-main span {
+      display:block;
+      white-space: nowrap;
+      margin: clamp(2px, 1vw, 8px) 0;
+    }
+
+    .hero-kicker {
+      font-family: "Newslab","Nunito Sans",system-ui,sans-serif;
+      font-size: clamp(14px, 3.4vw, 16px);
+      line-height: 1.55;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.78);
+      max-width: 42ch;
+      opacity: 0.92;
+    }
+
+    .hero-line-ashwood,
+    .hero-line-extrabold,
+    .hero-line-cheap {
+      color: #fff;
+    }
+
+    .hero-line-ashwood {
+      font-size: clamp(28px, 9vw, 48px);
+      letter-spacing: 0.05em;
+      white-space: normal;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-badge-wrap {
+      position: absolute;
+      right: 14px;
+      bottom: clamp(28px, 6.5vh, 70px);
+      display: flex;
+      justify-content: flex-end;
+      width: auto;
+      margin-top: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .hero-badge {
+      display: none;
+      width: 140px;
+      height: 140px;
+      background: none;
+      filter: drop-shadow(0 16px 28px rgba(0,0,0,0.72));
+      opacity: 0.98;
+    }
+
+    @media (max-width: 360px) {
+      .hero-title-main {
+        font-size: clamp(36px, 12vw, 64px);
+        letter-spacing: 0.12em;
+      }
+      .hero-line-ashwood {
+        font-size: clamp(24px, 8.2vw, 36px);
+        letter-spacing: 0.04em;
+      }
+      .hero-badge {
+        width: 124px;
+        height:124px;
+      }
+    }
+
+    /* Torn edge bottom */
+    .hero-bottom-rip {
+      position:absolute;
+      left:0; right:0;
+      bottom:0;
+      height: 54px;
+      z-index: 4;
+      pointer-events:none;
+    }
+    .hero-bottom-rip::before{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 50px;
+      background: none;
+      opacity: 0.95;
+    }
+    .hero-bottom-rip::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:-8px;
+      height: 4px;
+      background:
+        radial-gradient(circle at 12% 50%, rgba(244,0,18,0.55), transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(244,0,18,0.95), rgba(244,0,18,0.7) 32%, transparent 55%),
+        radial-gradient(circle at 88% 50%, rgba(244,0,18,0.55), transparent 60%),
+        linear-gradient(90deg, rgba(244,0,18,0) 0%, rgba(244,0,18,0.88) 18%, rgba(244,0,18,1) 50%, rgba(244,0,18,0.88) 82%, rgba(244,0,18,0) 100%);
+      border-radius: 999px;
+      box-shadow:
+        0 0 6px rgba(244,0,18,0.92),
+        0 0 20px rgba(244,0,18,0.58),
+        0 0 44px rgba(244,0,18,0.32);
+      animation: neonPulse 3.4s ease-in-out infinite;
+    }
+    @keyframes neonPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 16px rgba(244,0,18,0.65));
+        opacity: 0.92;
+      }
+      50% {
+        filter: drop-shadow(0 0 28px rgba(244,0,18,0.85));
+        opacity: 1;
+      }
+    }
+
+
+    /* Responsive tweaks */
+    @media (min-width: 640px){
+      .wrap{ max-width: 760px; padding: 0 clamp(20px, 5vw, 36px); }
+      .hero-stack{ padding: 0 32px; gap: 14px; }
+      .hero-title-main{ font-size: clamp(60px, 8vw, 92px); letter-spacing: 0.14em; }
+      .hero-kicker{ font-size: clamp(16px, 2.6vw, 18px); max-width: 48ch; }
+      .hero-badge{ width: 180px; height:180px; }
+    }
+
+    @media (min-width: 820px){
+      body{ padding-bottom: calc(env(safe-area-inset-bottom) + 160px); }
+      .wrap{ max-width: 900px; }
+      .hero{ min-height: 110svh; }
+      .hero-stack{
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: center;
+        text-align: left;
+        gap: 24px;
+      }
+      .hero-title-main,
+      .hero-kicker{ text-align: left; }
+      .hero-kicker{ max-width: 38ch; }
+      .hero-badge-wrap{ right: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+
+<body class="safe-top safe-bottom">
+  <main>
+    <!-- HERO = SLIDE 1 UNIQUEMENT -->
+    <section class="hero" aria-label="Hero">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="../../assets/img/home/herov2.mp4" type="video/mp4" />
+      </video>
+
+      <div class="wrap hero-inner">
+        <div class="hero-stack">
+          <h1 class="hero-title-main">
+            <span class="hero-line-ashwood">NASHVILLE HOT CHICKEN.</span>
+            <span class="hero-line-extrabold">BOOZY SLUSHIES.</span>
+            <span class="hero-line-cheap">ZERO CHILL.</span>
+          </h1>
+
+          <p class="hero-kicker">
+            Known for its legendary Nashville Hot Chicken and late-night party energy. Party Fowl is where groups come to eat, drink, and push their limits together.
+          </p>
+
+          <div class="hero-badge-wrap" aria-hidden="true">
+            <div class="hero-badge"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-bottom-rip" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script>
+    /* Réduire les mouvements si l’utilisateur l’a demandé */
+    (function () {
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          const v = document.querySelector('.hero-video');
+          if (v) { v.pause(); }
+        }
+      } catch(e) {}
+    })();
+
+    // (sticky actions moved to top-level page for a global dock)
+  </script>
+</body>
+</html>

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Party Fowl – Social Media Reels (Mobile)</title>
+
+  <!-- Local fonts only -->
+
+  <style>
+    /* ==============================
+       BASE / RESET
+    =============================== */
+    @font-face {
+      font-family: "BartenderBold";
+      src: url("../../assets/fonts/Bartender-BoldSansLetterpress.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodExtraBold";
+      src: url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Alias Google Nunito Sans → local Adrenaline */
+    @font-face {
+      font-family: "Nunito Sans";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    button, a { touch-action: manipulation; }
+    img, video { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { border: none; background: none; cursor: pointer; font-family: inherit; }
+    ul { list-style: none; }
+    :focus-visible {
+      outline: 2px solid rgba(125,195,184,0.85);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+      --bg-highlight: #06263d;
+      --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+    }
+
+    body.safe-top.safe-bottom {
+      font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-mid);
+      background-image:
+        radial-gradient(circle at 18% 24%, rgba(125, 195, 184, 0.07), transparent 58%),
+        radial-gradient(circle at 78% 18%, rgba(244, 0, 18, 0.035), transparent 62%),
+        radial-gradient(circle at 52% 110%, rgba(0, 0, 0, 0.62), transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.34));
+      color: #fff;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100%;
+      position: relative;
+      isolation: isolate;
+      overscroll-behavior-y: auto;
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 32px);
+    }
+
+    /* ==============================
+       WHAT'S NEW SECTION (SLIDE 2)
+    =============================== */
+    .whats-new {
+      position: relative;
+      padding: 48px 0 68px;
+      background-color: #03172b;
+      /* Keep the original base background; overlay photo via ::before */
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .whats-new::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: auto;
+      height: 3px;
+      background: linear-gradient(
+        180deg,
+        rgba(244,0,18,0.92) 0%,
+        rgba(244,0,18,0.62) 55%,
+        rgba(244,0,18,0.35) 100%
+      );
+      box-shadow:
+        0 0 6px rgba(244,0,18,0.45),
+        0 0 12px rgba(244,0,18,0.25);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .whats-new::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      /* Overlay photo at ~20% opacity over the base background */
+      background-image: url("../../assets/img/home/background.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.2;
+      mix-blend-mode: normal;
+      filter: none;
+    }
+
+    .whats-new .bottom-fade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 150px;
+      pointer-events: none;
+      z-index: 4;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.82) 100%
+      );
+    }
+    .whats-new .blue-dirt {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520' viewBox='0 0 520 520'%3E%3Cdefs%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.22' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='7 0 0 0 -3  0 7 0 0 -3  0 0 7 0 -3  0 0 0 1 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3CfeFuncG type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3CfeFuncB type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C/defs%3E%3Crect width='520' height='520' fill='%236b1a22' filter='url(%23d)' opacity='0.85'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 520px 520px;
+    }
+
+    .whats-new-inner {
+      position: relative;
+      z-index: 6;
+    }
+
+    .whats-new-header {
+      position: relative;
+      /* Extra spacing so the title sits a bit lower under the footprints */
+      padding-top: 76px;
+      margin-bottom: 16px;
+      padding-bottom: 18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .whats-new-title {
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      font-size: 36px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-align:center;
+      color: rgba(255,255,255,0.96);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.78),
+        0 0 12px rgba(244,0,18,0.32);
+      padding: 8px 0 10px;
+      position: relative;
+      z-index: 2;
+    }
+    .whats-new-title::after {
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:0;
+      transform: translateX(-50%);
+      width: 84px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(244,0,18,0) 0%,
+        rgba(244,0,18,0.95) 50%,
+        rgba(244,0,18,0) 100%
+      );
+      box-shadow:
+        0 0 12px rgba(244,0,18,0.50),
+        0 0 22px rgba(244,0,18,0.26);
+      border-radius: 999px;
+    }
+
+    /* Footprints strip */
+    .footprints-layer {
+      position:absolute;
+      left:0;
+      right:0;
+      top: -6px;
+      transform: none;
+      width: auto;
+      height: 82px;
+      z-index: 1;
+      pointer-events:none;
+      opacity: 0.98;
+      padding-bottom: 42px;
+    }
+    .footprints-path {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .footprint {
+      position:absolute;
+      width: 32px;
+      height: 32px;
+      opacity: 0;
+      transform-origin:center;
+      --footprint-scale: 1;
+      transform: rotate(var(--footprint-rotation, 0deg)) scale(var(--footprint-scale, 1));
+      filter:
+        drop-shadow(0 0 16px rgba(194,17,38,0.5))
+        drop-shadow(0 0 40px rgba(194,17,38,0.2));
+      transition: opacity .22s ease-out, transform .25s ease-out, filter .25s ease-out;
+      will-change: opacity, transform, filter;
+      border-radius: 999px;
+      isolation:isolate;
+    }
+    .footprint img {
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+    .footprint::before{
+      content:"";
+      position:absolute;
+      inset:-26px;
+      z-index:-1;
+      opacity: var(--glow, 0);
+      border-radius:999px;
+      background: radial-gradient(circle at 50% 55%, rgba(244,0,18,0.92) 0%, rgba(194,17,38,0.44) 40%, rgba(194,17,38,0) 70%);
+      filter: blur(20px);
+      transform: scale(calc(var(--footprint-scale, 1) + 0.06));
+      transition: opacity .26s ease-out, transform .32s cubic-bezier(.22,1,.36,1);
+    }
+    .footprint.is-on::before { opacity: var(--glow, .95); }
+    .footprint.is-on {
+      opacity: 1;
+      filter:
+        drop-shadow(0 0 22px rgba(194,17,38,0.78))
+        drop-shadow(0 0 54px rgba(194,17,38,0.32));
+    }
+    .footprint.is-trail { opacity: .22; }
+    .footprint.is-off { opacity: 0; }
+
+    /* Social row */
+    .social-row {
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      margin: 8px 0 16px;
+    }
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(1,15,30,0.55);
+      border: 1.5px solid rgba(255,255,255,0.36);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:
+        0 12px 22px rgba(0,0,0,0.62),
+        0 0 12px rgba(125,195,184,0.10),
+        0 0 10px rgba(244,0,18,0.08);
+      /* Remove background blur behind each button */
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      color: rgba(255,255,255,0.84);
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      transition:
+        transform .16s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+    }
+    .social-btn:active {
+      transform: translateY(1px) scale(0.97);
+      border-color: rgba(255,255,255,0.65);
+      box-shadow:
+        0 6px 14px rgba(0,0,0,0.55),
+        0 0 20px rgba(244,0,18,0.18);
+    }
+    .social-btn svg {
+      width: 20px;
+      height:20px;
+      fill:none;
+      stroke: currentColor;
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .social-btn .social-icon {
+      width: 20px;
+      height:20px;
+      object-fit:contain;
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,0.25))
+        drop-shadow(0 0 14px rgba(125,195,184,0.16));
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    /* Carousel */
+    .carousel {
+      position: relative;
+      /* Add more room under social icons before the visuals */
+      margin-top: 20px;
+      padding-bottom: 10px;
+    }
+    .carousel-track {
+      display:flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 8px 6px 32px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar { display:none; }
+
+    .card {
+      position: relative;
+      flex: 0 0 86%;
+      max-width: 360px;
+      scroll-snap-align: center;
+      border-radius: 14px;
+      overflow: visible;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    .card::before {
+      content:"";
+      position:absolute;
+      inset:-22px;
+      opacity: 0;
+      pointer-events:none;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 30% 35%, rgba(194,17,38,0.85) 0%, rgba(194,17,38,0.30) 38%, rgba(194,17,38,0) 72%),
+        radial-gradient(circle at 70% 65%, rgba(194,17,38,0.70) 0%, rgba(194,17,38,0.22) 40%, rgba(194,17,38,0) 74%);
+      filter: blur(24px);
+      transition: opacity .18s ease-out, transform .22s ease-out;
+      transform: scale(0.99);
+    }
+    .card:active::before {
+      opacity: .62;
+      transform: scale(1.03);
+    }
+
+    .card-frame {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: transparent;
+    }
+    .card-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25),
+        rgba(0,0,0,0.45)
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+    .card-frame img {
+      width:100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 26px rgba(0,0,0,0.60));
+      transition: opacity .25s ease-out;
+      background: transparent;
+      position: relative;
+      z-index: 0;
+    }
+
+    .card-video {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      opacity:0;
+      pointer-events:none;
+      filter: drop-shadow(0 16px 26px rgba(0,0,0,0.60));
+      transition: opacity .25s ease-out;
+    }
+
+    .card-play {
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(1,15,30,0.55);
+      border: 1.5px solid rgba(255,255,255,0.55);
+      box-shadow:
+        0 16px 26px rgba(0,0,0,0.74),
+        0 0 14px rgba(125,195,184,0.22),
+        0 0 12px rgba(244,0,18,0.14);
+      backdrop-filter: blur(10px) saturate(125%);
+      -webkit-backdrop-filter: blur(10px) saturate(125%);
+      -webkit-tap-highlight-color: transparent;
+      z-index: 3;
+    }
+    .card-play:active { transform: scale(0.98); }
+
+    .card-play .icon {
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: opacity .18s ease-out, transform .18s ease-out;
+    }
+    .card-play .icon-pause {
+      opacity:0;
+      transform: scale(0.7);
+    }
+    .card-play svg {
+      width: 24px;
+      height:24px;
+      fill: rgba(255,255,255,0.96);
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,0.34))
+        drop-shadow(0 0 14px rgba(125,195,184,0.22));
+    }
+    .card-play .icon-play svg { transform: translateX(1px); }
+
+    /* Video state toggles */
+    .card.is-video-visible .card-frame img { opacity: 0; }
+    .card.is-video-visible .card-video { opacity: 1; }
+    .card.is-video-playing .card-play .icon-play { opacity: 0; transform: scale(0.7); }
+    .card.is-video-playing .card-play .icon-pause { opacity: 1; transform: scale(1); }
+
+    /* Sans JS, on laisse juste l’état "image" par défaut */
+    .swipe-hint {
+      margin-top: 6px;
+      text-align:center;
+      font-family: "Newslab","Nunito Sans",system-ui,sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .10em;
+      font-size: 10px;
+      color: rgba(255,255,255,0.66);
+      text-shadow: 0 6px 18px rgba(0,0,0,0.55);
+    }
+
+    /* Small responsive tweaks */
+    @media (max-width: 360px){
+      .card{ flex-basis: 90%; }
+    }
+    @media (min-width: 480px){
+      .wrap{ padding: 0 18px; }
+      .card{ flex-basis: 78%; }
+    }
+    @media (min-width: 640px){
+      .wrap{ max-width: 760px; padding: 0 clamp(20px, 5vw, 36px); }
+      .carousel-track{ gap: 18px; padding: 12px 12px 28px; }
+      .card{ flex-basis: 60%; max-width: 420px; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body class="safe-top safe-bottom">
+  <main>
+    <!-- SLIDE 2: WHAT'S NEW / SOCIAL MEDIA REELS -->
+    <section class="whats-new" aria-label="What's New">
+      <div class="blue-dirt" aria-hidden="true"></div>
+      <div class="bottom-fade" aria-hidden="true"></div>
+      <div class="wrap whats-new-inner">
+        <div class="whats-new-header">
+          <div class="footprints-layer" aria-hidden="true">
+            <div class="footprints-path" id="footprintsPath">
+              <div class="footprint" style="left:-4%; top:78%; transform: rotate(86deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:2%;  top:26%; transform: rotate(94deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:8%;  top:80%; transform: rotate(88deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:14%; top:28%; transform: rotate(96deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:20%; top:82%; transform: rotate(90deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:26%; top:28%; transform: rotate(100deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:32%; top:80%; transform: rotate(92deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:38%; top:28%; transform: rotate(104deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:44%; top:80%; transform: rotate(94deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:50%; top:26%; transform: rotate(106deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:56%; top:82%; transform: rotate(96deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:62%; top:26%; transform: rotate(108deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:68%; top:78%; transform: rotate(98deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:74%; top:26%; transform: rotate(110deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:80%; top:78%; transform: rotate(100deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:86%; top:26%; transform: rotate(112deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:92%; top:74%; transform: rotate(102deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:98%; top:30%; transform: rotate(114deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+              <div class="footprint" style="left:104%; top:74%; transform: rotate(108deg);">
+                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+              </div>
+            </div>
+          </div>
+
+          <h2 class="whats-new-title">WHAT'S NEW</h2>
+        </div>
+
+        <div class="social-row" aria-label="Social links">
+          <button class="social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.2"></circle>
+              <circle cx="16.6" cy="7.4" r="0.9" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </button>
+          <button class="social-btn" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 9h3V6h-3c-2 0-3 1-3 3v3H8v3h3v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z"></path>
+            </svg>
+          </button>
+          <button class="social-btn" aria-label="X">
+            <img class="social-icon" src="../../assets/img/home/x.png" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div class="carousel" aria-label="Instagram carousel">
+          <div class="carousel-track" id="carouselTrack" data-scroll-x>
+            <article class="card" data-video="../../assets/img/home/insta2.mov">
+              <div class="card-frame">
+                <img src="../../assets/img/home/insta2.png" alt="Instagram post 2" loading="lazy" decoding="async" />
+                <button class="card-play" aria-label="Play video">
+                  <span class="icon icon-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 7.5v9l8-4.5-8-4.5z"></path></svg>
+                  </span>
+                  <span class="icon icon-pause" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path></svg>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="card" data-video="../../assets/img/home/insta1.mov">
+              <div class="card-frame">
+                <img src="../../assets/img/home/insta1.png" alt="Instagram post 1" loading="lazy" decoding="async" />
+                <button class="card-play" aria-label="Play video">
+                  <span class="icon icon-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 7.5v9l8-4.5-8-4.5z"></path></svg>
+                  </span>
+                  <span class="icon icon-pause" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path></svg>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="card" data-video="../../assets/img/home/insta3.mov">
+              <div class="card-frame">
+                <img src="../../assets/img/home/insta3.png" alt="Instagram post 3" loading="lazy" decoding="async" />
+                <button class="card-play" aria-label="Play video">
+                  <span class="icon icon-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 7.5v9l8-4.5-8-4.5z"></path></svg>
+                  </span>
+                  <span class="icon icon-pause" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path></svg>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="card" data-video="../../assets/img/home/insta4.mov">
+              <div class="card-frame">
+                <img src="../../assets/img/home/insta4.png" alt="Instagram post 4" loading="lazy" decoding="async" />
+                <button class="card-play" aria-label="Play video">
+                  <span class="icon icon-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 7.5v9l8-4.5-8-4.5z"></path></svg>
+                  </span>
+                  <span class="icon icon-pause" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path></svg>
+                  </span>
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="swipe-hint">Swipe to see more</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <script>
+      /* ==============================
+        MOBILE CARD VIDEO: tap to play/pause
+        - Tap anywhere on a card (image or button) to toggle
+        - Only one video plays at a time (mobile friendly)
+        - Videos are created lazily on first tap
+        - Pauses all when section leaves viewport
+      =============================== */
+      (function () {
+        const section = document.querySelector('.whats-new');
+        const cards = Array.from(document.querySelectorAll('.carousel .card'));
+        if (!cards.length) return;
+
+        const states = new WeakMap(); // card -> { playing: boolean }
+
+        function ensureVideo(card) {
+          if (card._video) return card._video;
+          const frame = card.querySelector('.card-frame');
+          const img = card.querySelector('img');
+          if (!frame || !img) return null;
+
+          const declared = card.getAttribute('data-video') || '';
+          const fallback = (img.getAttribute('src') || '').replace(/\.[^.]+$/, '.mov');
+          const src = declared || fallback;
+          if (!src) return null;
+
+          const v = document.createElement('video');
+          v.className = 'card-video';
+          v.src = src;
+          v.muted = true;
+          v.playsInline = true;
+          v.preload = 'metadata';
+          v.setAttribute('aria-hidden', 'true');
+          frame.appendChild(v);
+          card._video = v;
+
+          v.addEventListener('ended', () => stopCard(card, { resetTime: true }));
+          v.addEventListener('error', () => stopCard(card, { resetTime: false }));
+          return v;
+        }
+
+        function stopOthers(except) {
+          cards.forEach((c) => { if (c !== except) stopCard(c, { resetTime: true }); });
+        }
+
+        function playCard(card) {
+          const v = ensureVideo(card);
+          if (!v) return;
+          stopOthers(card);
+          card.classList.add('is-video-visible', 'is-video-playing');
+          const st = states.get(card) || { playing: false };
+          try { if (v.currentTime === v.duration) v.currentTime = 0; } catch (_) {}
+          const p = v.play();
+          st.playing = true;
+          states.set(card, st);
+          if (p && typeof p.catch === 'function') {
+            p.catch(() => stopCard(card, { resetTime: false }));
+          }
+          const btn = card.querySelector('.card-play');
+          if (btn) btn.setAttribute('aria-label', 'Pause video');
+        }
+
+        function stopCard(card, opts) {
+          const options = Object.assign({ resetTime: true }, opts);
+          const v = card._video || card.querySelector('video.card-video');
+          const st = states.get(card) || { playing: false };
+          if (v) {
+            try {
+              v.pause();
+              if (options.resetTime) v.currentTime = 0;
+            } catch (_) {}
+          }
+          st.playing = false;
+          states.set(card, st);
+          card.classList.remove('is-video-playing');
+          // Hide video after pausing to show image back
+          card.classList.remove('is-video-visible');
+          const btn = card.querySelector('.card-play');
+          if (btn) btn.setAttribute('aria-label', 'Play video');
+        }
+
+        function toggleCard(card) {
+          const st = states.get(card) || { playing: false };
+          if (st.playing) stopCard(card, { resetTime: true });
+          else playCard(card);
+        }
+
+        // Bind controls
+        cards.forEach((card) => {
+          states.set(card, { playing: false });
+          const frame = card.querySelector('.card-frame');
+          const btn = card.querySelector('.card-play');
+          if (!frame || !btn) return;
+
+          // Tap anywhere on the card frame toggles
+          frame.addEventListener('click', (e) => {
+            // Let the explicit button handler manage if the tap was on the button
+            if (e.target && (e.target.closest && e.target.closest('.card-play'))) return;
+            toggleCard(card);
+          });
+
+          // Explicit button toggles as well
+          btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); toggleCard(card); });
+          btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(card); }
+          });
+        });
+
+        // Pause all when section is not visible
+        if (section && 'IntersectionObserver' in window) {
+          const io = new IntersectionObserver((entries) => {
+            const visible = entries.some((e) => e.isIntersecting);
+            if (!visible) cards.forEach((c) => stopCard(c, { resetTime: false }));
+          }, { threshold: 0.05 });
+          io.observe(section);
+        }
+
+        // Defensive: pause on tab hide
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) cards.forEach((c) => stopCard(c, { resetTime: false }));
+        });
+      })();
+    </script>
+
+    <script>
+      /* ==============================
+        FOOTPRINTS SCROLL WALK (mobile tuned)
+      =============================== */
+      (function () {
+        const section = document.querySelector('.whats-new');
+        const steps = Array.from(document.querySelectorAll('#footprintsPath .footprint'));
+        if (!section || steps.length === 0) return;
+
+        const TRAIL_LENGTH = 7;
+        const SPEED = 1.05;
+        window.__footprintsConfig = { startTopRatio: 0.94, speed: SPEED };
+
+        // Preserve each footprint's original transform (its rotation / position)
+        steps.forEach((el) => {
+          if (!el.dataset.baseTransform) {
+            el.dataset.baseTransform = el.style.transform || '';
+          }
+        });
+
+        function clamp(v, min, max) {
+          return Math.max(min, Math.min(max, v));
+        }
+
+        function applyProgress(p) {
+          const maxIndex = steps.length - 1;
+          const t = p * maxIndex;
+          const activeIndex = Math.min(maxIndex, Math.floor(t));
+
+          steps.forEach((el, i) => {
+            const prevState = el.__state || 'off';
+            const dist = t - i;
+            let nextState = 'off';
+            let opacity = 0;
+            let scale = 1;
+            let glow = 0;
+
+            if (dist >= 0 && dist < 0.65) {
+              nextState = 'on';
+              opacity = 0.98 - dist * 0.18;
+              scale = (i === activeIndex) ? 1.18 : 1.06;
+              glow = 0.90;
+            } else if (dist >= 0.65 && dist < TRAIL_LENGTH) {
+              nextState = 'trail';
+              const k = 1 - (dist - 0.65) / (TRAIL_LENGTH - 0.65);
+              opacity = 0.12 + k * 0.22;
+              scale = 1.0;
+              glow = 0.42 * k;
+            }
+
+            if (nextState !== prevState) {
+              el.classList.remove('is-on', 'is-trail', 'is-off');
+              el.classList.add(nextState === 'on' ? 'is-on' : nextState === 'trail' ? 'is-trail' : 'is-off');
+              el.__state = nextState;
+            }
+            el.style.opacity = String(Math.max(0, Math.min(1, opacity)));
+            el.style.setProperty('--footprint-scale', String(scale));
+            el.style.setProperty('--glow', String(Math.max(0, Math.min(1, glow))));
+
+            // Normalize transform to CSS variables once
+            if (!el.__rotFixed) {
+              const m = (el.style.transform || '').match(/rotate\(([-0-9\.]+)deg\)/);
+              if (m) {
+                el.style.setProperty('--footprint-rotation', `${m[1]}deg`);
+                el.style.transform = '';
+              }
+              el.__rotFixed = true;
+            }
+          });
+        }
+
+        function updateFromSelfScroll() {
+          const rect = section.getBoundingClientRect();
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+          const startTop = vh * 0.94;
+          const endTop = vh - rect.height;
+          const total = (startTop - endTop) || 1;
+          const p = clamp(((startTop - rect.top) / total) * SPEED, 0, 1);
+          applyProgress(p);
+        }
+
+        // Expose hooks for parent driver
+        function offsetTopAcc(el){
+          var y = 0, n = el;
+          while (n) { y += (n.offsetTop || 0); n = n.offsetParent; }
+          return y;
+        }
+        window.__getFootprintsMetrics = function () {
+          try {
+            return { topOffset: offsetTopAcc(section), height: section.offsetHeight || section.getBoundingClientRect().height };
+          } catch (_) {
+            return { topOffset: 0, height: section.getBoundingClientRect().height };
+          }
+        };
+        window.__updateFootprintsProgress = function (p) {
+          applyProgress(clamp(p, 0, 1));
+        };
+
+        // Fallback when opened standalone
+        const USE_FALLBACK = (function(){ try { return window.self === window.top; } catch(_) { return false; } })();
+        if (USE_FALLBACK) {
+          let ticking = false;
+          function onScroll() {
+            if (!ticking) {
+              ticking = true;
+              requestAnimationFrame(() => {
+                ticking = false;
+                updateFromSelfScroll();
+              });
+            }
+          }
+          const io = new IntersectionObserver((entries) => {
+            const any = entries.some(e => e.isIntersecting);
+            if (any) {
+              window.addEventListener('scroll', onScroll, { passive: true });
+              window.addEventListener('resize', onScroll);
+              onScroll();
+            } else {
+              window.removeEventListener('scroll', onScroll);
+              window.removeEventListener('resize', onScroll);
+            }
+          }, { threshold: 0.05 });
+          io.observe(section);
+        }
+      })();
+    </script>
+</body>
+</html>

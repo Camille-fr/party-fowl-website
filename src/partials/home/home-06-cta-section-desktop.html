@@ -1,0 +1,497 @@
+<!-- Target: src/partials/home/home-06-cta-section-desktop.html | Desktop 1440px -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home CTA — Full Width</title>
+  <style>
+    /* ================= Fonts (local only) ================= */
+    @font-face{
+      font-family:"AshwoodCondensed";
+      src:url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"AshwoodExtraBold";
+      src:url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Newslab";
+      src:url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-display:swap;
+    }
+
+    :root{
+      --bg0:#06060a;
+      --bg1:#07070b;
+
+      --cream:#ffe5be;
+      --cream2:#ffd49c;
+
+      --teal:#35f0ff;
+      --teal2:#21b8ff;
+
+      --red:#b10f13;
+      --red2:#d3181c;
+
+      --ink:#f6f1e6;
+      --muted:rgba(246,241,230,.82);
+
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      min-height:0;
+      height:auto;
+    }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 700px at 50% 35%, rgba(45,255,255,.08), transparent 60%),
+                  radial-gradient(900px 520px at 18% 62%, rgba(255,47,47,.10), transparent 60%),
+                  radial-gradient(900px 520px at 82% 62%, rgba(255,212,156,.06), transparent 60%),
+                  linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 40%, var(--bg0) 100%);
+      color:var(--ink);
+      overflow:hidden;
+    }
+
+    /* ===== Full-width / full-height section, trimmed bottom spacing ===== */
+    .cta{
+      position:relative;
+      width:100%;
+      min-height: auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:0;
+      margin:0;
+      isolation:isolate;
+      overflow:hidden;
+      background: linear-gradient(180deg, #05070d 0%, #0b0d14 100%);
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px; height:1px;
+      padding:0; margin:-1px;
+      overflow:hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border:0;
+    }
+
+    /* Background image layer (static) */
+    .cta-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover; /* fill the entire section width responsively */
+      object-position:center; /* keep the focus centered across breakpoints */
+      pointer-events:none;
+      z-index:0;
+      opacity:1;
+      filter: none;
+    }
+
+    .cta::before{
+      content:"";
+      position:absolute; inset:0;
+      z-index:1;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.62) 0%,
+        rgba(0,0,0,0.45) 26%,
+        rgba(0,0,0,0.26) 52%,
+        rgba(0,0,0,0.12) 72%,
+        transparent 100%);
+      filter: blur(24px);
+      pointer-events:none;
+    }
+
+    .cta::after{
+      content:"";
+      position:absolute; inset:0;
+      z-index:2;
+      background:
+        linear-gradient(180deg,
+          rgba(0,0,0,.78) 0%,
+          rgba(0,0,0,.52) 22%,
+          rgba(0,0,0,0) 58%),
+        radial-gradient(60% 80% at 50% 40%, rgba(0,0,0,.25), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.68));
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+      pointer-events:none;
+    }
+
+    /* Layout container matches screenshot: centered content, airy, but edges can breathe */
+    .wrap{
+      position:relative;
+      z-index:3;
+      width:min(1440px, 100%);
+      padding-inline: clamp(28px, 4.5vw, 84px); /* left/right only */
+      padding-top: 0;
+      padding-bottom: clamp(10px, 1.6vw, 22px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap: clamp(8px, 1.8vw, 16px);
+      transform: translateY(0);
+    }
+
+    /* Title video replaces text headline */
+    .headline-video{
+      position:relative;
+      width:min(720px, 86vw);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      filter: drop-shadow(0 20px 52px rgba(0,0,0,.72));
+      transform: skewX(-6deg);
+      mix-blend-mode: screen;
+      isolation:isolate; /* keeps blend limited to this block */
+      overflow:visible;
+      border-radius: 48px;
+      padding: clamp(0px, 0.4vw, 6px);
+      box-shadow:
+        0 0 60px 34px rgba(0,0,0,.52),
+        0 0 110px 54px rgba(0,0,0,.45);
+    }
+    .headline-video::before{
+      content:"";
+      position:absolute;
+      inset:-48% -32%;
+      background: radial-gradient(circle at 50% 50%,
+        rgba(0,0,0,0.65) 0%,
+        rgba(0,0,0,0.52) 24%,
+        rgba(0,0,0,0.36) 48%,
+        rgba(0,0,0,0.22) 68%,
+        transparent 92%);
+      filter: blur(46px);
+      opacity:1;
+      border-radius: 160px;
+      z-index:0;
+      pointer-events:none;
+    }
+    .headline-video::after{
+      content:"";
+      position:absolute;
+      inset:-32px;
+      background: radial-gradient(ellipse at 50% 50%,
+        rgba(0,0,0,0.5) 0%,
+        rgba(0,0,0,0.35) 40%,
+        transparent 80%);
+      filter: blur(32px);
+      opacity:1;
+      border-radius: 999px;
+      z-index:1;
+      pointer-events:none;
+    }
+    .headline-video video{
+      width:100%;
+      height:auto;
+      display:block;
+      background: transparent;
+      mix-blend-mode: screen; /* drops dark backing to keep only the lettering */
+      filter: brightness(1.08) contrast(1.1);
+      border:none;
+      overflow:hidden;
+      position:relative;
+      z-index:2;
+    }
+    @supports (mix-blend-mode: lighten){
+      .headline-video video{ mix-blend-mode: lighten; }
+    }
+    .headline-video video::-webkit-media-controls{
+      display:none !important;
+    }
+
+    /* Sub-copy */
+    .sub{
+      margin: clamp(6px, 1vw, 10px) 0 0;
+      text-align:center;
+      color: var(--muted);
+      font: 400 18px/1.5 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      max-width: 78ch;
+      text-shadow: 0 0 18px rgba(0,0,0,.35);
+    }
+
+    /* Buttons centered under title like screenshot */
+    .btn-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      margin-top: clamp(8px, 1.6vw, 16px);
+      margin-bottom: clamp(24px, 5vh, 68px);
+      flex-wrap:wrap;
+    }
+
+    /* === Header pill buttons (copied to ensure identical look) === */
+    .btn-pill {
+      --btn-bg: linear-gradient(to bottom, #303030, #121212);
+      --btn-glow: rgba(255, 255, 255, 0.18);
+      --btn-shadow: rgba(0, 0, 0, 0.7);
+      text-decoration:none;
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      border-radius: 40px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--btn-bg);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      white-space: nowrap;
+      min-height: 48px;
+      text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.75),
+        0 0 3px rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        border-color 0.18s ease-out,
+        letter-spacing 0.2s ease-out;
+    }
+    .btn-pill::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .btn-pill::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, var(--btn-glow), transparent 70%);
+      opacity: 0;
+      filter: blur(14px);
+      transition:
+        opacity 0.25s ease-out,
+        filter 0.25s ease-out;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .btn-pill:hover {
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: 0.08em;
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.8),
+        0 0 18px rgba(255, 255, 255, 0.25);
+    }
+    .btn-pill:hover::after {
+      opacity: 0.85;
+      filter: blur(22px);
+    }
+    .btn-label {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      margin-top: 1px;
+    }
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-locations {
+      --btn-bg:
+        linear-gradient(130deg, rgba(125, 195, 184, 0.35), transparent 40%) ,
+        linear-gradient(to bottom, #217872 0%, #1b605c 100%);
+      --btn-glow: rgba(125, 195, 184, 0.45);
+      color: #FFFFFF;
+      border-color: rgba(125, 195, 184, 0.8);
+    }
+    .btn-locations:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(125, 195, 184, 0.45);
+    }
+    .btn-order {
+      --btn-bg:
+        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+      --btn-glow: rgba(244, 0, 18, 0.55);
+      color: #FFFFFF;
+      border-color: rgba(255, 180, 176, 0.85);
+    }
+    .btn-order:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.85),
+        0 0 34px rgba(244, 0, 18, 0.45);
+    }
+    .btn-icon-location {
+      background-image: url("../../assets/img/home/location.png");
+    }
+    .btn-icon-order {
+      background-image: url("../../assets/img/home/order.png");
+    }
+
+    /* Reuse header pill buttons with a softer, glassy feel in this hero */
+    .cta .btn-pill{
+      /* Force transparent fill for the CTA pills instead of the default dark gradient */
+      --btn-bg: transparent;
+      background: transparent;
+      background-image: none;
+      background-color: transparent;
+      background-blend-mode: normal;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.65),
+        inset 0 1px 1px rgba(255,255,255,0.08);
+      opacity:0.95;
+    }
+    .cta .btn-order{
+      background: transparent;
+      color: #ff1f2b;
+      border-color: rgba(244, 0, 18, 0.95);
+      box-shadow:
+        0 0 16px rgba(244, 0, 18, 0.56),
+        0 0 36px rgba(244, 0, 18, 0.32),
+        inset 0 0 12px rgba(244, 0, 18, 0.3);
+      --btn-glow: rgba(244, 0, 18, 0.68);
+    }
+    .cta .btn-order:hover{
+      border-color: rgba(255, 120, 126, 1);
+      box-shadow:
+        0 0 22px rgba(244, 0, 18, 0.78),
+        0 0 46px rgba(244, 0, 18, 0.45),
+        inset 0 0 16px rgba(244, 0, 18, 0.36);
+      color: #ffd5d9;
+    }
+    .cta .btn-order::after{
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+    }
+    .cta .btn-locations{
+      background: transparent;
+      color: #9ef1ea;
+      border-color: rgba(53, 240, 255, 0.75);
+      box-shadow:
+        0 0 14px rgba(53, 240, 255, 0.42),
+        0 0 32px rgba(33, 184, 255, 0.28),
+        inset 0 0 10px rgba(33, 184, 255, 0.22);
+      --btn-glow: rgba(53, 240, 255, 0.55);
+    }
+    .cta .btn-locations:hover{
+      border-color: rgba(126, 241, 234, 0.95);
+      box-shadow:
+        0 0 18px rgba(53, 240, 255, 0.62),
+        0 0 40px rgba(33, 184, 255, 0.38),
+        inset 0 0 14px rgba(33, 184, 255, 0.28);
+      color: #c4fffa;
+    }
+    .cta .btn-locations::after{
+      background: radial-gradient(circle at 50% 50%, rgba(53, 240, 255, 0.55), transparent 70%);
+    }
+
+    /* keep layout solid on smaller desktops */
+    @media (max-width: 980px){
+      .btn-row{flex-wrap:wrap}
+    }
+  </style>
+</head>
+
+<body>
+  <section class="cta" aria-label="CTA Party Fowl">
+    <!-- Background (local-first + fallback). Add the real image later; it will auto-swap. -->
+    <img class="cta-bg"
+         alt=""
+         aria-hidden="true"
+         loading="lazy"
+         decoding="async"
+         data-src="../../assets/img/home/home-06-cta-bg.png"
+         data-fallback="TODO" />
+
+    <div class="wrap">
+      <h1 class="sr-only">Don’t Wait — Celebrate!</h1>
+
+      <div class="headline-video" role="img" aria-label="Don’t Wait — Celebrate!">
+        <video src="../../assets/img/home/home_06_title.mp4"
+               autoplay
+               muted
+               loop
+               playsinline
+               preload="auto"></video>
+      </div>
+
+      <p class="sub">
+        Hot chicken, boozy slushies &amp; zero chill, served now or waiting at your nearest Party Fowl.
+      </p>
+
+      <div class="btn-row" role="group" aria-label="Call to action buttons">
+        <a href="TODO" class="btn-pill btn-order" aria-label="Order Now">
+          <span class="btn-label">Order Now</span>
+          <span class="btn-icon btn-icon-order" aria-hidden="true"></span>
+        </a>
+        <a href="TODO" class="btn-pill btn-locations" aria-label="Find a Location">
+          <span class="btn-label">Find a Location</span>
+          <span class="btn-icon btn-icon-location" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Local-asset loader: uses data-src first; falls back to data-fallback if not found.
+    (function () {
+      const imgs = Array.from(document.querySelectorAll('img[data-src]'));
+
+      async function exists(url) {
+        try {
+          let res = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
+          if (res && res.ok) return true;
+          res = await fetch(url, { method: 'GET', cache: 'no-cache' });
+          return !!(res && res.ok);
+        } catch (_) { return false; }
+      }
+
+      async function loadImg(img) {
+        const local = img.getAttribute('data-src');
+        const fallback = img.getAttribute('data-fallback') || 'TODO';
+        if (img.getAttribute('src')) return;
+
+        if (local && await exists(local)) img.src = local;
+        else img.src = fallback;
+      }
+
+      const io = ('IntersectionObserver' in window)
+        ? new IntersectionObserver((entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                io.unobserve(e.target);
+                loadImg(e.target);
+              }
+            }
+          }, { rootMargin: '300px 0px' })
+        : null;
+
+      imgs.forEach(img => io ? io.observe(img) : loadImg(img));
+    })();
+  </script>
+</body>
+</html>

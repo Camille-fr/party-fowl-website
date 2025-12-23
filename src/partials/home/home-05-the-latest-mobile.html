@@ -1,0 +1,759 @@
+<!-- Target: src/partials/home/home-05-the-latest-mobile.html | Mobile -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Party Fowl - The Latest (Mobile)</title>
+
+  <style>
+    /* ==============================
+       FONTS (LOCAL ONLY)
+    =============================== */
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodExtraBold";
+      src: url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Buttergone";
+      src: url("../../assets/fonts/Buttergone OTF.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Nunito Sans";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ==============================
+       BASE / RESET
+    =============================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button {
+      border: 0;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+    }
+    button, a { touch-action: manipulation; }
+    :focus-visible {
+      outline: 2px solid rgba(244,0,18,0.9);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg: #030b16;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+      --panel: #0d131c;
+      --panel-2: #0a0f17;
+      --ink: #f4f6fb;
+      --muted: rgba(244,246,251,0.78);
+      --accent-red: #f40012;
+      --accent-teal: #7dc3b8;
+      --accent-gold: #f0d07a;
+      --accent-warm: #ff9a3c;
+      --line: rgba(255,255,255,0.12);
+      --line-soft: rgba(255,255,255,0.08);
+      --shadow: 0 22px 52px rgba(0,0,0,0.65);
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --edge: clamp(16px, 4vw, 24px);
+      --edge-wide: clamp(18px, 5vw, 30px);
+      --sticky-safe: calc(env(safe-area-inset-bottom) + clamp(64px, 12vh, 96px));
+    }
+
+    body {
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000;
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 0;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+      padding-bottom: 0;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    body::before,
+    body::after {
+      content: none;
+    }
+
+    .safe-top { padding-top: env(safe-area-inset-top); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+    .wrap {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 var(--edge);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==============================
+       THE LATEST (MOBILE)
+    =============================== */
+    .latest {
+      position: relative;
+      padding: clamp(28px, 6vw, 46px) 0 clamp(12px, 3vw, 18px);
+      background: #000;
+      overflow: hidden;
+      isolation: isolate;
+      scroll-margin-bottom: var(--sticky-safe);
+    }
+    .latest::before {
+      content: none;
+    }
+    .latest::after {
+      content: none;
+    }
+    .latest-bg-flip {
+      display: none;
+    }
+    .latest-topline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.9), rgba(255,255,255,0.22));
+      box-shadow:
+        0 0 6px rgba(255,255,255,0.9),
+        0 0 18px rgba(255,255,255,0.55);
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .latest-header {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 2px;
+      max-width: 520px;
+    }
+
+    .latest-title {
+      font-family: "AshwoodExtraBold", "AshwoodCondensed", sans-serif;
+      font-size: clamp(30px, 7vw, 40px);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.04;
+      color: var(--ink);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.7),
+        0 10px 28px rgba(0,0,0,0.55),
+        0 0 16px rgba(244,0,18,0.32);
+    }
+
+    .latest-subtitle {
+      max-width: 42ch;
+      font-size: clamp(13px, 3.2vw, 14.5px);
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .latest-filters {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(10px, 3vw, 16px);
+      display: flex;
+      gap: 8px;
+      padding: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.24) transparent;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .latest-filters::-webkit-scrollbar { height: 6px; }
+    .latest-filters::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.22);
+      border-radius: 999px;
+    }
+    .latest-filter-btn {
+      min-height: 44px;
+      padding: 10px 14px 9px;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      border: 1px solid var(--line-soft);
+      background: rgba(255,255,255,0.02);
+      color: rgba(244,246,251,0.82);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+    }
+    .latest-filter-btn[data-active="true"] {
+      border-color: rgba(125,195,184,0.82);
+      color: var(--ink);
+      background: linear-gradient(140deg, rgba(125,195,184,0.95), rgba(125,195,184,0.78));
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.35),
+        0 0 18px rgba(125, 195, 184, 0.26);
+      transform: translateY(-1px);
+    }
+    .latest-filter-btn:active {
+      transform: translateY(1px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .latest-list {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(14px, 3.5vw, 20px);
+      display: flex;
+      gap: clamp(12px, 3.4vw, 18px);
+      padding: 6px var(--edge);
+      margin-left: calc(-1 * var(--edge));
+      margin-right: calc(-1 * var(--edge));
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: var(--edge);
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    .latest-list::-webkit-scrollbar { height: 7px; }
+    .latest-list::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.22);
+      border-radius: 999px;
+    }
+    .latest-card {
+      --card-accent: rgba(125, 195, 184, 0.55);
+      --card-accent-2: rgba(244, 0, 18, 0.45);
+      background:
+        linear-gradient(160deg, rgba(12,17,26,0.92), rgba(6,10,17,0.96)),
+        linear-gradient(180deg, rgba(255,255,255,0.04), transparent 30%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.22s ease, transform 0.22s ease;
+      flex: 0 0 clamp(220px, 72vw, 320px);
+      scroll-snap-align: start;
+      height: auto;
+    }
+    .latest-card:nth-child(2) {
+      --card-accent: rgba(244, 0, 18, 0.6);
+      --card-accent-2: rgba(240, 208, 122, 0.45);
+    }
+    .latest-card:nth-child(3) {
+      --card-accent: rgba(240, 208, 122, 0.6);
+      --card-accent-2: rgba(125, 195, 184, 0.5);
+    }
+    .latest-card:nth-child(4) {
+      --card-accent: rgba(255, 154, 60, 0.6);
+      --card-accent-2: rgba(240, 208, 122, 0.45);
+    }
+    .latest-card:nth-child(5) {
+      --card-accent: rgba(125, 195, 184, 0.55);
+      --card-accent-2: rgba(244, 0, 18, 0.55);
+    }
+    .latest-card[hidden] { display: none; }
+    .latest-card__link {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+      padding: 12px;
+    }
+    .latest-card:focus-within,
+    .latest-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.16);
+      box-shadow:
+        0 20px 48px rgba(0,0,0,0.55),
+        0 0 18px rgba(125, 195, 184, 0.18);
+    }
+
+    .latest-card__media {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #0b111a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .latest-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.02) contrast(1.05) brightness(0.95);
+    }
+    .latest-card__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.82) 100%);
+      pointer-events: none;
+    }
+
+    .latest-card__body {
+      display: grid;
+      gap: 6px;
+    }
+    .latest-card__tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .latest-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px 5px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      background: rgba(255,255,255,0.06);
+      font-family: "Newslab", "Nunito Sans", system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(247,240,229,0.9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      text-shadow: none;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+    .latest-card__tag::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px rgba(0,0,0,0.35);
+    }
+    .latest-card__tag--event { color: rgba(125,195,184,0.95); background: rgba(125,195,184,0.14); }
+    .latest-card__tag--deal { color: rgba(240,208,122,0.95); background: rgba(240,208,122,0.14); }
+    .latest-card__tag--new { color: rgba(244,0,18,0.95); background: rgba(244,0,18,0.16); }
+
+    .latest-card__title {
+      font-family: "AshwoodExtraBold", "AshwoodCondensed", "Buttergone", serif;
+      font-weight: 800;
+      font-size: clamp(16px, 4.6vw, 20px);
+      line-height: 1.12;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.5);
+      max-width: 24ch;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .latest-card__copy {
+      font-size: 11.5px;
+      color: rgba(244,246,251,0.82);
+      line-height: 1.42;
+      max-width: 44ch;
+      text-shadow: 0 8px 18px rgba(0,0,0,0.45);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .latest-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 4px;
+    }
+    .latest-card__rule {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--card-accent), rgba(255,255,255,0.12), var(--card-accent-2));
+      opacity: 0.85;
+    }
+    .latest-card__micro {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(244,246,251,0.74);
+      white-space: nowrap;
+      text-shadow: 0 8px 16px rgba(0,0,0,0.45);
+    }
+
+    .latest-cta {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(14px, 3.6vw, 22px);
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .latest-cta__btn {
+      --glow: rgba(244, 0, 18, 0.68);
+      --border: rgba(244, 0, 18, 0.95);
+      font-family: "Newslab", "Nunito Sans", system-ui, sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 11px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: #ff1f2b;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+      font-size: 12.5px;
+      text-decoration: none;
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.5),
+        0 0 18px rgba(244, 0, 18, 0.6),
+        0 0 34px rgba(244, 0, 18, 0.3),
+        inset 0 0 12px rgba(244, 0, 18, 0.26);
+      text-shadow: 0 0 10px rgba(244, 0, 18, 0.24);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, letter-spacing 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+    .latest-cta__btn::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      pointer-events:none;
+      opacity:.85;
+    }
+    .latest-cta__btn::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      border-radius:999px;
+      pointer-events:none;
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+      opacity:0;
+      filter: blur(18px);
+      transition: opacity .22s ease, filter .22s ease;
+      z-index:-1;
+    }
+    .latest-cta__btn:hover{
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: 0.08em;
+      border-color: rgba(255, 120, 126, 1);
+      box-shadow:
+        0 10px 24px rgba(0,0,0,0.55),
+        0 0 24px rgba(244, 0, 18, 0.75),
+        0 0 42px rgba(244, 0, 18, 0.4),
+        inset 0 0 14px rgba(244, 0, 18, 0.36);
+      color: #ffd5d9;
+    }
+    .latest-cta__btn:hover::after{ opacity:.85; filter: blur(22px); }
+    .latest-cta__btn:active { transform: translateY(1px); }
+    .latest-cta__btn:focus-visible {
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 120, 126, 0.85),
+        0 12px 24px rgba(0,0,0,0.55);
+    }
+    .latest-cta__btn .arrow{
+      display: inline-block;
+      transition: transform 0.16s ease;
+    }
+    .latest-cta__btn:hover .arrow{ transform: translateX(2px); }
+
+    @media (max-width: 360px) {
+      .latest-title { font-size: 28px; }
+      .latest-filter-btn { letter-spacing: 0.08em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body class="safe-top safe-bottom">
+  <main>
+    <section id="the-latest" class="latest" aria-labelledby="the-latest-title">
+      <div class="latest-topline" aria-hidden="true"></div>
+      <div class="latest-bg-flip" aria-hidden="true"></div>
+      <div class="wrap">
+        <header class="latest-header">
+          <h2 id="the-latest-title" class="latest-title">What's Hot Right Now.</h2>
+          <p class="latest-subtitle">The deals, events, and moments you don't want to miss.</p>
+        </header>
+
+        <div class="latest-filters" role="tablist" aria-label="Filter what's hot" data-scroll-x>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="true" data-filter="all" data-active="true">All</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="event" data-active="false">Events</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="deal" data-active="false">Deals</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="new" data-active="false">New</button>
+        </div>
+
+        <div class="latest-list" role="list" data-scroll-x>
+          <article class="latest-card" role="listitem" data-type="event new" aria-label="Pre-Party Dine-In - Vanderbilt @ Aertson">
+            <a class="latest-card__link" href="/latest#pre-party-dine-in">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Friends sharing hot chicken at a Party Fowl preview event"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="../../assets/img/home/the-latest/pre-party-dine-in.png"
+                     data-fallback="https://images.pexels.com/photos/8921578/pexels-photo-8921578.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--new">New</span>
+                </div>
+                <h3 class="latest-card__title">Pre-Party Dine-In - Vanderbilt @ Aertson</h3>
+                <p class="latest-card__copy">
+                  Party Fowl invites guests to preview the new Vanderbilt location with a free dine-in meal and a sneak-peek at the bar. Boozy slushies and hot-chicken vibes (drinks available for purchase).
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Limited Preview</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="event new" aria-label="Pre-Party To-Go - Vanderbilt @ Aertson">
+            <a class="latest-card__link" href="tel:16156100750">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Crispy hot chicken tenders packed for takeout"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="../../assets/img/home/the-latest/pre-party-to-go.png"
+                     data-fallback="https://images.pexels.com/photos/30635702/pexels-photo-30635702.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--new">New</span>
+                </div>
+                <h3 class="latest-card__title">Pre-Party To-Go - Vanderbilt @ Aertson</h3>
+                <p class="latest-card__copy">
+                  Complimentary hot-chicken meals packed to enjoy at home. Reserve your pickup by calling (615) 610-0750.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Reserve Ahead</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="deal" aria-label="Happy Hour - All Day, Every Day">
+            <a class="latest-card__link" href="/latest#happy-hour">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Cocktails lined up on the Party Fowl bar"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="../../assets/img/home/the-latest/happy-hour.png"
+                     data-fallback="https://images.pexels.com/photos/31553344/pexels-photo-31553344.png" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Happy Hour - All Day, Every Day</h3>
+                <p class="latest-card__copy">
+                  Running now through the end of the year: $2 domestic light beers, $3 single wells, $4 house wines and $5 house margaritas. All day, every day.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Happening Now</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="deal" aria-label="Cheap Chick Monday and Kids Eat Free">
+            <a class="latest-card__link" href="/latest#cheap-chick">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Child smiling while eating hot chicken at Party Fowl"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="../../assets/img/home/the-latest/cheap-chick-monday.png"
+                     data-fallback="https://images.pexels.com/photos/12788473/pexels-photo-12788473.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Cheap Chick Monday &amp; Kids Eat Free</h3>
+                <p class="latest-card__copy">
+                  Mondays (5 pm - close): $2 domestic drafts and an $8 two-tender basket. Kids eat free with the purchase of an adult entree - a perfect family night.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Mondays</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="event deal" aria-label="Local Love / College Night - Wednesdays">
+            <a class="latest-card__link" href="/latest#local-love-college-night">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Friends toasting drinks and smiling"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="../../assets/img/home/the-latest/local-love-college-night.png"
+                     data-fallback="https://images.pexels.com/photos/6174132/pexels-photo-6174132.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Local Love / College Night - Wednesdays</h3>
+                <p class="latest-card__copy">
+                  Wednesdays (5 pm - close): $4 shotskis, $5 burgers and $6 boozy slushies. Rep your school colours and bring the zero-chill energy.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Wednesdays</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+
+        <div class="latest-cta">
+          <button class="latest-cta__btn" type="button" aria-label="See what's on near you">
+            See What's On Near You <span class="arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.latest-card'));
+      const filters = Array.from(document.querySelectorAll('.latest-filter-btn'));
+
+      if (cards.length === 0) return;
+
+      function loadImage(img) {
+        if (!img || img.dataset.loaded === '1') return;
+        const src = img.getAttribute('data-src');
+        const fallback = img.getAttribute('data-fallback');
+        if (src) img.src = src;
+        if (fallback) {
+          img.onerror = () => {
+            if (img.src !== fallback) img.src = fallback;
+          };
+        }
+        img.dataset.loaded = '1';
+      }
+
+      const lazyImgs = Array.from(document.querySelectorAll('img.lazy-asset[data-src]'));
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const img = entry.target;
+            loadImage(img);
+            io.unobserve(img);
+          });
+        }, { rootMargin: '200px 0px', threshold: 0.01 });
+        lazyImgs.forEach((img) => io.observe(img));
+      } else {
+        lazyImgs.forEach(loadImage);
+      }
+
+      function setActiveFilter(btn) {
+        filters.forEach((b) => {
+          const active = b === btn;
+          b.dataset.active = active ? 'true' : 'false';
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+
+      function applyFilter(filter) {
+        cards.forEach((card) => {
+          const tags = (card.dataset.type || '').split(' ').filter(Boolean);
+          const visible = filter === 'all' || tags.includes(filter);
+          card.hidden = !visible;
+          card.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        });
+      }
+
+      filters.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setActiveFilter(btn);
+          applyFilter(btn.dataset.filter || 'all');
+        });
+      });
+
+      const initialFilter = filters.find((btn) => btn.dataset.active === 'true') || filters[0];
+      if (initialFilter) {
+        setActiveFilter(initialFilter);
+        applyFilter(initialFilter.dataset.filter || 'all');
+      } else {
+        applyFilter('all');
+      }
+    })();
+  </script>
+</body>
+</html>

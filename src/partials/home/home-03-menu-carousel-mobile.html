@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu Highlights - Party Fowl (Mobile)</title>
+
+  <style>
+    @font-face{
+      font-family:"AshwoodCondensed";
+      src:url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Newslab";
+      src:url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Buttergone";
+      src:url("../../assets/fonts/Buttergone OTF.otf") format("opentype");
+      font-display:swap;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    img{ display:block; max-width:100%; }
+    a{ color:inherit; text-decoration:none; }
+    button{ border:0; background:none; color:inherit; font:inherit; }
+
+    :root{
+      color-scheme: dark;
+      --bg:#03172b;
+      --bg-ink:#010915;
+      --accent-red:#f40012;
+      --accent-amber:#7dc3b8;
+      --accent-teal:#7dc3b8;
+      --accent-cream:#f4f6fb;
+      --ink:#f4f6fb;
+      --muted: rgba(244,246,251,0.78);
+      --panelW: clamp(240px, 78vw, 320px);
+      --panelGap: clamp(10px, 3vw, 18px);
+      --progAreaH: clamp(28px, 6.2vh, 42px);
+      --vPad: clamp(22px, 5vw, 32px);
+      --capH: clamp(112px, 22vw, 140px);
+      --titleH: clamp(48px, 22vw, 68px);
+      --descH: clamp(50px, 18vw, 68px);
+      --captionGap: 10px;
+      --sep: 1px;
+      --grain-opacity: .18;
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --sticky-safe: calc(env(safe-area-inset-bottom) + clamp(12px, 3.4vh, 22px));
+    }
+
+    @media (max-width: 360px){
+      :root{
+        --panelW: clamp(210px, 78vw, 260px);
+        --panelGap: clamp(8px, 4vw, 14px);
+        --capH: clamp(92px, 26vw, 120px);
+        --titleH: clamp(42px, 18vw, 60px);
+      }
+      .menu-title-line:nth-child(2){ letter-spacing: .12em; }
+      .menu-cta{ max-width: min(320px, 92vw); }
+    }
+
+    @media (min-width: 720px){
+      :root{
+        --panelW: clamp(280px, 42vw, 360px);
+        --panelGap: clamp(14px, 2vw, 24px);
+      }
+      #menu-highlights{
+        --menu-pad-x: clamp(20px, 4vw, 32px);
+      }
+    }
+
+    html, body{
+      width: 100%;
+      max-width: 100vw;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body{
+      font-family: "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #000;
+      color:var(--ink);
+      line-height:1.5;
+      min-height:100%;
+      overflow-x:hidden;
+      isolation:isolate;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      font-synthesis-weight:none;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:-30%;
+      pointer-events:none;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,0) 1px 3px);
+      mix-blend-mode:overlay;
+      opacity:var(--grain-opacity);
+      filter: blur(.4px);
+      z-index:-1;
+    }
+
+    #menu-highlights{
+      background-color:#000;
+      --menu-pad-x: clamp(16px, 5vw, 26px);
+      --menu-pad-y: clamp(16px, 4.2vw, 22px);
+      position:relative;
+      width:100%;
+      min-height:auto;
+      display:flex;
+      flex-direction:column;
+      gap: clamp(12px, 3vw, 18px);
+      padding: var(--menu-pad-y) var(--menu-pad-x) clamp(16px, 4vw, 24px);
+      overflow-x: hidden;
+      overflow-y: visible;
+      max-width: 100vw;
+      border-top: none;
+      scroll-margin-bottom: var(--sticky-safe);
+      touch-action: auto;
+    }
+    #menu-highlights::before{
+      content:"";
+      position:absolute; inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0) 65%),
+        radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.08), transparent 62%),
+        radial-gradient(120% 80% at 50% 100%, rgba(0,0,0,0.75), transparent 72%);
+      opacity: 0.85;
+      mix-blend-mode: normal;
+      filter: none;
+      z-index:0;
+    }
+    #menu-highlights::after{
+      content:"";
+      position:absolute; inset:-32px;
+      background: var(--noise);
+      mix-blend-mode:overlay;
+      opacity:.18;
+      filter: blur(.2px);
+      z-index:0;
+    }
+    #menu-highlights > *{ position:relative; z-index:1; }
+
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      max-width: 540px;
+      z-index:2;
+      align-items:flex-start;
+    }
+    .quick-jumps{
+      display:flex;
+      flex-wrap:nowrap;
+      align-items:center;
+      gap: 8px;
+      margin-top: 6px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling: touch;
+      max-width:100%;
+      padding-bottom: 4px;
+    }
+    .jump-label{
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(244,246,251,0.55);
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    .jump-pill{
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: rgba(244,246,251,0.86);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, color .16s ease;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    .jump-pill:active{ transform: scale(0.98); }
+    .jump-pill:focus-visible{
+      outline: none;
+      border-color: rgba(125,195,184,0.85);
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(125,195,184,0.85);
+    }
+    .jump-pill.is-active{
+      border-color: rgba(125,195,184,0.75);
+      color: #ffffff;
+      box-shadow:
+        0 0 14px rgba(125,195,184,0.35),
+        0 0 22px rgba(125,195,184,0.2);
+    }
+    .menu-title{
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color: var(--ink);
+      text-shadow:
+        0 8px 22px rgba(0,0,0,0.65),
+        0 0 22px rgba(125,195,184,0.16);
+    }
+    .menu-title-line{
+      display:block;
+      font-family:"AshwoodCondensed", serif;
+      font-size: clamp(44px, 12vw, 66px);
+      line-height:.9;
+    }
+    .menu-title-line:nth-child(2){ font-size: clamp(38px, 10vw, 56px); letter-spacing:.14em; }
+    .sub{
+      font-family: "Newslab", "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      letter-spacing:.04em;
+      color: var(--muted);
+      text-shadow: 0 6px 18px rgba(0,0,0,.45);
+      font-style: italic;
+      margin-bottom: 0;
+      line-height:1.5;
+    }
+    .menu-cta{
+      --glow: rgba(244, 0, 18, 0.68);
+      --border: rgba(244, 0, 18, 0.95);
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 22px;
+      min-height:46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color:#ff1f2b;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      font-size: clamp(12px, 1.05vw, 14px);
+      text-decoration:none;
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.65),
+        0 0 16px rgba(244, 0, 18, 0.56),
+        0 0 36px rgba(244, 0, 18, 0.32),
+        inset 0 0 12px rgba(244, 0, 18, 0.30);
+      text-shadow: 0 0 10px rgba(244, 0, 18, 0.24);
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .16s ease, box-shadow .16s ease, letter-spacing .18s ease, border-color .16s ease, color .18s ease;
+      max-width: min(340px, 84vw);
+      align-self:center;
+      margin: clamp(12px, 3vw, 16px) auto 6px;
+    }
+    .menu-cta::before{
+      content:""; position:absolute; inset:2px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10); pointer-events:none; opacity:.85;
+    }
+    .menu-cta::after{
+      content:""; position:absolute; inset:-30%; border-radius:999px; pointer-events:none;
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+      opacity:0; filter: blur(18px); transition: opacity .22s ease, filter .22s ease;
+      z-index:-1;
+    }
+    @media (hover: hover){
+      .menu-cta:hover{
+        transform: translateY(-1px) scale(1.01);
+        letter-spacing: .08em;
+        border-color: rgba(255, 120, 126, 1);
+        box-shadow:
+          0 8px 20px rgba(0,0,0,0.55),
+          0 0 22px rgba(244, 0, 18, 0.78),
+          0 0 46px rgba(244, 0, 18, 0.45),
+          inset 0 0 16px rgba(244, 0, 18, 0.36);
+        color: #ffd5d9;
+      }
+      .menu-cta:hover::after{ opacity:.85; filter: blur(22px); }
+      .menu-cta:hover .arrow{ transform: translateX(2px); }
+    }
+    .menu-cta:active{ transform: translateY(0); }
+    .menu-cta:focus-visible{
+      outline: none;
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 120, 126, 0.85),
+        0 14px 28px rgba(0,0,0,0.55);
+    }
+    .menu-cta .arrow{ display:inline-block; transition: transform .16s ease; }
+
+    .carousel{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap: clamp(12px, 3vw, 18px);
+      margin-top: 6px;
+    }
+    .carousel-fullbleed{
+      position:relative;
+      width: calc(100% + (var(--menu-pad-x) * 2));
+      max-width: 100vw;
+      margin-left: calc(-1 * var(--menu-pad-x));
+      margin-right: calc(-1 * var(--menu-pad-x));
+      overflow: hidden;
+    }
+    .trackWrap{
+      position:relative;
+      min-height: clamp(360px, 68svh, 640px);
+      width:100%;
+      overflow-x:hidden;
+      overflow-y:visible;
+      max-width: 100vw;
+      touch-action: auto;
+      border-radius: 0;
+      background: transparent;
+      outline: none;
+      box-shadow: none;
+    }
+    .trackWrap::before{
+      display:none;
+    }
+
+    .track{
+      position:absolute;
+      inset: 0 0 0 0;
+      display:flex;
+      height:100%;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 calc((100% - var(--panelW)) / 2);
+      margin: 0;
+      gap: var(--panelGap);
+      scroll-snap-type:x mandatory;
+      scroll-padding: 0;
+      scroll-behavior:smooth;
+      scrollbar-width:none;
+      cursor: grab;
+      user-select:none;
+      background: transparent;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      transform: translateZ(0);
+      will-change: transform;
+      touch-action: auto;
+      z-index:2;
+    }
+    .track::-webkit-scrollbar{ display:none; }
+    .track.dragging{ cursor: grabbing; scroll-behavior:auto; }
+
+    .panel{
+      position:relative;
+      flex:0 0 var(--panelW);
+      height:100%;
+      overflow:hidden;
+      background: transparent;
+      border-radius:0;
+      border-right: var(--sep) solid rgba(255,255,255,0.08);
+      scroll-snap-align:center;
+      contain: paint;
+      isolation:isolate;
+      opacity: 0.82;
+      transition: opacity .2s ease;
+    }
+    .panel:last-child{ border-right:0; }
+    .media{
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      background: transparent;
+      border-radius:0;
+      z-index:0;
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: grayscale(1) contrast(1.05) brightness(0.92);
+      transform: none;
+      transition: transform .24s ease, filter .24s ease;
+      will-change: transform, filter;
+      border-radius:0;
+    }
+    .panel.active .media img{
+      filter: grayscale(0) saturate(1.08) contrast(1.06) brightness(0.96);
+      transform: scale(1.06);
+    }
+    .panel.active{ opacity: 1; }
+    .media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(120% 96% at 24% 16%, rgba(0,0,0,0.20), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.76));
+      pointer-events:none;
+    }
+    .media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.12) 48%,
+        rgba(0,0,0,0.28) 72%,
+        rgba(0,0,0,0.46) 100%);
+      pointer-events:none;
+    }
+    .label-row{
+      position:absolute;
+      top:14px;
+      left:14px;
+      right:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      z-index:3;
+      pointer-events:none;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius: 999px;
+      font-family:"Newslab", "Nunito Sans", system-ui, -apple-system, sans-serif;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+      background: rgba(244,67,47,0.82);
+      color:#fff;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(6px);
+    }
+    .badge-signature{ background: linear-gradient(135deg, #f4452f, #c0110f); color:#fff; }
+    .badge-fan{ background: linear-gradient(135deg, #ffb351, #ff8c2a); color:#2d0f02; }
+    .badge-new{ background: linear-gradient(135deg, #f6eddc, #f0dbaa); color:#2a1a0c; }
+    .caption{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      min-height: var(--capH);
+      padding: 18px 18px 22px;
+      display:grid;
+      grid-template-rows: var(--titleH) var(--descH);
+      align-content: end;
+      justify-items: center;
+      row-gap: var(--captionGap);
+      z-index: 2;
+      pointer-events:none;
+    }
+    .caption::before{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: max(50%, calc(var(--capH) + 36px));
+      background:
+        linear-gradient(180deg,
+          rgba(4, 6, 12, 0.05) 0%,
+          rgba(4, 6, 12, 0.45) 35%,
+          rgba(4, 6, 12, 0.78) 68%,
+          rgba(4, 6, 12, 0.96) 100%),
+        radial-gradient(90% 90% at 70% 20%, rgba(125,195,184,0.22), transparent 60%);
+      mask-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+      z-index: -1;
+      pointer-events:none;
+    }
+    .capTitle{
+      grid-row: 1;
+      height: var(--titleH);
+      position: relative;
+      display:-webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      text-align: center;
+      margin: 4px 18px 4px;
+      max-width: calc(100% - 36px);
+      font-family:"AshwoodCondensed", serif;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: clamp(19px, 6vw, 25px);
+      line-height:1.12;
+      color: var(--accent-cream);
+      padding: 2px 0 2px;
+      background: transparent;
+      overflow: hidden;
+      word-break: normal;
+      overflow-wrap: normal;
+      hyphens: none;
+      transition: text-shadow .18s ease, color .18s ease;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.75);
+    }
+    .panel.active .capTitle{
+      color: #fff1e0;
+      text-shadow:
+        0 4px 20px rgba(0,0,0,0.65),
+        0 0 24px rgba(125,195,184,0.32);
+    }
+    .capDesc{
+      grid-row: 2;
+      align-self: stretch;
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size:13px;
+      letter-spacing:.02em;
+      color: rgba(244,246,251,.82);
+      line-height:1.45;
+      display:-webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      text-shadow: 0 12px 22px rgba(0,0,0,.55);
+      text-align:center;
+      padding: 0 8px;
+      max-width: 400px;
+    }
+
+    .navBtns{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 0 6px;
+      pointer-events:none;
+      z-index:4;
+    }
+    .navBtn{
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background:
+        linear-gradient(180deg, rgba(18, 24, 36, 0.94), rgba(8, 12, 20, 0.94));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.55),
+        0 0 14px rgba(244,67,47,0.22);
+      color:var(--ink);
+      font-size:18px;
+      cursor:pointer;
+      pointer-events:auto;
+      touch-action: manipulation;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    }
+    .navBtn:active{ transform: scale(0.97); }
+    .navBtn:focus-visible{
+      outline: none;
+      border-color: rgba(125,195,184,0.85);
+      box-shadow:
+        0 0 0 2px rgba(0,0,0,0.85),
+        0 0 0 4px rgba(125,195,184,0.85);
+    }
+
+    .progressWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding: 0 clamp(10px, 4vw, 16px);
+      margin-top: 0;
+    }
+    .progress{
+      position:relative;
+      width: min(92vw, 560px);
+      height: 28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      filter: saturate(115%);
+    }
+    .progress-rail{
+      position:relative;
+      width:100%;
+      height: 3px;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, rgba(125,195,184,0.16), rgba(125,195,184,0.32), rgba(125,195,184,0.16));
+      box-shadow:
+        0 0 14px rgba(125,195,184,0.22),
+        0 0 24px rgba(125,195,184,0.18);
+      overflow:hidden;
+    }
+    .progress-knob{
+      position:absolute; top:50%; left:0; transform: translate(-50%, -50%);
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      background: transparent;
+      pointer-events:auto;
+      will-change: transform;
+      touch-action: auto;
+      outline: none;
+    }
+    .progress-knob::before{
+      content:"";
+      position:absolute;
+      inset:50%;
+      width:18px;
+      height:18px;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background:
+        radial-gradient(45% 45% at 50% 50%, #7dc3b8, rgba(125,195,184,0.78) 60%, rgba(125,195,184,0.15) 74%);
+      box-shadow:
+        0 0 12px rgba(125,195,184,0.85),
+        0 0 24px rgba(125,195,184,0.55),
+        0 0 36px rgba(125,195,184,0.35);
+      pointer-events:none;
+    }
+    .progress-knob:focus-visible{
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(125,195,184,0.85),
+        0 10px 18px rgba(0,0,0,0.45);
+    }
+    .hint{
+      font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      color: rgba(244,246,251,0.70);
+      text-align:center;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+
+
+    @media (min-width: 600px) and (max-width: 719px){
+      :root{ --panelW: clamp(280px, 72vw, 380px); }
+      #menu-highlights{ --menu-pad-x: clamp(18px, 6vw, 32px); }
+    }
+
+    @media (min-width: 600px){
+      .navBtn{ width: 52px; height: 52px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .track{ scroll-behavior:auto; }
+      .media img{ transition:none; }
+      .menu-cta, .navBtn, .trackWrap::before, #menu-highlights::before, #menu-highlights::after{ transition:none; }
+    }
+  </style>
+</head>
+<body>
+    <section id="menu-highlights" class="slide" aria-label="Menu highlights">
+    <header class="hero">
+      <h2 class="menu-title">
+        <span class="menu-title-line">MENU</span>
+        <span class="menu-title-line">HIGHLIGHTS</span>
+      </h2>
+      <p class="sub">Scroll to explore our top picks.</p>
+    </header>
+    <div class="quick-jumps" aria-label="Quick jumps to menu categories">
+      <span class="jump-label">Jump to</span>
+      <button class="jump-pill" type="button" data-jump="signature">Signature</button>
+      <button class="jump-pill" type="button" data-jump="fan">Fan favorites</button>
+      <button class="jump-pill" type="button" data-jump="new">New drops</button>
+    </div>
+
+    <div class="carousel" aria-label="Featured menu carousel">
+      <div class="carousel-fullbleed">
+        <div class="trackWrap">
+          <div class="track" id="menuTrack" role="list" aria-describedby="srHint" data-scroll-x>
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="&quot;NASHVILLE HOT&quot; HALF BIRD" loading="lazy"
+                   data-src="../../assets/img/home/menu/HALF_BIRD.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-signature">Signature</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">&quot;NASHVILLE HOT&quot; HALF BIRD</div>
+              <div class="capDesc">The OG Nashville hot experience: crispy, juicy, and built to make you sweat in the best way. Welcome to the party.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="HOT CHICKEN AND BEIGNETS" loading="lazy"
+                   data-src="../../assets/img/home/menu/HOT_CHICKEN_AND_BEIGNETS.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-fan">Fan favorite</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">HOT CHICKEN AND BEIGNETS</div>
+              <div class="capDesc">Sweet + spicy chaos done right. Hot chicken meets powdered-sugar beignets for maximum weekend energy.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="HOT CHICKEN N' CHEDDAR" loading="lazy"
+                   data-src="../../assets/img/home/menu/HOT_CHICKEN_N_CHEDDAR.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-new">New</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">HOT CHICKEN N' CHEDDAR</div>
+              <div class="capDesc">Crispy hot chicken stacked with cheddar and all the fixins. Messy, loud, and worth it.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="CHICKEN FRIED CHICKEN" loading="lazy"
+                   data-src="../../assets/img/home/menu/NASHVILLE_HOT_CHICKEN_FRIED CHICKEN.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-signature">Signature</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">CHICKEN FRIED CHICKEN</div>
+              <div class="capDesc">Double-breaded comfort with a heat level that doesn't apologize. Gravy, mash, and full send.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="HOT STUFFED QUESADILLA" loading="lazy"
+                   data-src="../../assets/img/home/menu/HOT_STUFFED_QUESADILLA.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-fan">Fan favorite</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">HOT STUFFED QUESADILLA</div>
+              <div class="capDesc">Crispy tortilla, melty cheese, and your choice of protein. Dip it, dunk it, repeat.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="BRUNCH FOR TWO" loading="lazy"
+                   data-src="../../assets/img/home/menu/BRUNCH_FOR_TWO.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-signature">Signature</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">BRUNCH FOR TWO</div>
+              <div class="capDesc">A 55 oz Bloody Mary situation that's basically a meal with attitude. Go big or go home.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="LOADED HOT CHICKEN BISCUIT" loading="lazy"
+                   data-src="../../assets/img/home/menu/LOADED_HOT_CHICKEN_BISCUIT.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-fan">Fan favorite</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">LOADED HOT CHICKEN BISCUIT</div>
+              <div class="capDesc">Open-face biscuits, hot chicken, sawmill gravy, and eggs your way. The cure for last night's decisions.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="NASHVILLE HOT COBB" loading="lazy"
+                   data-src="../../assets/img/home/menu/NASHVILLE_HOT_COBB.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-new">New</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">NASHVILLE HOT COBB</div>
+              <div class="capDesc">A cobb salad that refuses to be boring: bacon, egg, avocado, and hot chicken bringing the heat.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="ONION LOAF" loading="lazy"
+                   data-src="../../assets/img/home/menu/ONION_LOAF.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-fan">Fan favorite</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">ONION LOAF</div>
+              <div class="capDesc">Thin-sliced onions, fried until reckless, served for sharing... technically. Dip in chipotle ranch and disappear.</div>
+            </div>
+          </article>
+
+          <article class="panel" role="listitem">
+            <div class="media">
+              <img alt="FRENCH TOAST BITES" loading="lazy"
+                   data-src="../../assets/img/home/menu/FRENCH_TOAST_BITES.png" />
+            </div>
+            <div class="label-row">
+              <span class="badge badge-new">New</span>
+            </div>
+            <div class="caption">
+              <div class="capTitle">FRENCH TOAST BITES</div>
+              <div class="capDesc">Bite-sized french toast tossed in cinnamon sugar with bourbon glaze. Sweet, sinful, and gone in 60 seconds.</div>
+            </div>
+          </article>
+          </div>
+
+          <div class="navBtns" aria-hidden="false">
+            <button class="navBtn prev" type="button" aria-label="View previous featured item">←</button>
+            <button class="navBtn next" type="button" aria-label="View next featured item">→</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="progressWrap">
+        <div class="progress" id="menuProgress">
+          <div class="progress-rail"></div>
+          <div class="progress-knob" id="menuProgressKnob" aria-label="Menu carousel progress" role="slider" aria-valuemin="0" aria-valuemax="100" tabindex="0"></div>
+        </div>
+        <p class="hint" aria-hidden="true">Swipe</p>
+      </div>
+      <p class="sr-only" id="srHint">
+        Swipe through featured dishes or use the previous and next buttons. Images turn to color when focused.
+      </p>
+    </div>
+
+    <a class="menu-cta" href="#" aria-label="View full menu">View Full Menu <span class="arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <script>
+    (function(){
+      const track = document.getElementById('menuTrack');
+      if (!track) return;
+      const panels = Array.from(track.querySelectorAll('.panel'));
+      const knob = document.getElementById('menuProgressKnob');
+      const progressRail = document.querySelector('.progress-rail');
+      const prevBtn = document.querySelector('.navBtn.prev');
+      const nextBtn = document.querySelector('.navBtn.next');
+      const jumpButtons = Array.from(document.querySelectorAll('.jump-pill'));
+      const activeName = document.getElementById('activeDishName');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let activeIndex = 1;
+
+      const inlineFallback = (() => {
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#070812"/>
+                <stop offset="0.55" stop-color="#0b0c14"/>
+                <stop offset="1" stop-color="#05060a"/>
+              </linearGradient>
+              <radialGradient id="r" cx="30%" cy="22%" r="70%">
+                <stop offset="0" stop-color="rgba(0,229,255,.22)"/>
+                <stop offset="0.55" stop-color="rgba(124,77,255,.12)"/>
+                <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#g)"/>
+            <rect width="100%" height="100%" fill="url(#r)"/>
+            <g fill="rgba(242,239,231,.70)" font-family="Arial, sans-serif">
+              <text x="70" y="120" font-size="44">Image placeholder</text>
+              <text x="70" y="182" font-size="28" fill="rgba(242,239,231,.45)">Add ../../assets/img/home/...</text>
+            </g>
+          </svg>`;
+        return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.trim());
+      })();
+
+      function resolveImg(img){
+        const local = img.getAttribute('data-src');
+        const fb = img.getAttribute('data-fallback');
+
+        const setInline = () => {
+          img.onerror = null;
+          img.src = inlineFallback;
+        };
+
+        const setFallback = () => {
+          if (fb && fb !== 'TODO') {
+            img.onerror = setInline;
+            img.src = fb;
+          } else {
+            setInline();
+          }
+        };
+
+        if (local) {
+          img.onerror = setFallback;
+          img.src = local;
+        } else {
+          setFallback();
+        }
+      }
+      panels.forEach((panel) => {
+        const img = panel.querySelector('img[data-src]');
+        if (img) resolveImg(img);
+      });
+
+      function measurePanelWidth(){
+        const p = panels[0];
+        return p ? p.offsetWidth || 0 : 0;
+      }
+      function measurePanelGap(){
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || 0);
+        return Number.isFinite(gap) ? gap : 0;
+      }
+      function measureStep(){
+        return measurePanelWidth() + measurePanelGap();
+      }
+
+      function categoryFor(panel){
+        if (!panel) return 'all';
+        if (panel.querySelector('.badge-signature')) return 'signature';
+        if (panel.querySelector('.badge-fan')) return 'fan';
+        if (panel.querySelector('.badge-new')) return 'new';
+        return 'all';
+      }
+      function updateActiveLabel(){
+        const panel = panels[activeIndex];
+        if (activeName && panel) {
+          const title = panel.querySelector('.capTitle');
+          activeName.textContent = title ? title.textContent.trim() : 'Menu highlight';
+        }
+        const cat = categoryFor(panel);
+        jumpButtons.forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.jump === cat);
+        });
+      }
+
+      function setActiveFromCenter(){
+        if (!panels.length) return;
+        const rect = track.getBoundingClientRect();
+        const center = rect.left + rect.width / 2;
+        let best = 0, bestD = Infinity;
+        panels.forEach((panel, idx) => {
+          const r = panel.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const d = Math.abs(center - cx);
+          if (d < bestD) { bestD = d; best = idx; }
+        });
+        activeIndex = best;
+        panels.forEach((panel, idx) => panel.classList.toggle('active', idx === best));
+        updateActiveLabel();
+        return best;
+      }
+
+      function updateProgress(){
+        if (!progressRail || !knob) return;
+        const max = Math.max(1, track.scrollWidth - track.clientWidth);
+        const ratio = Math.max(0, Math.min(1, track.scrollLeft / max));
+        const railW = progressRail.clientWidth || 0;
+        const knobW = knob.offsetWidth || 0;
+        const r = knobW * 0.5;
+        const cx = Math.max(r, Math.min(railW - r, ratio * railW));
+        knob.style.left = cx.toFixed(2) + 'px';
+        knob.style.transform = 'translate(-50%, -50%)';
+        knob.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+        knob.setAttribute('aria-valuetext', `Slide ${activeIndex + 1} sur ${panels.length}`);
+      }
+
+      let rafId = 0;
+      function onScroll(){
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          rafId = 0;
+          setActiveFromCenter();
+          updateProgress();
+        });
+      }
+
+      let isDown = false, startX = 0, startLeft = 0, pid = null;
+      track.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') return;
+        isDown = true;
+        pid = e.pointerId;
+        track.setPointerCapture(pid);
+        startX = e.clientX;
+        startLeft = track.scrollLeft;
+        track.classList.add('dragging');
+      });
+      track.addEventListener('pointermove', (e) => {
+        if(!isDown) return;
+        const dx = e.clientX - startX;
+        track.scrollLeft = startLeft - dx;
+        updateProgress();
+      });
+      const endDrag = () => {
+        if(!isDown) return;
+        isDown = false;
+        pid = null;
+        track.classList.remove('dragging');
+        setActiveFromCenter();
+      };
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+      track.addEventListener('pointerleave', endDrag);
+
+      track.addEventListener('wheel', (e) => {
+        const absX = Math.abs(e.deltaX);
+        const absY = Math.abs(e.deltaY);
+        if (absX <= absY) return;
+        e.preventDefault();
+        const dx = (e.shiftKey && absX < 1) ? e.deltaY : e.deltaX;
+        track.scrollLeft += dx;
+      }, { passive:false });
+
+      function scrollByPanel(dir){
+        const step = measureStep() || track.clientWidth;
+        const nextLeft = track.scrollLeft + dir * step;
+        track.scrollTo({ left: nextLeft, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      }
+
+      function scrollToIndex(index, behavior){
+        const step = measureStep();
+        if (!step) return;
+        const max = Math.max(0, track.scrollWidth - track.clientWidth);
+        const target = Math.max(0, Math.min(max, index * step));
+        track.scrollTo({ left: target, behavior: behavior || 'auto' });
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', () => scrollByPanel(-1));
+      if (nextBtn) nextBtn.addEventListener('click', () => scrollByPanel(1));
+      jumpButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.dataset.jump || '';
+          if (!target) return;
+          const index = panels.findIndex((panel) => categoryFor(panel) === target);
+          if (index >= 0) {
+            scrollToIndex(index, prefersReducedMotion ? 'auto' : 'smooth');
+          }
+        });
+      });
+
+      if (progressRail && knob){
+        const progress = document.getElementById('menuProgress');
+        const pFromEvent = (ev) => {
+          const r = progressRail.getBoundingClientRect();
+          const x = Math.max(0, Math.min(r.width, (ev.clientX - r.left)));
+          return r.width ? (x / r.width) : 0;
+        };
+        const captureTarget = knob || progress || progressRail;
+        let scrubbing = false;
+        let scrubPending = false;
+        let scrubPID = null;
+        let pendingPID = null;
+        let startX = 0;
+        let startY = 0;
+        const SCRUB_THRESHOLD = 10;
+        const applyScrub = (ev) => {
+          const p = pFromEvent(ev);
+          const target = p * (track.scrollWidth - track.clientWidth);
+          track.scrollTo({ left: target, behavior: 'auto' });
+        };
+        const startScrub = (ev) => {
+          scrubbing = true;
+          scrubPending = false;
+          applyScrub(ev);
+          if (ev.pointerId != null && captureTarget){
+            scrubPID = ev.pointerId;
+            captureTarget.setPointerCapture(scrubPID);
+          }
+        };
+        const beginScrub = (ev) => {
+          if (ev.pointerType && ev.pointerType !== 'touch') {
+            startScrub(ev);
+            ev.preventDefault();
+            return;
+          }
+          scrubPending = true;
+          pendingPID = ev.pointerId != null ? ev.pointerId : null;
+          startX = ev.clientX;
+          startY = ev.clientY;
+        };
+        const moveScrub = (ev) => {
+          if (scrubbing) {
+            applyScrub(ev);
+            ev.preventDefault();
+            return;
+          }
+          if (!scrubPending) return;
+          if (pendingPID != null && ev.pointerId != null && ev.pointerId !== pendingPID) return;
+          const dx = ev.clientX - startX;
+          const dy = ev.clientY - startY;
+          const ax = Math.abs(dx);
+          const ay = Math.abs(dy);
+          if (ax > ay + SCRUB_THRESHOLD) {
+            startScrub(ev);
+            ev.preventDefault();
+          } else if (ay > ax + SCRUB_THRESHOLD) {
+            scrubPending = false;
+            pendingPID = null;
+          }
+        };
+        const endScrub = () => {
+          scrubbing = false;
+          scrubPending = false;
+          pendingPID = null;
+          if (scrubPID != null && captureTarget){
+            try { captureTarget.releasePointerCapture(scrubPID); } catch (_) {}
+          }
+          scrubPID = null;
+        };
+
+        progressRail.addEventListener('pointerdown', beginScrub);
+        progressRail.addEventListener('pointermove', moveScrub);
+        window.addEventListener('pointerup', endScrub);
+        window.addEventListener('pointercancel', endScrub);
+        knob.addEventListener('pointerdown', beginScrub);
+        knob.addEventListener('pointermove', moveScrub);
+      }
+
+      if (knob){
+        knob.addEventListener('keydown', (e) => {
+          const key = e.key;
+          if (key === 'ArrowLeft' || key === 'ArrowUp'){
+            scrollByPanel(-1);
+            e.preventDefault();
+          } else if (key === 'ArrowRight' || key === 'ArrowDown'){
+            scrollByPanel(1);
+            e.preventDefault();
+          } else if (key === 'Home'){
+            track.scrollTo({ left: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+            e.preventDefault();
+          } else if (key === 'End'){
+            track.scrollTo({ left: track.scrollWidth, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+            e.preventDefault();
+          }
+        });
+      }
+
+      track.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        updateProgress();
+        setActiveFromCenter();
+      }, { passive: true });
+
+      requestAnimationFrame(() => {
+        scrollToIndex(1, 'auto');
+        setActiveFromCenter();
+        updateProgress();
+      });
+    })();
+  </script>
+
+  <!-- Normalize dish titles: first letter uppercase, rest lowercase -->
+  <script>
+    (function(){
+      try{
+        const titles = Array.from(document.querySelectorAll('.capTitle'));
+        const reLetter = /[A-Za-zÀ-ÖØ-öø-ÿ]/;
+        titles.forEach((el) => {
+          const raw = (el.textContent || '').trim();
+          if (!raw) return;
+          const lower = raw.toLowerCase();
+          const arr = Array.from(lower);
+          let idx = -1;
+          for (let i=0;i<arr.length;i++){ if (reLetter.test(arr[i])) { idx = i; break; } }
+          if (idx >= 0){ arr[idx] = arr[idx].toUpperCase(); }
+          el.textContent = arr.join('');
+        });
+      }catch(_){ /* ignore */ }
+    })();
+  </script>
+</body>
+</html>
