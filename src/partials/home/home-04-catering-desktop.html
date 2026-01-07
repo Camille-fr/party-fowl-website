@@ -19,6 +19,7 @@
       --gold2:#f0d07a;
       --shadow: 0 28px 80px rgba(0,0,0,.55);
       --shadow2: 0 18px 50px rgba(0,0,0,.55);
+      --scroll-ambient-strength: 0.28;
     }
 
     /* Local fonts (as requested) */
@@ -44,40 +45,105 @@
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{
+      height:auto;
+      min-height:0;
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
+    }
+    html{
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
+    }
     body{
       margin:0;
-      background:
-        radial-gradient(1200px 700px at 40% 45%, rgba(255,72,0,.14), transparent 55%),
-        radial-gradient(900px 600px at 35% 30%, rgba(0,190,255,.12), transparent 55%),
-        radial-gradient(900px 600px at 70% 45%, rgba(255,255,255,.05), transparent 60%),
-        var(--bg);
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
       color:var(--white);
-      overflow:hidden;
+      overflow-x:hidden;
       font-synthesis-weight:none;
+      min-height:0;
+      position: relative;
+      z-index: 0;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(140% 120% at 18% 18%, rgba(125, 195, 184, 0.12), transparent 56%),
+        radial-gradient(140% 120% at 78% 12%, rgba(244, 0, 18, 0.08), transparent 58%),
+        linear-gradient(180deg, rgba(1, 20, 36, 0.92), rgba(1, 4, 10, 0.94) 42%, rgba(1, 2, 5, 1)),
+        url("../../assets/img/home/background.png");
+      background-size: 140% 140%, 140% 140%, 100% 100%, cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(0.96) brightness(0.9);
+      transform: translateZ(0);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        linear-gradient(160deg, rgba(1, 18, 32, 0.76), rgba(1, 6, 12, 0.9)),
+        radial-gradient(210% 180% at 20% -8%, rgba(255, 43, 91, calc(var(--scroll-ambient-strength) * 0.32)), transparent 62%),
+        radial-gradient(190% 150% at 78% -12%, rgba(53, 240, 255, calc(var(--scroll-ambient-strength) * 0.24)), transparent 64%),
+        url("../../assets/img/home/backgg.png");
+      background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+      background-size: cover, 150% 150%, 150% 150%, 380px 380px;
+      background-position: center;
+      background-blend-mode: normal, screen, screen, soft-light;
+      opacity: 0.42;
+      filter: saturate(0.92);
     }
 
     .stage{
-      height:100vh;
+      min-height:0;
       width:100%;
       display:flex;
+      position: relative;
+      z-index: 1;
       align-items:stretch;
       justify-content:flex-start;
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
     }
 
     .slide{
       width:100%;
-      height:100vh;
+      min-height:0;
       max-height:none;
       position:relative;
       overflow:hidden;
-      /* Aligne le fond sur la slide 02 (Social Media Reels) */
-      background-color:#03172b;
-      background-image:
-        radial-gradient(circle at 18% 24%, rgba(125,195,184,0.07), transparent 58%),
-        radial-gradient(circle at 82% 14%, rgba(244,0,18,0.10), transparent 56%),
-        radial-gradient(circle at 52% 110%, rgba(0,0,0,0.62), transparent 60%),
-        linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.34));
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
+    }
+
+    .pf-catering,
+    .pf-catering__wrap,
+    .pf-catering__media,
+    .pf-catering__card {
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      background-repeat: no-repeat;
     }
 
     /* Photo overlay (from slide 02), kept subtle and behind content */
@@ -85,33 +151,8 @@
       content:"";
       position:absolute; inset:0;
       pointer-events:none;
-      background-image:
-        radial-gradient(420px 260px at 88% 6%,
-          rgba(0,0,0,0.92) 0%,
-          rgba(0,0,0,0.68) 26%,
-          rgba(0,0,0,0.32) 48%,
-          rgba(0,0,0,0.08) 66%,
-          rgba(0,0,0,0) 80%),
-        linear-gradient(180deg,
-          rgba(0,0,0,0.82) 0%,
-          rgba(0,0,0,0.66) 8%,
-          rgba(0,0,0,0.32) 18%,
-          rgba(0,0,0,0.10) 26%,
-          rgba(0,0,0,0) 36%),
-        linear-gradient(180deg,
-          rgba(0,0,0,0.82) 0%,
-          rgba(3,6,12,0.62) 22%,
-          rgba(3,6,12,0.36) 48%,
-          rgba(3,6,12,0.14) 72%,
-          rgba(0,0,0,0) 92%),
-        linear-gradient(180deg, rgba(3,11,22,0.32) 0%, rgba(3,11,22,0.32) 100%),
-        url("../../assets/img/home/background.png");
-      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 1;
-      mix-blend-mode: normal;
-      filter: saturate(0.96) brightness(0.92);
+      background: none;
+      opacity: 0;
       z-index: 0;
     }
 
@@ -120,15 +161,8 @@
       content:"";
       position:absolute; inset:-40px;
       pointer-events:none;
-      background:
-        radial-gradient(circle at 10% 30%, rgba(255,255,255,.10), transparent 26%),
-        radial-gradient(circle at 35% 70%, rgba(255,255,255,.08), transparent 24%),
-        radial-gradient(circle at 65% 18%, rgba(255,255,255,.07), transparent 22%),
-        radial-gradient(circle at 80% 65%, rgba(255,255,255,.06), transparent 28%),
-        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,0) 1px 3px);
-      mix-blend-mode:overlay;
-      opacity:.22;
-      filter: blur(.2px);
+      background: none;
+      opacity:0;
     }
 
     .grid{
@@ -224,21 +258,21 @@
     }
 
     /* TEXT PANEL (RIGHT) */
-    .text{
-      position:relative;
-      padding:0 56px 0 48px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:flex-start;
-      gap:16px;
-      min-height:100%;
-      isolation:isolate;
+	    .text{
+	      position:relative;
+	      padding:0 56px 0 48px;
+	      display:flex;
+	      flex-direction:column;
+	      justify-content:center;
+	      align-items:flex-start;
+	      gap:16px;
+	      min-height:100%;
+	      isolation:isolate;
 
-      /* overlap into visuals */
-      margin-left:-120px;          /* key: slight overlap */
-      z-index:5;
-    }
+	      /* overlap into visuals */
+	      margin-left: clamp(-120px, -6vw, -48px);
+	      z-index:5;
+	    }
 
     .text::before{
       content:"";
@@ -248,9 +282,9 @@
       width: calc(100% + 120px);
       height: 60%;
       transform: translateY(-50%);
-      background: linear-gradient(270deg, rgba(3,11,22,.68) 0%, rgba(3,11,22,.32) 45%, rgba(3,11,22,0) 92%);
-      filter: blur(14px);
-      opacity:.7;
+      background: none;
+      filter: none;
+      opacity: 0;
       pointer-events:none;
       z-index:0;
     }
@@ -259,6 +293,21 @@
       position:relative;
       z-index:1;
       max-width:440px;
+      isolation:isolate;
+    }
+
+    /* Contrast panel behind the entire text block (keeps media visible) */
+    .textContent::before{
+      content:"";
+      position:absolute;
+      inset:-26px -22px -22px -60px;
+      border-radius:26px;
+      background: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      pointer-events:none;
+      z-index:-1;
     }
 
     .title{
@@ -525,18 +574,15 @@
       .catering-title-line{ letter-spacing:.06em; }
     }
 
-    @media (max-width: 1050px){
-      :root{ --visuals-pad: 8px; }
-      .grid{
-        grid-template-columns: minmax(0, 2fr) clamp(280px, 36vw, 400px);
-      }
-      .text{
-        margin-left:-92px;
-        padding:0 44px 0 36px;
-      }
-      .catering-title-line{
-        font-size: clamp(48px, 5.6vw, 86px);
-      }
+	    @media (max-width: 1050px){
+	      :root{ --visuals-pad: 8px; }
+	      .grid{
+	        grid-template-columns: minmax(0, 2fr) clamp(280px, 36vw, 400px);
+	      }
+	      .text{ padding:0 44px 0 36px; }
+	      .catering-title-line{
+	        font-size: clamp(48px, 5.6vw, 86px);
+	      }
       .catering-title-line:nth-child(2){
         font-size: clamp(42px, 5.0vw, 74px);
       }
@@ -547,96 +593,383 @@
         white-space: normal;
       }
     }
-  </style>
+
+    /* HOME SLIDE 4 */
+    .pf-catering{
+      position:relative;
+      z-index:1;
+    }
+
+    .pf-catering__wrap{
+      position:relative;
+      z-index:1;
+      width:min(100%, 1440px);
+      margin:0 auto;
+      padding-inline: clamp(18px, 4vw, 40px);
+      padding-block: clamp(28px, 6vh, 72px);
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: clamp(16px, 3vw, 40px);
+      align-items:stretch;
+      min-height:0;
+    }
+
+    @media (min-width: 1024px){
+      .pf-catering__wrap{
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+      }
+    }
+
+    .pf-catering__media,
+    .pf-catering__card{
+      min-width:0;
+    }
+
+    .pf-catering__media{
+      position:relative;
+      border-radius: clamp(18px, 2.2vw, 30px);
+      overflow:hidden;
+      aspect-ratio: 4 / 3;
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+      isolation:isolate;
+    }
+
+    .pf-catering__media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.18) 60%, rgba(0,0,0,.32) 100%),
+        radial-gradient(520px 320px at 18% 10%, rgba(125,195,184,.16), transparent 68%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .pf-catering__video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      filter: saturate(1.06) contrast(1.05);
+      transform: translateZ(0);
+    }
+
+    .pf-catering__card{
+      width:100%;
+      max-width:560px;
+      justify-self:stretch;
+      padding: clamp(18px, 2.2vw, 34px);
+      border-radius: clamp(24px, 2.4vw, 32px);
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:
+        0 22px 48px rgba(0,0,0,0.65);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    @media (min-width: 1024px){
+      .pf-catering__card{
+        justify-self:end;
+      }
+    }
+
+    @media (min-width: 1280px){
+      .pf-catering__card{
+        transform: translateX(-24px);
+      }
+    }
+
+    .pf-catering__headline{
+      margin:0 0 clamp(12px, 1.6vw, 18px) 0;
+      font-family:"AshwoodCondensed", serif;
+      font-size: clamp(34px, 4.2vw, 74px);
+      line-height: 1.02;
+      letter-spacing: .07em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,0.96);
+      text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 10px rgba(244, 0, 18, 0.30);
+      text-wrap: balance;
+      overflow-wrap:anywhere;
+    }
+
+    @media (max-width: 420px){
+      .pf-catering__headline{ letter-spacing: .055em; }
+    }
+
+    .pf-catering__subtitle{
+      margin:0 0 clamp(14px, 1.6vw, 18px) 0;
+      font-family:"Newslab", Georgia, serif;
+      font-size: clamp(15px, 1.2vw, 18px);
+      line-height:1.45;
+      color:var(--muted);
+      max-width: 52ch;
+      text-shadow: 0 8px 18px rgba(0,0,0,.45);
+    }
+
+    .pf-catering__accent{
+      color:#e9fffb;
+      text-shadow: 0 0 12px rgba(125,195,184,.42);
+    }
+
+    .pf-catering__features{
+      margin:0 0 clamp(14px, 1.6vw, 20px) 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap: 16px;
+      font-family:"Newslab", Georgia, serif;
+      color:var(--muted2);
+      font-size: clamp(14px, 1.05vw, 15.5px);
+      line-height:1.55;
+      text-shadow: 0 8px 18px rgba(0,0,0,.45);
+      --pf-icon: 44px;
+    }
+
+    @media (max-width: 420px){
+      .pf-catering__features{ --pf-icon: 40px; gap: 14px; }
+    }
+
+    .pf-catering__feature{
+      display:flex;
+      gap: 16px;
+      align-items:flex-start;
+      margin:0;
+    }
+
+    .pf-catering__feature-icon{
+      width:var(--pf-icon);
+      height:var(--pf-icon);
+      flex:0 0 var(--pf-icon);
+      margin-top:2px;
+      border-radius:999px;
+      border:1px solid rgba(125,195,184,.65);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(125,195,184,.45), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(125,195,184,.18), transparent 55%),
+        rgba(3,11,22,.38);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--accent-teal);
+      box-shadow:
+        0 0 14px rgba(125,195,184,.24),
+        0 6px 14px rgba(0,0,0,.35),
+        inset 0 0 12px rgba(125,195,184,.14);
+    }
+
+    .pf-catering__feature-icon svg{
+      width: calc(var(--pf-icon) * 0.55);
+      height: calc(var(--pf-icon) * 0.55);
+    }
+
+    .pf-catering__script{
+      margin:0 0 clamp(14px, 1.6vw, 18px) 0;
+      font-family:"Buttergone", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: clamp(18px, 1.7vw, 24px);
+      line-height:1.28;
+      letter-spacing:.06em;
+      color: #f7fffd;
+      text-shadow:
+        0 0 2px rgba(255,255,255,0.90),
+        0 0 8px rgba(125,195,184,0.68),
+        0 0 18px rgba(116,238,255,0.30);
+      text-wrap: balance;
+    }
+    .pf-catering__script-line{ display:block; }
+
+	    .pf-catering__cta{
+	      display:inline-flex;
+	      align-items:center;
+	      justify-content:center;
+      gap:12px;
+      width: fit-content;
+      --glow: rgba(53, 240, 255, 0.42);
+      --border: rgba(53, 240, 255, 0.72);
+      border:1px solid var(--border);
+      background: rgba(3,11,22,0.22);
+      color:#9ef1ea;
+      font-family:"Newslab", "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      padding:14px 22px;
+      margin:0;
+      margin-top: clamp(10px, 1.6vw, 16px);
+      min-height:50px;
+      border-radius:999px;
+      box-shadow:
+        0 10px 18px rgba(0,0,0,0.45),
+        0 0 12px rgba(53, 240, 255, 0.22),
+        inset 0 0 10px rgba(33, 184, 255, 0.15);
+      text-shadow: 0 0 8px rgba(53,240,255,0.22);
+      position:relative;
+	      overflow:hidden;
+	      cursor:pointer;
+	      text-decoration:none;
+	      user-select:none;
+	      transition: transform .18s ease, box-shadow .18s ease, letter-spacing .18s ease, border-color .18s ease;
+	    }
+    .pf-catering__cta::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .pf-catering__cta::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      border-radius:999px;
+      background: radial-gradient(circle at center, var(--glow), transparent 70%);
+      opacity:0;
+      filter: blur(16px);
+      transition: opacity .2s ease, filter .2s ease;
+      pointer-events:none;
+      z-index:-1;
+    }
+    .pf-catering__cta:hover{
+      transform: translateY(-1px);
+      letter-spacing:.11em;
+      border-color: rgba(126, 241, 234, 0.92);
+      box-shadow:
+        0 12px 26px rgba(0,0,0,0.55),
+        0 0 22px rgba(53, 240, 255, 0.38),
+        inset 0 0 14px rgba(33, 184, 255, 0.22);
+    }
+    .pf-catering__cta:hover::after{ opacity:.78; filter: blur(20px); }
+    .pf-catering__cta:active{ transform: translateY(1px) scale(.985); box-shadow: 0 10px 20px rgba(0,0,0,0.58); }
+    .pf-catering__cta:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(233,255,251,.9),
+        0 14px 30px rgba(0,0,0,.62);
+    }
+    .pf-catering__cta-arrow{ display:inline-block; transition: transform .16s ease; }
+    .pf-catering__cta:hover .pf-catering__cta-arrow{ transform: translateX(2px); }
+
+    @media (max-width: 1023px){
+      .pf-catering__card{
+        max-width:none;
+        transform:none;
+      }
+      .pf-catering__cta{
+        width:100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pf-catering__cta,
+      .pf-catering__cta::after,
+      .pf-catering__cta-arrow{
+        transition:none !important;
+      }
+    }
+
+    @media (min-width: 1024px){
+      .pf-catering__wrap{
+        align-items: stretch;
+      }
+      .pf-catering__media{
+        height: 100%;
+        min-height: 100%;
+        aspect-ratio: auto;
+      }
+      .pf-catering__video{
+        height: 100%;
+      }
+      .pf-catering__card{
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+      }
+    }
+</style>
 </head>
-<body>
-  <main class="stage" aria-label="Catering & Events slide">
-    <section class="slide" role="img" aria-label="Night neon catering promotion with food photos and call-to-action">
-      <div class="grid">
-
-        <!-- VISUALS LEFT -->
-        <div class="visuals" aria-label="Neon photo and food gallery">
-          <img class="visualsBg js-smartimg"
-               alt=""
-               loading="lazy"
-               decoding="async"
-               data-src="../../assets/img/catering-events/right-neon-sign-bg.jpg"
-               data-fallback="TODO" />
-
-          <div class="heroMedia" aria-hidden="true">
-            <video class="heroVideo" autoplay muted loop playsinline preload="metadata" poster="../../assets/img/home/catering/backgroundslide4.png">
-              <source src="../../assets/img/home/catering/04_catering.mp4" type="video/mp4" />
-            </video>
-          </div>
+<body style="background: transparent; background-color: transparent;">
+  <main class="stage" aria-label="Catering & Events slide" style="background: transparent; background-color: transparent;">
+    <section class="slide pf-catering" aria-label="Catering &amp; Events" style="background: transparent; background-color: transparent;">
+      <div class="pf-catering__wrap">
+        <div class="pf-catering__media" aria-label="Catering video">
+          <video class="pf-catering__video" muted loop playsinline autoplay preload="metadata" poster="../../assets/img/home/catering/backgroundslide4.png" data-defer="visible" data-autoplay="1">
+            <source data-src="../../assets/img/home/catering/04_catering.mp4" type="video/mp4" />
+          </video>
         </div>
 
-        <!-- TEXTE RIGHT (overlaps slightly onto visuals) -->
-        <aside class="text" aria-label="Text panel">
-          <div class="textContent">
-            <h1 class="title catering-title">
-              <span class="catering-title-line">Bring the</span>
-              <span class="catering-title-line">Party to You</span>
-            </h1>
+        <aside class="pf-catering__card" aria-label="Catering details">
+          <h1 class="pf-catering__headline">BRING THE PARTY TO YOU</h1>
 
-            <p class="subtitle">
-              Hot chicken spreads, boozy slushie bars &amp; private spaces built for <span class="accent">big nights.</span>
-            </p>
+          <p class="pf-catering__subtitle">
+            NASHVILLE HOT CHICKEN spreads, boozy slushie bars &amp; private spaces built for <span class="pf-catering__accent">big nights.</span>
+          </p>
 
-            <ul class="bullets">
-              <li>
-                <span class="bullet-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4.5 19.5l8.8-3.6-5.1-6-3.7 9.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M7.6 13.8l3-1.2M8.6 16.6l3.2-1.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                    <path d="M12.8 8.2l3.8-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <path d="M16.6 3.6v2.2M19.6 5.2l2-1M14.8 5l-2-1M18.2 8.2l2.2 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                    <circle cx="20.2" cy="8.4" r="0.9" fill="currentColor"/>
-                    <circle cx="13.4" cy="3.4" r="0.8" fill="currentColor"/>
-                  </svg>
-                </span>
-                <span class="bullet-text">Catering trays for game days, office events &amp; celebrations</span>
-              </li>
-              <li>
-                <span class="bullet-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <rect x="3.5" y="4" width="9.5" height="16" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    <circle cx="10.2" cy="12" r="0.8" fill="currentColor"/>
-                    <circle cx="17.5" cy="9" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    <circle cx="21" cy="10.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M15 16.2c.6-2 2.3-3.3 4.2-3.3 1.9 0 3.6 1.3 4.2 3.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <span class="bullet-text">Private rooms from cozy dinners to 200-guest parties</span>
-              </li>
-              <li>
-                <span class="bullet-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M3 8h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <circle cx="9" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M3 14h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <circle cx="6" cy="14" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M16 7h5l-1 10a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2l-1-10z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M18 5v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <span class="bullet-text">Custom menus, heat levels &amp; drink setups for your crew</span>
-              </li>
-            </ul>
+          <ul class="pf-catering__features" aria-label="Catering highlights">
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4.5 19.5l8.8-3.6-5.1-6-3.7 9.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M7.6 13.8l3-1.2M8.6 16.6l3.2-1.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M12.8 8.2l3.8-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M16.6 3.6v2.2M19.6 5.2l2-1M14.8 5l-2-1M18.2 8.2l2.2 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <circle cx="20.2" cy="8.4" r="0.9" fill="currentColor"/>
+                  <circle cx="13.4" cy="3.4" r="0.8" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Catering trays for game days, office events &amp; celebrations</span>
+            </li>
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3.5" y="4" width="9.5" height="16" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="10.2" cy="12" r="0.8" fill="currentColor"/>
+                  <circle cx="17.5" cy="9" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="21" cy="10.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M15 16.2c.6-2 2.3-3.3 4.2-3.3 1.9 0 3.6 1.3 4.2 3.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Private rooms from cozy dinners to 200-guest parties</span>
+            </li>
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 8h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="9" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M3 14h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="6" cy="14" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M16 7h5l-1 10a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2l-1-10z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M18 5v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Custom menus, heat levels &amp; drink setups for your crew</span>
+            </li>
+          </ul>
 
-            <p class="mini neon-white">
-              <span class="mini-line">From The Coop to intimate VIP rooms,</span>
-              <span class="mini-line">your next party starts here.</span>
-            </p>
+          <p class="pf-catering__script">
+            <span class="pf-catering__script-line">From The Coop to intimate VIP rooms,</span>
+            <span class="pf-catering__script-line">your next party starts here.</span>
+          </p>
 
-            <button class="cta" type="button" aria-label="Explore Catering & Events">
-              <span>Explore Catering &amp; Events</span>
-              <span class="cta-arrow" aria-hidden="true">→</span>
-            </button>
+          <a class="pf-catering__cta" href="../../pages/catering.html" aria-label="Explore Catering &amp; Events" target="_top">
+            <span>Explore Catering &amp; Events</span>
+            <span class="pf-catering__cta-arrow" aria-hidden="true">→</span>
+          </a>
 
-            <p class="sr-only">CTA button opens catering and events details (link hookup pending).</p>
-          </div>
+          <p class="sr-only">Explore Party Fowl catering and events.</p>
         </aside>
-
       </div>
     </section>
   </main>
@@ -660,7 +993,7 @@
       }
 
       function applySrc(img, url) {
-        if (!url || url === "TODO") return;
+        if (!url) return;
         if (img.dataset.applied === "1") return;
         img.src = url;
         img.dataset.applied = "1";
@@ -673,14 +1006,14 @@
           io.unobserve(img);
 
           const local = img.getAttribute('data-src');
-          const fallback = img.getAttribute('data-fallback') || "TODO";
+          const fallback = img.getAttribute('data-fallback') || "";
 
-          if (fallback && fallback !== "TODO") applySrc(img, fallback);
+          if (fallback) applySrc(img, fallback);
 
           if (local) {
             const ok = await exists(local);
             if (ok) applySrc(img, local);
-            else if (fallback && fallback !== "TODO") applySrc(img, fallback);
+            else if (fallback) applySrc(img, fallback);
             else {
               img.alt = (img.alt || "") + " (image missing)";
               img.style.opacity = "0";
@@ -694,7 +1027,7 @@
         io.observe(img);
       });
 
-      const cta = document.querySelector('.cta');
+      const cta = document.querySelector('.pf-catering__cta');
       if (cta) {
         cta.addEventListener('click', () => {
           cta.animate(

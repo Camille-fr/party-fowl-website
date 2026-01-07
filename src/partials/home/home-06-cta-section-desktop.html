@@ -43,18 +43,18 @@
     }
 
     *{box-sizing:border-box}
-    html,body{
-      min-height:0;
-      height:auto;
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: transparent;
     }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 700px at 50% 35%, rgba(45,255,255,.08), transparent 60%),
-                  radial-gradient(900px 520px at 18% 62%, rgba(255,47,47,.10), transparent 60%),
-                  radial-gradient(900px 520px at 82% 62%, rgba(255,212,156,.06), transparent 60%),
-                  linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 40%, var(--bg0) 100%);
-      color:var(--ink);
-      overflow:hidden;
+    body {
+      margin: 0;
+      background: transparent;
+      color: var(--ink);
+      overflow: hidden;
     }
 
     /* ===== Full-width / full-height section, trimmed bottom spacing ===== */
@@ -65,11 +65,11 @@
       display:flex;
       align-items:flex-start;
       justify-content:center;
-      padding:0;
+      padding: clamp(22px, 4vw, 48px) 0 clamp(14px, 2vw, 30px);
       margin:0;
       isolation:isolate;
       overflow:hidden;
-      background: linear-gradient(180deg, #05070d 0%, #0b0d14 100%);
+      background-color: #030b16;
     }
 
     .sr-only{
@@ -92,8 +92,9 @@
       object-position:center; /* keep the focus centered across breakpoints */
       pointer-events:none;
       z-index:0;
-      opacity:1;
+      opacity:0.92;
       filter: none;
+      display:block;
     }
 
     .cta::before{
@@ -101,12 +102,12 @@
       position:absolute; inset:0;
       z-index:1;
       background: linear-gradient(180deg,
-        rgba(0,0,0,0.62) 0%,
-        rgba(0,0,0,0.45) 26%,
-        rgba(0,0,0,0.26) 52%,
-        rgba(0,0,0,0.12) 72%,
-        transparent 100%);
-      filter: blur(24px);
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.32) 28%,
+        rgba(0,0,0,0.22) 48%,
+        rgba(0,0,0,0.12) 70%,
+        rgba(0,0,0,0) 100%);
+      filter: blur(28px);
       pointer-events:none;
     }
 
@@ -114,16 +115,34 @@
       content:"";
       position:absolute; inset:0;
       z-index:2;
-      background:
-        linear-gradient(180deg,
-          rgba(0,0,0,.78) 0%,
-          rgba(0,0,0,.52) 22%,
-          rgba(0,0,0,0) 58%),
-        radial-gradient(60% 80% at 50% 40%, rgba(0,0,0,.25), transparent 62%),
-        linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.68));
-      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-      mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.42) 30%,
+        rgba(0,0,0,0.32) 60%,
+        rgba(0,0,0,0.08) 100%);
       pointer-events:none;
+    }
+
+    .cta-neon-line {
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        rgba(255, 45, 86, 0.35),
+        rgba(255, 45, 86, 0.95),
+        rgba(255, 45, 86, 0.35));
+      box-shadow:
+        0 0 10px rgba(255, 45, 86, 0.8),
+        0 0 24px rgba(255, 45, 86, 0.4);
+      pointer-events:none;
+      z-index:4;
+    }
+
+    .cta-neon-line--bottom {
+      top: auto;
+      bottom: 0;
     }
 
     /* Layout container matches screenshot: centered content, airy, but edges can breathe */
@@ -405,61 +424,345 @@
         inset 0 0 14px rgba(33, 184, 255, 0.28);
       color: #c4fffa;
     }
-    .cta .btn-locations::after{
-      background: radial-gradient(circle at 50% 50%, rgba(53, 240, 255, 0.55), transparent 70%);
-    }
+	    .cta .btn-locations::after{
+	      background: radial-gradient(circle at 50% 50%, rgba(53, 240, 255, 0.55), transparent 70%);
+	    }
 
-    /* keep layout solid on smaller desktops */
-    @media (max-width: 980px){
-      .btn-row{flex-wrap:wrap}
-    }
+	    /* ================= Contact section ================= */
+	    .contact{
+	      position:relative;
+	      width:100%;
+	      padding: clamp(64px, 7vw, 96px) 0 clamp(72px, 8vw, 118px);
+	      background:
+	        radial-gradient(1200px 620px at 16% 0%, rgba(244,0,18,0.12), transparent 60%),
+	        radial-gradient(980px 620px at 82% 20%, rgba(53,240,255,0.12), transparent 58%),
+	        linear-gradient(180deg, #05070d 0%, #030b16 100%);
+	      isolation:isolate;
+	      overflow:hidden;
+	    }
+
+	    .contact::before{
+	      content:"";
+	      position:absolute;
+	      inset:0;
+	      background:
+	        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.06), transparent 42%),
+	        radial-gradient(circle at 70% 72%, rgba(255,255,255,0.05), transparent 44%),
+	        repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 1px, rgba(0,0,0,0) 1px 4px);
+	      mix-blend-mode: overlay;
+	      opacity:0.22;
+	      pointer-events:none;
+	      z-index:0;
+	    }
+
+	    .contact-top-line{
+	      position:absolute;
+	      top:0;
+	      left:0;
+	      right:0;
+	      height:2px;
+	      background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.86) 50%, rgba(255,255,255,0.12));
+	      box-shadow:
+	        0 0 12px rgba(255,255,255,0.55),
+	        0 0 30px rgba(255,255,255,0.35);
+	      pointer-events:none;
+	      z-index:2;
+	    }
+
+	    .contact-inner{
+	      position:relative;
+	      z-index:1;
+	      width:min(1440px, 100%);
+	      margin:0 auto;
+	      padding-inline: clamp(28px, 4.5vw, 84px);
+	    }
+
+	    .contact-kicker{
+	      display:inline-flex;
+	      align-items:center;
+	      gap:10px;
+	      font: 700 12px/1 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      letter-spacing:0.22em;
+	      text-transform:uppercase;
+	      color: rgba(255,255,255,0.72);
+	      margin-bottom: 14px;
+	    }
+	    .contact-kicker::before{
+	      content:"";
+	      width: 12px;
+	      height: 12px;
+	      border-radius:999px;
+	      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(244,0,18,0.95));
+	      box-shadow:
+	        0 0 14px rgba(244,0,18,0.32),
+	        0 0 18px rgba(53,240,255,0.18);
+	    }
+
+	    .contact-grid{
+	      display:grid;
+	      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+	      gap: clamp(18px, 2.8vw, 34px);
+	      align-items: start;
+	    }
+
+	    .contact-title{
+	      margin: 0 0 16px 0;
+	      font-family: "AshwoodExtraBold","AshwoodCondensed", system-ui, sans-serif;
+	      font-size: clamp(54px, 5.6vw, 86px);
+	      line-height: 0.92;
+	      letter-spacing: 0.02em;
+	      text-transform: uppercase;
+	      color: #fff;
+	      text-shadow:
+	        0 12px 40px rgba(0,0,0,0.72),
+	        0 0 22px rgba(244,0,18,0.20);
+	    }
+
+	    .contact-subtitle{
+	      margin: 0 0 18px 0;
+	      max-width: 46ch;
+	      color: rgba(246,241,230,0.78);
+	      font: 400 15px/1.6 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	    }
+
+	    .contact-pills{
+	      display:flex;
+	      flex-wrap:wrap;
+	      gap:10px;
+	      margin: 16px 0 0;
+	      padding: 0;
+	      list-style: none;
+	    }
+
+	    .contact-pill{
+	      display:inline-flex;
+	      align-items:center;
+	      gap:8px;
+	      padding: 10px 12px;
+	      border-radius: 999px;
+	      border: 1px solid rgba(255,255,255,0.12);
+	      background: rgba(11, 20, 32, 0.55);
+	      color: rgba(255,255,255,0.88);
+	      font: 700 12px/1 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      letter-spacing: 0.08em;
+	      text-transform: uppercase;
+	      box-shadow:
+	        0 10px 18px rgba(0,0,0,0.25),
+	        inset 0 1px 1px rgba(255,255,255,0.08);
+	      backdrop-filter: blur(10px) saturate(115%);
+	      -webkit-backdrop-filter: blur(10px) saturate(115%);
+	    }
+
+	    .contact-dot{
+	      width: 10px;
+	      height: 10px;
+	      border-radius: 999px;
+	      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.85), rgba(53,240,255,0.95));
+	      box-shadow:
+	        0 0 12px rgba(53,240,255,0.26),
+	        0 0 16px rgba(244,0,18,0.16);
+	      flex: 0 0 auto;
+	    }
+
+	    .contact-panel{
+	      background: linear-gradient(180deg, rgba(11, 20, 32, 0.86), rgba(13, 26, 41, 0.72));
+	      border: 1px solid rgba(255,255,255,0.12);
+	      border-radius: 22px;
+	      box-shadow: var(--shadow);
+	      backdrop-filter: blur(14px) saturate(120%);
+	      -webkit-backdrop-filter: blur(14px) saturate(120%);
+	      position: relative;
+	      overflow: hidden;
+	    }
+
+	    .contact-panel::before{
+	      content:"";
+	      position:absolute;
+	      inset:-1px;
+	      background:
+	        radial-gradient(circle at 20% 0%, rgba(53,240,255,0.18), transparent 55%),
+	        radial-gradient(circle at 85% 0%, rgba(244,0,18,0.18), transparent 58%),
+	        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+	      opacity:0.75;
+	      pointer-events:none;
+	      z-index:0;
+	    }
+
+	    .contact-panel-inner{
+	      position:relative;
+	      z-index:1;
+	      padding: clamp(18px, 2.2vw, 28px);
+	    }
+
+	    .contact-formTitle{
+	      margin: 0 0 14px;
+	      font-family: "AshwoodExtraBold","AshwoodCondensed", system-ui, sans-serif;
+	      font-size: 26px;
+	      letter-spacing: 0.06em;
+	      text-transform: uppercase;
+	      color: rgba(255,255,255,0.92);
+	    }
+
+	    .contact-formGrid{
+	      display:grid;
+	      grid-template-columns: 1fr 1fr;
+	      gap: 12px;
+	      margin-top: 10px;
+	    }
+
+	    .contact-field{
+	      display:flex;
+	      flex-direction:column;
+	      gap: 8px;
+	      min-width: 0;
+	    }
+
+	    .contact-field--full{
+	      grid-column: 1 / -1;
+	    }
+
+	    .contact label{
+	      font: 700 12px/1 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      letter-spacing: 0.16em;
+	      text-transform: uppercase;
+	      color: rgba(255,255,255,0.72);
+	    }
+
+	    .contact input,
+	    .contact select,
+	    .contact textarea{
+	      width:100%;
+	      border-radius: 14px;
+	      border: 1px solid rgba(255,255,255,0.14);
+	      background: rgba(3, 11, 22, 0.55);
+	      color: rgba(255,255,255,0.92);
+	      font-family: "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      font-size: 14px;
+	      padding: 12px 12px;
+	      outline: none;
+	      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+	    }
+
+	    .contact textarea{
+	      resize: none;
+	      min-height: 128px;
+	      line-height: 1.55;
+	      padding-top: 12px;
+	    }
+
+	    .contact input::placeholder,
+	    .contact textarea::placeholder{
+	      color: rgba(255,255,255,0.38);
+	    }
+
+	    .contact input:focus,
+	    .contact select:focus,
+	    .contact textarea:focus{
+	      border-color: rgba(53,240,255,0.88);
+	      box-shadow:
+	        0 0 0 4px rgba(53,240,255,0.16),
+	        0 0 18px rgba(53,240,255,0.12);
+	      transform: translateY(-1px);
+	    }
+
+	    .contact form.is-submitted input:invalid,
+	    .contact form.is-submitted select:invalid,
+	    .contact form.is-submitted textarea:invalid{
+	      border-color: rgba(244,0,18,0.62);
+	    }
+
+	    .contact-actions{
+	      display:flex;
+	      align-items:center;
+	      justify-content:space-between;
+	      gap: 14px;
+	      margin-top: 14px;
+	      flex-wrap: wrap;
+	    }
+
+	    .contact .contact-submit{
+	      --btn-bg:
+	        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+	        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+	      --btn-glow: rgba(244, 0, 18, 0.55);
+	      border-color: rgba(255, 180, 176, 0.85);
+	      color: #ffffff;
+	    }
+
+	    .contact-help{
+	      margin: 0;
+	      max-width: 44ch;
+	      color: rgba(246,241,230,0.62);
+	      font: 400 12px/1.5 Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	    }
+
+	    .contact .form-status{
+	      margin-top: 12px;
+	      min-height: 20px;
+	      font-size: 13px;
+	      letter-spacing: 0.02em;
+	      color: rgba(246,241,230,0.68);
+	    }
+	    .contact .form-status.is-success{ color: rgba(53,240,255,0.9); }
+	    .contact .form-status.is-error{ color: rgba(255, 180, 176, 0.92); }
+
+	    /* keep layout solid on smaller desktops */
+	    @media (max-width: 980px){
+	      .btn-row{flex-wrap:wrap}
+	      .contact-grid{ grid-template-columns: 1fr; }
+	      .contact-subtitle{ max-width: 60ch; }
+	    }
   </style>
 </head>
 
-<body>
-  <section class="cta" aria-label="CTA Party Fowl">
-    <!-- Background (local-first + fallback). Add the real image later; it will auto-swap. -->
+<body style="background: transparent; background-color: transparent;">
+			  <section class="cta" aria-label="CTA Party Fowl">
+	    <!-- Background (local-first + fallback). -->
     <img class="cta-bg"
          alt=""
          aria-hidden="true"
          loading="lazy"
          decoding="async"
          data-src="../../assets/img/home/home-06-cta-bg.png"
-         data-fallback="TODO" />
+         data-fallback="../../assets/img/home/background.png" />
+    <span class="cta-neon-line" aria-hidden="true"></span>
+    <span class="cta-neon-line cta-neon-line--bottom" aria-hidden="true"></span>
 
     <div class="wrap">
       <h1 class="sr-only">Don’t Wait — Celebrate!</h1>
 
       <div class="headline-video" role="img" aria-label="Don’t Wait — Celebrate!">
-        <video src="../../assets/img/home/home_06_title.mp4"
-               autoplay
+        <video data-src="../../assets/img/home/home_06_title.mp4"
                muted
                loop
+               autoplay
                playsinline
-               preload="auto"></video>
+               preload="metadata"
+               data-defer="visible"
+               data-autoplay="1"></video>
       </div>
 
       <p class="sub">
-        Hot chicken, boozy slushies &amp; zero chill, served now or waiting at your nearest Party Fowl.
+        NASHVILLE HOT CHICKEN, boozy slushies &amp; zero chill, served now or waiting at your nearest Party Fowl.
       </p>
 
-      <div class="btn-row" role="group" aria-label="Call to action buttons">
-        <a href="TODO" class="btn-pill btn-order" aria-label="Order Now">
-          <span class="btn-label">Order Now</span>
-          <span class="btn-icon btn-icon-order" aria-hidden="true"></span>
-        </a>
-        <a href="TODO" class="btn-pill btn-locations" aria-label="Find a Location">
-          <span class="btn-label">Find a Location</span>
-          <span class="btn-icon btn-icon-location" aria-hidden="true"></span>
-        </a>
-      </div>
-    </div>
-  </section>
+	      <div class="btn-row" role="group" aria-label="Call to action buttons">
+	        <a href="../../pages/ordersnow.html" class="btn-pill btn-order" aria-label="Order Now" target="_top">
+	          <span class="btn-label">Order Now</span>
+	          <span class="btn-icon btn-icon-order" aria-hidden="true"></span>
+	        </a>
+	        <a href="../../pages/locations.html" class="btn-pill btn-locations" aria-label="Find a Location" target="_top">
+	          <span class="btn-label">Find a Location</span>
+	          <span class="btn-icon btn-icon-location" aria-hidden="true"></span>
+	        </a>
+		      </div>
+		    </div>
+			  </section>
 
-  <script>
-    // Local-asset loader: uses data-src first; falls back to data-fallback if not found.
-    (function () {
-      const imgs = Array.from(document.querySelectorAll('img[data-src]'));
+		  <script>
+		    // Local-asset loader: uses data-src first; falls back to data-fallback if not found.
+		    (function () {
+	      const imgs = Array.from(document.querySelectorAll('img[data-src]'));
 
       async function exists(url) {
         try {
@@ -470,14 +773,15 @@
         } catch (_) { return false; }
       }
 
-      async function loadImg(img) {
-        const local = img.getAttribute('data-src');
-        const fallback = img.getAttribute('data-fallback') || 'TODO';
-        if (img.getAttribute('src')) return;
+	      async function loadImg(img) {
+	        const local = img.getAttribute('data-src');
+	        const fallback = img.getAttribute('data-fallback') || '';
+	        if (img.getAttribute('src')) return;
 
-        if (local && await exists(local)) img.src = local;
-        else img.src = fallback;
-      }
+	        if (local && await exists(local)) img.src = local;
+	        else if (fallback) img.src = fallback;
+	        else img.style.display = 'none';
+	      }
 
       const io = ('IntersectionObserver' in window)
         ? new IntersectionObserver((entries) => {
@@ -490,8 +794,8 @@
           }, { rootMargin: '300px 0px' })
         : null;
 
-      imgs.forEach(img => io ? io.observe(img) : loadImg(img));
-    })();
-  </script>
-</body>
-</html>
+		      imgs.forEach(img => io ? io.observe(img) : loadImg(img));
+		    })();
+		  </script>
+		</body>
+		</html>

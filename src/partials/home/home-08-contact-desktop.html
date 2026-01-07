@@ -1,0 +1,776 @@
+<!-- Target: src/partials/home/home-08-contact-desktop.html | Desktop 1440px -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Party Fowl — Contact</title>
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon/favicon.ico" />
+  <style>
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg: #030b16;
+      --ink: #fefefe;
+      --muted: rgba(255, 255, 255, 0.75);
+      --muted-strong: rgba(255, 255, 255, 0.9);
+      --accent-red: #ff1f2b;
+      --accent-teal: #7dc3b8;
+      --focus-ring: 0 0 0 3px rgba(125, 195, 184, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      width: 100%;
+      background: transparent;
+      color: var(--ink);
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      padding: 0;
+      background: transparent;
+    }
+
+    .pf-contact {
+      position: relative;
+      padding: clamp(26px, 4vw, 48px) clamp(18px, 3vw, 32px) clamp(22px, 3vw, 36px);
+      background: transparent;
+      color: var(--ink);
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .pf-contact::before {
+      content: none;
+    }
+
+    .pf-contact::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1.5px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 31, 43, 0.18) 0%,
+        rgba(255, 31, 43, 0.95) 50%,
+        rgba(255, 31, 43, 0.18) 100%
+      );
+      box-shadow:
+        0 0 12px rgba(255, 31, 43, 0.75),
+        0 0 24px rgba(255, 31, 43, 0.35);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .pf-contact__wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .pf-contact__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(26px, 3.6vw, 48px);
+      align-items: center;
+    }
+
+    .pf-contact__media-shell {
+      position: relative;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      align-self: center;
+      width: fit-content;
+      justify-self: center;
+    }
+
+    .pf-contact__media {
+      position: relative;
+      min-height: 0;
+      align-self: center;
+      --pf-contact-media-width-limit: clamp(420px, 34vw, 560px);
+      --pf-contact-media-height-limit: clamp(460px, 60vh, 640px);
+      --pf-contact-media-ratio: calc(512 / 768);
+      width: min(
+        var(--pf-contact-media-width-limit),
+        calc(var(--pf-contact-media-height-limit) * var(--pf-contact-media-ratio))
+      );
+      height: min(
+        var(--pf-contact-media-height-limit),
+        calc(var(--pf-contact-media-width-limit) / var(--pf-contact-media-ratio))
+      );
+      aspect-ratio: var(--pf-contact-media-ratio);
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
+      --pf-contact-media-radius: clamp(20px, 3vw, 28px);
+      border-radius: var(--pf-contact-media-radius);
+      overflow: hidden;
+      border: 0.8px solid rgba(255, 31, 43, 0.82);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.68),
+        0 0 32px rgba(255, 31, 43, 0.38);
+      isolation: isolate;
+      padding: 0;
+    }
+
+    .pf-contact__media::after {
+      content: "";
+      position: absolute;
+      inset: clamp(-10px, -1.6vw, -6px);
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255, 31, 43, 0.82), rgba(255, 31, 43, 0.12) 48%, transparent 72%);
+      filter: blur(12px) saturate(120%);
+      opacity: 0.72;
+      z-index: 0;
+    }
+
+    .pf-contact__video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      background: transparent;
+      border-radius: var(--pf-contact-media-radius);
+      position: relative;
+      z-index: 1;
+      filter: brightness(1.08) contrast(1.15);
+    }
+
+    .pf-contact__body {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .pf-contact__eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .pf-contact__title {
+      margin: 0;
+      font-family: "AshwoodCondensed", "Adrenaline", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(52px, 6vw, 84px);
+      line-height: 0.96;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.6),
+        0 0 18px rgba(125, 195, 184, 0.28);
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .pf-contact__title-line{
+      display:block;
+      white-space: nowrap;
+    }
+    .pf-contact__letter{
+      display:inline-block;
+      position:relative;
+      padding:0 0.02em;
+      transform: translateZ(0) scale(var(--scale, 1)) translateY(var(--dy, 0px)) rotate(var(--rot, 0deg));
+      transform-origin: 50% 82%;
+      transition: transform 0s, text-shadow 0.15s ease, filter 0.15s ease;
+      will-change: transform, filter;
+      z-index: var(--z, 0);
+      text-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.85),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 36px)) rgba(244, 0, 18, 0.60),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 20px)) rgba(244, 0, 18, 0.22);
+    }
+    .pf-contact__letter::before{
+      content:"";
+      position:absolute;
+      left:50%; top:52%;
+      transform: translate(-50%, -50%) scale(calc(1 + (var(--scale, 1) - 1) * 1.4));
+      width: 1.22em; height: 1.08em;
+      pointer-events:none;
+      border-radius: 50%;
+      background:
+        radial-gradient(48% 46% at 50% 50%, rgba(244, 0, 18, 0.95) 0%, rgba(244, 0, 18, 0.45) 40%, rgba(244, 0, 18, 0) 72%);
+      filter: blur(14px) saturate(120%);
+      opacity: calc(var(--glow, 0) * 0.95);
+      mix-blend-mode: screen;
+      z-index: -1;
+      transition: opacity .18s ease-out, filter .20s ease-out, transform .20s ease-out;
+    }
+    .pf-contact__title-line:hover .pf-contact__letter::before{
+      filter: blur(18px) saturate(135%);
+      opacity: calc(var(--glow, 0) * 1.15);
+    }
+    .pf-contact__title-line:hover .pf-contact__letter{ filter:saturate(1.05); }
+
+    .pf-contact__lead {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      max-width: 520px;
+    }
+
+    .pf-contact__form {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .pf-contact__form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(16px, 2.4vw, 26px);
+    }
+
+    .pf-contact__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pf-contact__field--full {
+      grid-column: 1 / -1;
+    }
+
+    .pf-contact label {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0;
+    }
+
+    .pf-contact__input,
+    .pf-contact__select,
+    .pf-contact__textarea {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 52px;
+    }
+
+    .pf-contact__textarea {
+      min-height: 52px;
+      resize: vertical;
+      line-height: 1.5;
+      padding: 14px 16px;
+    }
+
+    .pf-contact__input::placeholder,
+    .pf-contact__textarea::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .pf-contact__input:focus,
+    .pf-contact__select:focus,
+    .pf-contact__textarea:focus {
+      border-color: var(--accent-teal);
+      box-shadow: var(--focus-ring);
+    }
+
+    .pf-contact__optin {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.78);
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+      margin-top: 10px;
+      padding-left: clamp(2px, 0.4vw, 4px);
+    }
+
+    .pf-contact__optin label {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .pf-contact__optin input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent-red);
+      flex-shrink: 0;
+    }
+
+    .pf-contact__footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .pf-contact__submit {
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 22px;
+      min-height: 50px;
+      border-radius: 999px;
+      border:1px solid rgba(255, 31, 43, 0.85);
+      background:
+        linear-gradient(140deg, rgba(255, 31, 43, 0.58), rgba(171, 7, 21, 0.95)),
+        rgba(3,11,22,0.55);
+      color:#ffffff;
+      font-family:"Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      text-decoration:none;
+      box-shadow:
+        0 12px 28px rgba(0,0,0,0.55),
+        0 0 28px rgba(255, 31, 43, 0.65),
+        inset 0 0 20px rgba(255, 82, 105, 0.35);
+      text-shadow: 0 0 12px rgba(255, 31, 43, 0.55);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      background-clip: padding-box;
+      transition: transform .18s ease, box-shadow .18s ease, letter-spacing .18s ease, border-color .18s ease;
+    }
+    .pf-contact__submit::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      opacity:.95;
+      pointer-events:none;
+      box-shadow: 0 0 8px rgba(255, 31, 43, 0.35);
+    }
+    .pf-contact__submit::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      border-radius:999px;
+      background: radial-gradient(circle at center, rgba(255, 31, 43, 0.55), transparent 70%);
+      opacity:0;
+      filter: blur(16px);
+      transition: opacity .2s ease, filter .2s ease;
+      pointer-events:none;
+      z-index:-1;
+    }
+    .pf-contact__submit:hover{
+      transform: translateY(-1px);
+      letter-spacing:.11em;
+      border-color: rgba(255, 170, 179, 0.92);
+      box-shadow:
+        0 14px 30px rgba(0,0,0,0.6),
+        0 0 32px rgba(255, 31, 43, 0.85),
+        inset 0 0 18px rgba(255, 82, 105, 0.45);
+      color: #ffffff;
+    }
+    .pf-contact__submit:hover::after{ opacity:.78; filter: blur(20px); }
+    .pf-contact__submit:active{
+      transform: translateY(1px) scale(.985);
+      box-shadow:
+        0 10px 20px rgba(0,0,0,0.58),
+        0 0 22px rgba(255, 31, 43, 0.45);
+    }
+    .pf-contact__submit:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 31, 43, 0.9),
+        0 14px 30px rgba(0,0,0,.62);
+    }
+    .pf-contact__cta-arrow{ display:inline-block; transition: transform .16s ease; }
+    .pf-contact__submit:hover .pf-contact__cta-arrow{ transform: translateX(2px); }
+
+    .pf-contact__note {
+      margin: 0;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .pf-contact__legal {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .pf-contact__legal a {
+      color: var(--accent-teal);
+      border-bottom: 1px solid rgba(125, 195, 184, 0.5);
+      text-decoration: none;
+    }
+
+    .pf-contact__legal a:hover,
+    .pf-contact__legal a:focus-visible {
+      color: #fff;
+      border-bottom-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .pf-contact__status {
+      margin: 0;
+      font-size: 13px;
+      color: rgba(125, 195, 184, 0.95);
+      min-height: 1.25em;
+    }
+
+    .pf-contact__status.is-error {
+      color: rgba(255, 94, 94, 0.95);
+    }
+
+    .pf-contact__status.is-success {
+      color: rgba(125, 195, 184, 0.95);
+    }
+
+    @media (max-width: 960px) {
+      .pf-contact__layout {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .pf-contact__form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pf-contact__footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .pf-contact__media {
+        --pf-contact-media-width-limit: min(380px, 100%);
+        --pf-contact-media-height-limit: clamp(380px, 58vh, 560px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pf-contact {
+        padding: clamp(32px, 6vw, 48px);
+      }
+
+      .pf-contact__media {
+        --pf-contact-media-width-limit: min(320px, 100%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0 !important;
+        animation-delay: 0 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0 !important;
+      }
+    }
+  </style>
+
+</head>
+<body style="background: transparent; background-color: transparent;">
+  <section id="contact" class="pf-contact" aria-labelledby="pf-contact-title">
+      <div class="pf-contact__wrap">
+        <div class="pf-contact__layout">
+          <div class="pf-contact__media-shell" aria-label="Party Fowl rotating chicken demo">
+            <div class="pf-contact__media">
+              <video class="pf-contact__video" autoplay muted loop playsinline preload="auto" poster="../../assets/img/home/chill.png">
+                <source src="../../assets/img/home/chichenrotation.mp4" type="video/mp4" />
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+          </div>
+          <div class="pf-contact__body">
+            <p class="pf-contact__eyebrow">Need the party to pop?</p>
+            <h2 class="pf-contact__title" id="pf-contact-title">
+              <span class="pf-contact__title-line">Get In</span>
+              <span class="pf-contact__title-line">Touch</span>
+            </h2>
+            <p class="pf-contact__lead">Planning an event, catering, or a late-night drop? Drop your details below and our crew will reply with the next steps.</p>
+          <form class="pf-contact__form" action="#" method="post" aria-label="Contact form">
+            <div class="pf-contact__form-grid">
+              <div class="pf-contact__field pf-contact__field--full">
+                <label for="pf-contact-first-name">First Name *</label>
+                <input
+                  id="pf-contact-first-name"
+                  name="firstName"
+                  type="text"
+                  class="pf-contact__input"
+                  placeholder="First name"
+                  autocomplete="given-name"
+                  required
+                />
+              </div>
+              <div class="pf-contact__field">
+                <label for="pf-contact-last-name">Last Name *</label>
+                <input
+                  id="pf-contact-last-name"
+                  name="lastName"
+                  type="text"
+                  class="pf-contact__input"
+                  placeholder="Last name"
+                  autocomplete="family-name"
+                  required
+                />
+              </div>
+              <div class="pf-contact__field">
+                <label for="pf-contact-phone">Phone Number *</label>
+                <input
+                  id="pf-contact-phone"
+                  name="phoneNumber"
+                  type="tel"
+                  inputmode="tel"
+                  class="pf-contact__input"
+                  placeholder="Best number"
+                  autocomplete="tel"
+                  required
+                />
+              </div>
+              <div class="pf-contact__field">
+                <label for="pf-contact-email">Email Address *</label>
+                <input
+                  id="pf-contact-email"
+                  name="emailAddress"
+                  type="email"
+                  class="pf-contact__input"
+                  placeholder="Email we can reach"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="pf-contact__field">
+                <label for="pf-contact-subject">Contact Subject *</label>
+                <select id="pf-contact-subject" name="contactSubject" class="pf-contact__select" required>
+                  <option value="" disabled selected>Select your contact reason</option>
+                  <option value="general">General inquiry</option>
+                  <option value="catering">Catering</option>
+                  <option value="events">Events</option>
+                  <option value="press">Press</option>
+                  <option value="feedback">Feedback</option>
+                </select>
+              </div>
+              <div class="pf-contact__field">
+                <label for="pf-contact-location">Preferred Location *</label>
+                <select id="pf-contact-location" name="location" class="pf-contact__select" required>
+                  <option value="" disabled selected>Select a location</option>
+                  <option value="nashville">Nashville</option>
+                  <option value="murfreesboro">Murfreesboro</option>
+                </select>
+              </div>
+              <div class="pf-contact__field pf-contact__field--full">
+                <label for="pf-contact-message">Message</label>
+                <textarea
+                  id="pf-contact-message"
+                  name="message"
+                  class="pf-contact__textarea"
+                  placeholder="Tell us what you're planning"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+            <div class="pf-contact__optin">
+              <input id="pf-contact-opt-in" name="newsletterOptIn" type="checkbox" />
+              <label for="pf-contact-opt-in">Add me to the newsletter and VIP alerts.</label>
+            </div>
+            <div class="pf-contact__footer">
+              <button type="submit" class="pf-contact__submit" aria-label="Submit contact form">
+                <span>Submit</span>
+                <span class="pf-contact__cta-arrow" aria-hidden="true">→</span>
+              </button>
+              <p class="pf-contact__note">Rapid reply within 24 hours</p>
+            </div>
+            <p class="pf-contact__legal">
+              This site is protected by reCAPTCHA and the Google
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+              and
+              <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+              apply.
+            </p>
+            <p class="pf-contact__legal">
+              Through this form Party Fowl collects your name and email. Check out our
+              <a href="#" aria-label="Privacy policy">privacy policy</a>
+              for the full story on how we protect and manage your submitted data.
+            </p>
+            <p class="pf-contact__status" data-role="pf-contact-validation" aria-live="polite" hidden></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pointerFine = window.matchMedia('(pointer: fine)').matches;
+      if (prefersReduced || !pointerFine) return;
+
+      const lines = Array.from(document.querySelectorAll('.pf-contact__title-line'));
+      if (!lines.length) return;
+
+      function attachWave(titleEl){
+        if (!titleEl || titleEl.dataset.splitLetters === '1') return;
+        titleEl.dataset.splitLetters = '1';
+        const raw = titleEl.textContent || '';
+        titleEl.textContent = '';
+        const frag = document.createDocumentFragment();
+        const letters = [];
+        for (const ch of raw){
+          const s = document.createElement('span');
+          s.className = 'pf-contact__letter';
+          s.textContent = (ch === ' ') ? '\u00A0' : ch;
+          frag.appendChild(s);
+          letters.push(s);
+        }
+        titleEl.appendChild(frag);
+
+        const N = letters.length;
+        const state = new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        const target= new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        let rafId = 0, inside = false;
+
+        function computeTargets(idx){
+          const baseMaxBoost = 0.35;
+          const falloff = 0.92;
+          const maxTilt = 2.0;
+          const rect = titleEl.getBoundingClientRect();
+          const headroom = Math.max(0, rect.top);
+          const safety = Math.max(0.86, Math.min(1, headroom / 90));
+          const maxBoost = baseMaxBoost * safety;
+          for(let j=0;j<N;j++){
+            const d = idx < 0 ? Infinity : Math.abs(j-idx);
+            const boost = idx < 0 ? 0 : maxBoost * Math.exp(-d * falloff);
+            const s = 1 + boost;
+            const dy = idx < 0 ? 0 : 1.5 * Math.exp(-d * 1.08) * (boost / Math.max(0.0001, maxBoost));
+            const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
+            const z = 50 - (idx < 0 ? 0 : d);
+            const g = idx < 0 ? 0 : Math.max(0, Math.min(1, (boost / Math.max(0.0001, maxBoost)) * 1.0));
+            target[j].s = s;
+            target[j].dy = dy;
+            target[j].rot = rot;
+            target[j].z = z;
+            target[j].g = g;
+          }
+        }
+
+        function animate(){
+          let moving = false;
+          const k = 0.22;
+          for(let j=0;j<N;j++){
+            const st = state[j];
+            const tg = target[j];
+            st.s += (tg.s - st.s) * k;
+            st.dy += (tg.dy - st.dy) * k;
+            st.rot += (tg.rot - st.rot) * k;
+            st.z += (tg.z - st.z) * k;
+            st.g += (tg.g - st.g) * 0.28;
+
+            const el = letters[j];
+            el.style.setProperty('--scale', st.s.toFixed(3));
+            el.style.setProperty('--dy', st.dy.toFixed(2) + 'px');
+            el.style.setProperty('--rot', st.rot.toFixed(2) + 'deg');
+            el.style.setProperty('--z', String(st.z.toFixed(0)));
+            el.style.setProperty('--glow', st.g.toFixed(3));
+
+            if (Math.abs(tg.s - st.s) > 0.002 || Math.abs(tg.dy - st.dy) > 0.02 || Math.abs(tg.rot - st.rot) > 0.02) {
+              moving = true;
+            }
+          }
+          if (moving || inside) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            rafId = 0;
+          }
+        }
+
+        function ensure(){ if (!rafId) rafId = requestAnimationFrame(animate); }
+
+        function nearestIndexFromClientX(x){
+          let best = -1;
+          let bestDist = Infinity;
+          for(let j=0;j<N;j++){
+            const r = letters[j].getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const d = Math.abs(x - cx);
+            if (d < bestDist){ bestDist = d; best = j; }
+          }
+          return best;
+        }
+
+        titleEl.addEventListener('pointerenter', () => { inside = true; });
+        titleEl.addEventListener('pointermove', (e) => {
+          inside = true;
+          computeTargets(nearestIndexFromClientX(e.clientX));
+          ensure();
+        });
+        titleEl.addEventListener('pointerleave', () => {
+          inside = false;
+          computeTargets(-1);
+          ensure();
+        });
+
+        computeTargets(-1);
+      }
+
+      lines.forEach(attachWave);
+    })();
+  </script>
+</body>
+</html>

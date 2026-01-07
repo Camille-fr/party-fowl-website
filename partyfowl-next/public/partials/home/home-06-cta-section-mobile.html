@@ -1,0 +1,694 @@
+<!-- Target: src/partials/home/home-06-cta-section-mobile.html | Mobile -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home CTA - Mobile</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+  <style>
+    @font-face{
+      font-family:"AshwoodCondensed";
+      src:url("/assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"AshwoodExtraBold";
+      src:url("/assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Newslab";
+      src:url("/assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-display:swap;
+    }
+
+    :root{
+      color-scheme: dark;
+      --bg0:#06060a;
+      --bg1:#07070b;
+      --cream:#ffe5be;
+      --cream2:#ffd49c;
+      --teal:#35f0ff;
+      --teal2:#21b8ff;
+      --red:#b10f13;
+      --red2:#d3181c;
+      --ink:#f6f1e6;
+      --muted:rgba(246,241,230,.82);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --cta-safe-top: env(safe-area-inset-top);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:auto;
+      min-height:0;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+      background: transparent;
+    }
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0;
+      background: transparent;
+      color:var(--ink);
+      font-family: "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+    img{max-width:100%; display:block;}
+    a{color:inherit; text-decoration:none;}
+    button, a{touch-action:manipulation;}
+    :focus-visible{
+      outline:2px solid rgba(255,255,255,0.7);
+      outline-offset:2px;
+      border-radius:12px;
+    }
+
+    .cta{
+      position:relative;
+      width:100%;
+      min-height:auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding: calc(clamp(28px, 8vw, 48px) + var(--cta-safe-top, 0px)) 0 clamp(36px, 10vw, 64px);
+      margin: calc(0px - var(--cta-safe-top, 0px)) 0 0;
+      isolation:isolate;
+      overflow:hidden;
+      background: transparent;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px; height:1px;
+      padding:0; margin:-1px;
+      overflow:hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border:0;
+    }
+
+    .cta-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      pointer-events:none;
+      z-index:0;
+      opacity:0.7;
+      filter:saturate(1.04) contrast(1.04);
+      display:block;
+    }
+
+    .cta::before{
+      content:"";
+      position:absolute; inset:0;
+      z-index:1;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.62) 0%,
+        rgba(0,0,0,0.45) 26%,
+        rgba(0,0,0,0.26) 52%,
+        rgba(0,0,0,0.12) 72%,
+        transparent 100%);
+      filter: blur(24px);
+      pointer-events:none;
+    }
+
+    .cta::after{
+      content:"";
+      position:absolute; inset:0;
+      z-index:2;
+      background:
+        linear-gradient(180deg,
+          rgba(0,0,0,0.95) 0%,
+          rgba(0,0,0,0.65) 28%,
+          rgba(0,0,0,0.38) 58%,
+          rgba(0,0,0,0.2) 78%,
+          rgba(0,0,0,0) 100%),
+        radial-gradient(60% 80% at 50% 40%, rgba(0,0,0,.25), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.72));
+      -webkit-mask-image: none;
+      mask-image: none;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:3;
+      width:min(760px, 100%);
+      padding-inline: clamp(16px, 6vw, 24px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap: clamp(12px, 3.6vw, 20px);
+      text-align:center;
+    }
+
+    .headline-video{
+      position:relative;
+      width:min(780px, 92vw);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      filter: drop-shadow(0 20px 52px rgba(0,0,0,.72));
+      transform: skewX(-6deg);
+      mix-blend-mode: screen;
+      isolation:isolate;
+      overflow:visible;
+      border-radius: 48px;
+      padding: clamp(0px, 0.4vw, 6px);
+      box-shadow:
+        0 0 60px 34px rgba(0,0,0,.52),
+        0 0 110px 54px rgba(0,0,0,.45);
+    }
+    .headline-video::before{
+      content:"";
+      position:absolute;
+      inset:-48% -32%;
+      background: radial-gradient(circle at 50% 50%,
+        rgba(0,0,0,0.65) 0%,
+        rgba(0,0,0,0.52) 24%,
+        rgba(0,0,0,0.36) 48%,
+        rgba(0,0,0,0.22) 68%,
+        transparent 92%);
+      filter: blur(46px);
+      opacity:1;
+      border-radius: 160px;
+      z-index:0;
+      pointer-events:none;
+    }
+    .headline-video::after{
+      content:"";
+      position:absolute;
+      inset:-32px;
+      background: radial-gradient(ellipse at 50% 50%,
+        rgba(0,0,0,0.5) 0%,
+        rgba(0,0,0,0.35) 40%,
+        transparent 80%);
+      filter: blur(32px);
+      opacity:1;
+      border-radius: 999px;
+      z-index:1;
+      pointer-events:none;
+    }
+    .headline-video video{
+      width:100%;
+      height:auto;
+      display:block;
+      background: transparent;
+      mix-blend-mode: screen;
+      filter: brightness(1.08) contrast(1.1);
+      border:none;
+      overflow:hidden;
+      position:relative;
+      z-index:2;
+    }
+    @supports (mix-blend-mode: lighten){
+      .headline-video video{ mix-blend-mode: lighten; }
+    }
+    .headline-video video::-webkit-media-controls{
+      display:none !important;
+    }
+
+    .sub{
+      margin:0;
+      text-align:center;
+      color: rgba(246,241,230,0.62);
+      font: 400 clamp(14px, 4vw, 17px)/1.55 "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      max-width: 38ch;
+      text-shadow: none;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      margin-top: clamp(12px, 4vw, 18px);
+      margin-bottom: clamp(18px, 7vw, 32px);
+      width:100%;
+    }
+
+    .btn-row .btn-pill{
+      width:min(320px, 100%);
+    }
+
+    .btn-pill {
+      --btn-bg: linear-gradient(to bottom, #303030, #121212);
+      --btn-glow: rgba(255, 255, 255, 0.18);
+      --btn-shadow: rgba(0, 0, 0, 0.7);
+      text-decoration:none;
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      border-radius: 40px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--btn-bg);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      white-space: nowrap;
+      min-height: 48px;
+      text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.75),
+        0 0 3px rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        border-color 0.18s ease-out,
+        letter-spacing 0.2s ease-out;
+    }
+    .btn-pill::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .btn-pill::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, var(--btn-glow), transparent 70%);
+      opacity: 0;
+      filter: blur(14px);
+      transition:
+        opacity 0.25s ease-out,
+        filter 0.25s ease-out;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .btn-pill:hover {
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: 0.08em;
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.8),
+        0 0 18px rgba(255, 255, 255, 0.25);
+    }
+    .btn-pill:hover::after {
+      opacity: 0.85;
+      filter: blur(22px);
+    }
+    .btn-label {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      margin-top: 1px;
+    }
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-locations {
+      --btn-bg:
+        linear-gradient(130deg, rgba(125, 195, 184, 0.35), transparent 40%) ,
+        linear-gradient(to bottom, #217872 0%, #1b605c 100%);
+      --btn-glow: rgba(125, 195, 184, 0.45);
+      color: #FFFFFF;
+      border-color: rgba(125, 195, 184, 0.8);
+    }
+    .btn-locations:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(125, 195, 184, 0.45);
+    }
+    .btn-order {
+      --btn-bg:
+        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+      --btn-glow: rgba(244, 0, 18, 0.55);
+      color: #FFFFFF;
+      border-color: rgba(255, 180, 176, 0.85);
+    }
+    .btn-order:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.85),
+        0 0 34px rgba(244, 0, 18, 0.45);
+    }
+    .btn-icon-location {
+      background-image: url("/assets/img/home/location.png");
+    }
+    .btn-icon-order {
+      background-image: url("/assets/img/home/order.png");
+    }
+
+    .cta .btn-pill{
+      --btn-bg: transparent;
+      background: transparent;
+      background-image: none;
+      background-color: transparent;
+      background-blend-mode: normal;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.65),
+        inset 0 1px 1px rgba(255,255,255,0.08);
+      opacity:0.95;
+    }
+    .cta .btn-order{
+      background: transparent;
+      color: #ff1f2b;
+      border-color: rgba(244, 0, 18, 0.95);
+      box-shadow:
+        0 0 16px rgba(244, 0, 18, 0.56),
+        0 0 36px rgba(244, 0, 18, 0.32),
+        inset 0 0 12px rgba(244, 0, 18, 0.3);
+      --btn-glow: rgba(244, 0, 18, 0.68);
+    }
+    .cta .btn-order:hover{
+      border-color: rgba(255, 120, 126, 1);
+      box-shadow:
+        0 0 22px rgba(244, 0, 18, 0.78),
+        0 0 46px rgba(244, 0, 18, 0.45),
+        inset 0 0 16px rgba(244, 0, 18, 0.36);
+      color: #ffd5d9;
+    }
+    .cta .btn-order::after{
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+    }
+    .cta .btn-locations{
+      background: transparent;
+      color: #9ef1ea;
+      border-color: rgba(53, 240, 255, 0.75);
+      box-shadow:
+        0 0 14px rgba(53, 240, 255, 0.42),
+        0 0 32px rgba(33, 184, 255, 0.28),
+        inset 0 0 10px rgba(33, 184, 255, 0.22);
+      --btn-glow: rgba(53, 240, 255, 0.55);
+    }
+    .cta .btn-locations:hover{
+      border-color: rgba(126, 241, 234, 0.95);
+      box-shadow:
+        0 0 18px rgba(53, 240, 255, 0.62),
+        0 0 40px rgba(33, 184, 255, 0.38),
+        inset 0 0 14px rgba(33, 184, 255, 0.28);
+      color: #c4fffa;
+    }
+	    .cta .btn-locations::after{
+	      background: radial-gradient(circle at 50% 50%, rgba(53, 240, 255, 0.55), transparent 70%);
+	    }
+
+	    /* ================= Contact section ================= */
+	    .contact{
+	      position:relative;
+	      width:100%;
+	      padding: clamp(44px, 10vw, 72px) 0 calc(clamp(72px, 16vw, 110px) + 96px + env(safe-area-inset-bottom, 0px));
+	      background:
+	        radial-gradient(1000px 520px at 18% 0%, rgba(244,0,18,0.14), transparent 60%),
+	        radial-gradient(900px 520px at 82% 10%, rgba(53,240,255,0.14), transparent 62%),
+	        linear-gradient(180deg, #05070d 0%, #030b16 100%);
+	      isolation:isolate;
+	      overflow:hidden;
+	    }
+
+	    .contact::before{
+	      content:"";
+	      position:absolute;
+	      inset:0;
+	      background:
+	        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.06), transparent 42%),
+	        radial-gradient(circle at 70% 72%, rgba(255,255,255,0.05), transparent 44%),
+	        repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 1px, rgba(0,0,0,0) 1px 4px);
+	      mix-blend-mode: overlay;
+	      opacity:0.22;
+	      pointer-events:none;
+	      z-index:0;
+	    }
+
+	    .contact-top-line{
+	      position:absolute;
+	      top:0;
+	      left:0;
+	      right:0;
+	      height:2px;
+	      background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.86) 50%, rgba(255,255,255,0.12));
+	      box-shadow:
+	        0 0 12px rgba(255,255,255,0.55),
+	        0 0 30px rgba(255,255,255,0.35);
+	      pointer-events:none;
+	      z-index:2;
+	    }
+
+	    .contact-inner{
+	      position:relative;
+	      z-index:1;
+	      width:min(760px, 100%);
+	      margin:0 auto;
+	      padding-inline: clamp(16px, 6vw, 24px);
+	    }
+
+	    .contact-kicker{
+	      display:inline-flex;
+	      align-items:center;
+	      gap:10px;
+	      font-weight: 700;
+	      letter-spacing:0.22em;
+	      text-transform:uppercase;
+	      font-size: 12px;
+	      color: rgba(255,255,255,0.72);
+	      margin-bottom: 12px;
+	    }
+
+	    .contact-kicker::before{
+	      content:"";
+	      width: 12px;
+	      height: 12px;
+	      border-radius:999px;
+	      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(244,0,18,0.95));
+	      box-shadow:
+	        0 0 14px rgba(244,0,18,0.32),
+	        0 0 18px rgba(53,240,255,0.18);
+	    }
+
+	    .contact-title{
+	      margin: 0 0 12px;
+	      font-family: "AshwoodExtraBold","AshwoodCondensed", system-ui, sans-serif;
+	      font-size: clamp(40px, 10vw, 56px);
+	      line-height: 0.95;
+	      letter-spacing: 0.02em;
+	      text-transform: uppercase;
+	      color: #fff;
+	      text-shadow:
+	        0 12px 40px rgba(0,0,0,0.72),
+	        0 0 22px rgba(244,0,18,0.20);
+	    }
+
+	    .contact-subtitle{
+	      margin: 0 0 16px;
+	      color: rgba(246,241,230,0.78);
+	      font: 400 clamp(14px, 4vw, 16px)/1.6 "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      max-width: 46ch;
+	    }
+
+	    .contact-panel{
+	      background: linear-gradient(180deg, rgba(11, 20, 32, 0.86), rgba(13, 26, 41, 0.72));
+	      border: 1px solid rgba(255,255,255,0.12);
+	      border-radius: 20px;
+	      box-shadow: 0 26px 80px rgba(0,0,0,0.6);
+	      backdrop-filter: blur(14px) saturate(120%);
+	      -webkit-backdrop-filter: blur(14px) saturate(120%);
+	      position:relative;
+	      overflow:hidden;
+	    }
+
+	    .contact-panel::before{
+	      content:"";
+	      position:absolute;
+	      inset:-1px;
+	      background:
+	        radial-gradient(circle at 20% 0%, rgba(53,240,255,0.18), transparent 55%),
+	        radial-gradient(circle at 85% 0%, rgba(244,0,18,0.18), transparent 58%),
+	        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+	      opacity:0.75;
+	      pointer-events:none;
+	      z-index:0;
+	    }
+
+	    .contact-panel-inner{
+	      position:relative;
+	      z-index:1;
+	      padding: 16px 14px;
+	    }
+
+	    .contact-formTitle{
+	      margin: 0 0 12px;
+	      font-family: "AshwoodExtraBold","AshwoodCondensed", system-ui, sans-serif;
+	      font-size: 22px;
+	      letter-spacing: 0.06em;
+	      text-transform: uppercase;
+	      color: rgba(255,255,255,0.92);
+	    }
+
+	    .contact-formGrid{
+	      display:grid;
+	      grid-template-columns: 1fr;
+	      gap: 12px;
+	      margin-top: 8px;
+	    }
+
+	    .contact-field{
+	      display:flex;
+	      flex-direction:column;
+	      gap: 8px;
+	      min-width: 0;
+	    }
+
+	    .contact label{
+	      font-size: 12px;
+	      letter-spacing: 0.16em;
+	      text-transform: uppercase;
+	      color: rgba(255,255,255,0.72);
+	      font-weight: 700;
+	    }
+
+	    .contact input,
+	    .contact select,
+	    .contact textarea{
+	      width: 100%;
+	      border-radius: 14px;
+	      border: 1px solid rgba(255,255,255,0.14);
+	      background: rgba(3, 11, 22, 0.55);
+	      color: rgba(255,255,255,0.92);
+	      font-family: "Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	      font-size: 15px;
+	      padding: 14px 12px;
+	      min-height: 52px;
+	      outline: none;
+	      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+	    }
+
+	    .contact textarea{
+	      resize: none;
+	      min-height: 140px;
+	      line-height: 1.55;
+	      padding-top: 12px;
+	    }
+
+	    .contact input::placeholder,
+	    .contact textarea::placeholder{
+	      color: rgba(255,255,255,0.38);
+	    }
+
+	    .contact input:focus,
+	    .contact select:focus,
+	    .contact textarea:focus{
+	      border-color: rgba(53,240,255,0.88);
+	      box-shadow:
+	        0 0 0 4px rgba(53,240,255,0.16),
+	        0 0 18px rgba(53,240,255,0.12);
+	      transform: translateY(-1px);
+	    }
+
+	    .contact form.is-submitted input:invalid,
+	    .contact form.is-submitted select:invalid,
+	    .contact form.is-submitted textarea:invalid{
+	      border-color: rgba(244,0,18,0.62);
+	    }
+
+	    .contact-actions{
+	      display:flex;
+	      flex-direction: column;
+	      align-items: stretch;
+	      gap: 12px;
+	      margin-top: 14px;
+	    }
+
+	    .contact .contact-submit{
+	      width: 100%;
+	      justify-content: center;
+	      --btn-bg:
+	        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+	        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+	      --btn-glow: rgba(244, 0, 18, 0.55);
+	      border-color: rgba(255, 180, 176, 0.85);
+	      color: #ffffff;
+	    }
+
+	    .contact-help{
+	      margin: 0;
+	      color: rgba(246,241,230,0.62);
+	      font-size: 12px;
+	      line-height: 1.5;
+	      text-align: left;
+	    }
+
+	    .contact .form-status{
+	      margin-top: 12px;
+	      min-height: 20px;
+	      font-size: 13px;
+	      letter-spacing: 0.02em;
+	      color: rgba(246,241,230,0.68);
+	      text-align: left;
+	    }
+	    .contact .form-status.is-success{ color: rgba(53,240,255,0.9); }
+	    .contact .form-status.is-error{ color: rgba(255, 180, 176, 0.92); }
+	  </style>
+  </style>
+</head>
+<body style="background: transparent; background-color: transparent;">
+		  <section class="cta" aria-label="CTA Party Fowl">
+    <img class="cta-bg"
+         alt=""
+         aria-hidden="true"
+         loading="lazy"
+         decoding="async"
+         src="/assets/img/home/home-06-cta-bg.png" />
+
+    <div class="wrap">
+      <h1 class="sr-only">Don&#8217;t Wait &#8212; Celebrate!</h1>
+
+      <div class="headline-video" role="img" aria-label="Don&#8217;t Wait &#8212; Celebrate!">
+        <video data-src="/assets/img/home/home_06_title.mp4"
+               muted
+               loop
+               autoplay
+               playsinline
+               preload="metadata"
+               data-defer="visible"
+               data-autoplay="1"></video>
+      </div>
+
+      <p class="sub">
+        NASHVILLE HOT CHICKEN, boozy slushies &amp; zero chill, served now or waiting at your nearest Party Fowl.
+      </p>
+
+	      <div class="btn-row" role="group" aria-label="Call to action buttons">
+	        <a href="../../pages/ordersnow.html" class="btn-pill btn-order" aria-label="Order Now" target="_top">
+	          <span class="btn-label">Order Now</span>
+	          <span class="btn-icon btn-icon-order" aria-hidden="true"></span>
+	        </a>
+	        <a href="../../pages/locations.html" class="btn-pill btn-locations" aria-label="Find a Location" target="_top">
+	          <span class="btn-label">Find a Location</span>
+	          <span class="btn-icon btn-icon-location" aria-hidden="true"></span>
+	        </a>
+		      </div>
+	    </div>
+		  </section>
+		</body>
+		</html>

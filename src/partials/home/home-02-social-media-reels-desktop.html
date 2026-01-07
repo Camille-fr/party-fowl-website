@@ -56,6 +56,10 @@
       --accent-red: #f40012;
       --accent-teal: #7dc3b8;
       --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --reel-gap: clamp(14px, 1.6vw, 22px);
+      --pf-whats-new-media-height: clamp(420px, 47vw, 640px);
+      --pf-whats-new-media-width: min(1300px, 96vw);
+      --pf-reel-video-radius: clamp(16px, 1.3vw, 24px);
     }
 
     * {
@@ -66,50 +70,35 @@
 
     html,
     body {
-      height: 100%;
+      height: auto;
+      min-height: 0;
     }
 
     html {
       scroll-behavior: smooth;
-      background-color: var(--bg-deep);
+      background: transparent;
     }
 
     body {
       font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-mid);
-      background-image:
-        radial-gradient(circle at 18% 0%, rgba(244, 0, 18, 0.06), transparent 42%),
-        radial-gradient(circle at 70% 16%, rgba(125, 195, 184, 0.08), transparent 55%),
-        linear-gradient(180deg, rgba(1, 20, 36, 0.95) 0%, rgba(2, 9, 17, 0.9) 46%, rgba(1, 2, 5, 1) 100%);
+      background: transparent;
       color: #fff;
       line-height: 1.5;
-      min-height: 100%;
+      min-height: 0;
       overflow-x: hidden;
       position: relative;
       isolation: isolate;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: var(--noise-texture);
-      opacity: 0.35;
-      mix-blend-mode: screen;
-      z-index: -1;
-    }
-
+    body::before,
     body::after {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(244, 0, 18, 0.22), transparent 38%),
-        radial-gradient(circle at 10% 10%, rgba(125, 195, 184, 0.16), transparent 30%);
-      opacity: 0.5;
-      z-index: -2;
+      background: none;
+      opacity: 0;
+      z-index: -1;
     }
 
     img {
@@ -130,14 +119,30 @@
     }
 
     .container {
-      max-width: 1440px;
+      width: min(100%, 1440px);
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 clamp(20px, 3vw, 40px);
     }
 
     .desktop-preview {
       width: 100%;
       margin: 0;
+    }
+
+    @media (max-width: 1200px) {
+      .container { padding: 0 clamp(18px, 3.2vw, 32px); }
+    }
+
+    @media (max-width: 1023px) {
+      .container { padding: 0 clamp(16px, 4vw, 28px); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 clamp(14px, 5vw, 22px); }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 clamp(12px, 6vw, 18px); }
     }
 
 
@@ -146,35 +151,10 @@
     --------------------------------*/
     .whats-new {
       position: relative;
-      padding: 96px 0 220px;
-      background-color: #03172b;
-      /* Restore original gradients as the base background */
-      background-image:
-        radial-gradient(circle at 18% 24%, rgba(125, 195, 184, 0.07), transparent 58%),
-        radial-gradient(circle at 78% 18%, rgba(244, 0, 18, 0.035), transparent 62%),
-        radial-gradient(circle at 52% 110%, rgba(0, 0, 0, 0.62), transparent 60%),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.34));
-      overflow: hidden;
-    }
-
-    .whats-new::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 3px;
-      background: linear-gradient(
-        180deg,
-        rgba(244, 0, 18, 0.92) 0%,
-        rgba(244, 0, 18, 0.62) 55%,
-        rgba(244, 0, 18, 0.35) 100%
-      );
-      box-shadow:
-        0 0 6px rgba(244, 0, 18, 0.45),
-        0 0 12px rgba(244, 0, 18, 0.25);
-      pointer-events: none;
-      z-index: 5;
+      padding-top: clamp(40px, 5.2vw, 64px);
+      padding-bottom: clamp(28px, 3vw, 40px);
+      background: transparent;
+      overflow: visible;
     }
 
     .whats-new::before {
@@ -183,14 +163,8 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      /* Overlay photo at ~20% opacity over the base background */
-      background-image: url("../../assets/img/home/background.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.2;
-      mix-blend-mode: normal;
-      filter: none;
+      background: none;
+      opacity: 0;
     }
 
     .whats-new .blue-dirt {
@@ -208,16 +182,23 @@
     .whats-new-inner {
       position: relative;
       z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.6vw, 32px);
+      align-items: center;
+      padding-block: 0;
+      padding-top: clamp(12px, 1.8vw, 24px);
+      margin-inline: auto;
     }
 
     .whats-new-header {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 32px;
+      margin-bottom: clamp(12px, 1.8vw, 18px);
       position: relative;
       z-index: 1;
-      padding-top: 56px;
+      padding-top: clamp(8px, 1.1vw, 16px);
     }
 
     .whats-new-title {
@@ -288,10 +269,23 @@
       justify-content: center;
       align-items: center;
       gap: clamp(14px, 2.6vw, 24px);
-      margin-bottom: 44px;
-      margin-top: 14px;
+      margin-top: clamp(6px, 1.4vw, 12px);
+      margin-bottom: clamp(8px, 2vw, 14px);
       position: relative;
       isolation: isolate; /* allow a backdrop-blurred gradient behind without leaking */
+    }
+
+    .whats-new-media {
+      position: relative;
+      width: min(var(--pf-whats-new-media-width), 100%);
+      height: var(--pf-whats-new-media-height);
+      margin: 0 auto;
+      margin-bottom: clamp(26px, 3vw, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 0;
     }
 
     /* Remove blurred/halo background behind social buttons */
@@ -447,241 +441,243 @@
 
     /* CAROUSEL */
     .carousel {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .carousel-arrow {
-      width: 64px;
-      height: 120px;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      max-width: min(var(--pf-whats-new-media-width), 100%);
+      margin: 0 auto;
+      padding-inline: clamp(18px, 3vw, 32px);
+      overflow: visible;
+    }
+
+    /* HOME SLIDE 2 */
+    .carousel-track {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--reel-gap);
+      align-items: stretch;
+      overflow-x: auto;
+      overflow-y: visible;
+      padding: 0 clamp(18px, 2.5vw, 30px);
+      height: 100%;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+      max-width: 100%;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+
+    .pf-reels {
+      --reel-width: clamp(360px, 26vw, 470px);
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+
+    .pf-reel {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      flex: 0 0 var(--reel-width);
+      max-width: var(--reel-width);
+      height: 100%;
+      min-height: 0;
+      scroll-snap-align: start;
+    }
+
+    .pf-reel__frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 2 / 3;
+      min-height: 0;
       background: transparent;
       border: 0;
-      padding: 0;
-      color: rgba(255, 255, 255, 0.9);
-      cursor: pointer;
-      user-select: none;
-      transition:
-        transform 0.14s ease-out,
-        color 0.16s ease-out,
-        filter 0.16s ease-out;
-      filter:
-        drop-shadow(0 10px 18px rgba(0, 0, 0, 0.75))
-        drop-shadow(0 0 18px rgba(125, 195, 184, 0.14))
-        drop-shadow(0 0 14px rgba(244, 0, 18, 0.1));
-    }
-
-    .carousel-arrow svg {
-      width: 34px;
-      height: 34px;
-      display: block;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 3.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      opacity: 0.95;
-    }
-
-    .carousel-arrow:hover {
-      transform: translateY(-1px);
-      color: rgba(125, 195, 184, 0.96);
-      filter:
-        drop-shadow(0 14px 24px rgba(0, 0, 0, 0.82))
-        drop-shadow(0 0 22px rgba(125, 195, 184, 0.22))
-        drop-shadow(0 0 16px rgba(244, 0, 18, 0.14));
-    }
-
-    .carousel-arrow:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .carousel-track {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1.2fr));
-      gap: 22px;
-    }
-
-    .card {
-      position: relative;
-      background: transparent;
-      border-radius: 8px;
-      overflow: visible;
-      transform: translateZ(0);
-      will-change: transform;
-      transition:
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.45s ease;
-      transform-style: preserve-3d;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -28px;
-      z-index: 0;
-      opacity: 0;
-      pointer-events: none;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 30% 35%, rgba(194, 17, 38, 0.85) 0%, rgba(194, 17, 38, 0.32) 38%, rgba(194, 17, 38, 0) 72%),
-        radial-gradient(circle at 70% 65%, rgba(194, 17, 38, 0.7) 0%, rgba(194, 17, 38, 0.22) 40%, rgba(194, 17, 38, 0) 74%);
-      filter: blur(26px);
-      transform: scale(0.99);
-      transition:
-        opacity 0.18s ease-out,
-        transform 0.22s ease-out;
-    }
-
-    .card:hover::before {
-      opacity: 0.78;
-      transform: scale(1.03);
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 2;
-    }
-
-    .card:hover {
-      transform: translateY(-6px) scale(1.01);
-    }
-
-    .card-frame {
-      position: relative;
+      box-shadow: none;
       overflow: hidden;
-      background: transparent;
-      z-index: 2;
-      border-radius: 16px;
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      border-radius: var(--pf-reel-video-radius);
     }
 
-    .card-frame img {
+    .pf-reel__media {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: var(--pf-reel-video-radius);
+      clip-path: inset(0 round var(--pf-reel-video-radius));
+      -webkit-mask-image: linear-gradient(#fff 0 0);
+      mask-image: linear-gradient(#fff 0 0);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .pf-reel__poster,
+    .pf-reel__video {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
-      transition: opacity 0.3s ease-out;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: block;
+      background: transparent;
+      border-radius: var(--pf-reel-video-radius);
+      clip-path: inset(0 round var(--pf-reel-video-radius));
+      -webkit-mask-image: linear-gradient(#fff 0 0);
+      mask-image: linear-gradient(#fff 0 0);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      filter: none;
+      transition: opacity 220ms ease, clip-path 220ms ease, border-radius 220ms ease;
+      will-change: opacity;
     }
 
-    .card-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .pf-reel__poster {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .pf-reel__video {
       opacity: 0;
       pointer-events: none;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
-      transition: opacity 0.3s ease-out;
+      z-index: 2;
     }
 
-    .card-play {
+    .pf-reel.is-video-visible .pf-reel__poster {
+      opacity: 0;
+    }
+
+    .pf-reel.is-video-visible .pf-reel__video {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pf-reel__play {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
+      top: auto;
+      bottom: clamp(110px, calc(2.8rem + 2vw), 150px);
+      right: clamp(16px, calc(1rem + 1.4vw), 32px);
+      width: clamp(46px, 3.4vw, 58px);
+      height: clamp(46px, 3.4vw, 58px);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(1, 15, 30, 0.55);
-      border: 1.5px solid rgba(255, 255, 255, 0.55);
-      box-shadow:
-        0 14px 24px rgba(0, 0, 0, 0.72),
-        0 0 14px rgba(125, 195, 184, 0.22),
-        0 0 12px rgba(244, 0, 18, 0.14);
-      backdrop-filter: blur(10px) saturate(125%);
-      -webkit-backdrop-filter: blur(10px) saturate(125%);
-      pointer-events: auto;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px) saturate(200%);
+      -webkit-backdrop-filter: blur(16px) saturate(200%);
       cursor: pointer;
       user-select: none;
-      z-index: 3;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 5;
+      color: #fff;
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.42),
+        inset 0 0 6px rgba(255, 255, 255, 0.35),
+        0 0 18px rgba(255, 255, 255, 0.15);
       transition:
-        border-color 0.18s ease-out,
-        box-shadow 0.18s ease-out,
-        transform 0.18s ease-out;
+        opacity 180ms ease,
+        transform 180ms ease,
+        box-shadow 200ms ease,
+        border-color 200ms ease,
+        background 200ms ease;
+      padding: 0;
     }
 
-    .card-play .icon {
+    .pf-reel__playBtn {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .pf-reel__icon {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition:
-        opacity 0.2s ease-out,
-        transform 0.2s ease-out;
+      transition: opacity 200ms ease, transform 200ms ease;
     }
 
-    .card-play .icon-pause {
+    .pf-reel__icon--pause {
       opacity: 0;
       transform: scale(0.7);
     }
 
-    .card-play svg {
-      width: 24px;
-      height: 24px;
+    .pf-reel__playBtn svg {
+      width: 20px;
+      height: 20px;
       display: block;
-      fill: rgba(255, 255, 255, 0.96);
+      fill: currentColor;
       filter:
-        drop-shadow(0 0 8px rgba(255, 255, 255, 0.38))
-        drop-shadow(0 0 14px rgba(125, 195, 184, 0.24));
+        drop-shadow(0 0 8px rgba(125, 195, 184, 0.4))
+        drop-shadow(0 0 14px rgba(244, 0, 18, 0.2));
     }
 
-    .card-play .icon-play svg {
+    .pf-reel__icon--play svg {
       transform: translateX(1px);
     }
 
-    .card-play .icon-pause svg {
-      transform: translateX(0);
-    }
-
-    /* --- CARD VIDEO BEHAVIOR --- */
-    .card.is-video-visible .card-frame img {
-      opacity: 0;
-    }
-
-    .card.is-video-visible .card-video {
-      opacity: 1;
-    }
-
-    .card.is-video-playing .card-play .icon-play {
+    .pf-reel.is-video-playing .pf-reel__icon--play {
       opacity: 0;
       transform: scale(0.7);
     }
 
-    .card.is-video-playing .card-play .icon-pause {
+    .pf-reel.is-video-playing .pf-reel__icon--pause {
       opacity: 1;
       transform: scale(1);
     }
 
-    .card:hover .card-play {
-      border-color: rgba(255, 255, 255, 0.82);
+    .pf-reel__play:hover {
+      transform: translateY(-1px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.7);
       box-shadow:
-        0 18px 30px rgba(0, 0, 0, 0.78),
-        0 0 18px rgba(125, 195, 184, 0.3),
-        0 0 14px rgba(244, 0, 18, 0.18);
+        0 20px 38px rgba(0, 0, 0, 0.6),
+        0 0 22px rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     /* FOOTPRINTS */
     .whats-new {
-      overflow: hidden;
+      overflow: visible;
     }
 
     .footprints-layer {
       position: absolute;
       left: 50%;
-      top: -32px;
+      top: clamp(-92px, -6vw, -62px);
       transform: translate(-50%, 0);
       width: 100vw;
-      height: 84px;
+      height: clamp(94px, 4.8vw, 110px);
       z-index: 0;
       pointer-events: none;
       opacity: 0.98;
@@ -800,6 +796,31 @@
       }
     }
 
+    @media (min-width: 1024px) {
+      .whats-new {
+        padding-bottom: clamp(38px, 4vw, 64px);
+      }
+
+      .carousel-track {
+        scroll-snap-type: none;
+        padding-inline: clamp(12px, 3vw, 20px);
+      }
+
+      .pf-reels {
+        justify-content: space-between;
+      }
+
+      .pf-reel {
+        flex: 1 1 calc((100% - (var(--reel-gap) * 3)) / 4);
+        max-width: calc((100% - (var(--reel-gap) * 3)) / 4);
+        min-width: 220px;
+      }
+
+      .pf-reel__play {
+        bottom: clamp(126px, calc(2.6rem + 2vw), 168px);
+      }
+    }
+
     /* ------------------------------
        RESPONSIVE
     --------------------------------*/
@@ -808,16 +829,23 @@
         text-align: center;
       }
 
-      .carousel {
-        grid-template-columns: 1fr;
+      .whats-new-media {
+        height: auto;
       }
 
-      .carousel-arrow {
-        display: none;
+      .carousel {
+        flex-direction: column;
       }
 
       .carousel-track {
+        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        height: auto;
+        padding: clamp(10px, 3vw, 16px);
+      }
+
+      .pf-reel {
+        flex: 0 0 min(320px, 100%);
       }
     }
 
@@ -828,6 +856,8 @@
 
       .carousel-track {
         grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding: clamp(12px, 4vw, 18px);
       }
     }
   </style>
@@ -842,61 +872,61 @@
           <div class="footprints-layer" aria-hidden="true">
             <div class="footprints-path" id="footprintsPath">
               <div class="footprint" data-step="0"  style="left: -4%;  top: 64%; transform: rotate(86deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="1"  style="left: 2%;   top: 40%; transform: rotate(94deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="2"  style="left: 8%;   top: 70%; transform: rotate(88deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="3"  style="left: 14%;  top: 42%; transform: rotate(96deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="4"  style="left: 20%;  top: 74%; transform: rotate(90deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="5"  style="left: 26%;  top: 43%; transform: rotate(100deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="6"  style="left: 32%;  top: 72%; transform: rotate(92deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="7"  style="left: 38%;  top: 44%; transform: rotate(104deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="8"  style="left: 44%;  top: 70%; transform: rotate(94deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="9"  style="left: 50%;  top: 41%; transform: rotate(106deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="10" style="left: 56%;  top: 74%; transform: rotate(96deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="11" style="left: 62%;  top: 39%; transform: rotate(108deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="12" style="left: 68%;  top: 68%; transform: rotate(98deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="13" style="left: 74%;  top: 40%; transform: rotate(110deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="14" style="left: 80%;  top: 68%; transform: rotate(100deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="15" style="left: 86%;  top: 39%; transform: rotate(112deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="16" style="left: 92%;  top: 64%; transform: rotate(102deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="17" style="left: 98%;  top: 44%; transform: rotate(114deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="footprint" data-step="18" style="left: 104%; top: 64%; transform: rotate(108deg);">
-                <img src="../../assets/img/home/pattepoulet.png" alt="" />
+                <img src="../../assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
@@ -918,239 +948,261 @@
             </svg>
           </button>
           <button class="social-btn" aria-label="X">
-            <img class="social-icon" src="../../assets/img/home/x.png" alt="" aria-hidden="true" />
+            <img class="social-icon" src="../../assets/img/home/x.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
           </button>
         </div>
 
         <div class="carousel">
-          <button class="carousel-arrow" aria-label="Previous">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M14.5 5.5L8 12l6.5 6.5" />
-            </svg>
-          </button>
-
-          <div class="carousel-track">
-            <article class="card" data-video="../../assets/img/home/insta1.mov">
-              <div class="card-frame">
-                <img src="../../assets/img/home/insta1.png" alt="Instagram post 1" />
-                <span class="card-play" aria-hidden="true">
-                  <span class="icon icon-play">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
-                    </svg>
+          <div class="whats-new-media">
+            <div class="carousel-track pf-reels">
+            <article class="pf-reel" data-video="../../assets/img/home/insta1.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="../../assets/img/home/insta1.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
                   </span>
-                  <span class="icon icon-pause">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
-                    </svg>
-                  </span>
-                </span>
+                </button>
               </div>
             </article>
 
-            <article class="card" data-video="../../assets/img/home/insta2.mov">
-              <div class="card-frame">
-                <img src="../../assets/img/home/insta2.png" alt="Instagram post 2" />
-                <span class="card-play" aria-hidden="true">
-                  <span class="icon icon-play">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
-                    </svg>
+            <article class="pf-reel" data-video="../../assets/img/home/insta2.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="../../assets/img/home/insta2.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
                   </span>
-                  <span class="icon icon-pause">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
-                    </svg>
-                  </span>
-                </span>
+                </button>
               </div>
             </article>
 
-            <article class="card" data-video="../../assets/img/home/insta3.mov">
-              <div class="card-frame">
-                <img src="../../assets/img/home/insta3.png" alt="Instagram post 3" />
-                <span class="card-play" aria-hidden="true">
-                  <span class="icon icon-play">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
-                    </svg>
+            <article class="pf-reel" data-video="../../assets/img/home/insta3.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="../../assets/img/home/insta3.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
                   </span>
-                  <span class="icon icon-pause">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
-                    </svg>
-                  </span>
-                </span>
+                </button>
               </div>
             </article>
 
-            <article class="card" data-video="../../assets/img/home/insta4.mov">
-              <div class="card-frame">
-                <img src="../../assets/img/home/insta4.png" alt="Instagram post 4" />
-                <span class="card-play" aria-hidden="true">
-                  <span class="icon icon-play">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
-                    </svg>
+            <article class="pf-reel" data-video="../../assets/img/home/insta4.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="../../assets/img/home/insta4.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
                   </span>
-                  <span class="icon icon-pause">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
-                    </svg>
-                  </span>
-                </span>
+                </button>
               </div>
             </article>
+            </div>
           </div>
-
-          <button class="carousel-arrow" aria-label="Next">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9.5 5.5L16 12l-6.5 6.5" />
-            </svg>
-          </button>
         </div>
       </div>
     </section>
   </main>
 <script>
   /* ==============================
-    CARD VIDEO (hover to start; runs to end)
-    - Hover starts playback and keeps running until the video ends
-    - Leaving hover does NOT stop playback
-    - Pause button stops and resets that card only
-    - Multiple cards can play simultaneously
-    - Offscreen optimization: pause and reset all if section leaves viewport
+    HOME SLIDE 2: REEL VIDEO (hover/click controls)
+    - Hover starts or resumes playback on pointer-fine viewports
+    - Pause keeps the poster visible and sets per-reel state flags
+    - Ended triggers the fade to photo and resets playback
   =============================== */
   (function () {
     const section = document.querySelector('.whats-new');
-    const cards = Array.from(document.querySelectorAll('.carousel .card[data-video]'));
-    if (!cards.length) return;
+    const track = document.querySelector('.carousel-track');
+    const reels = Array.from(document.querySelectorAll('.carousel .pf-reel[data-video]'));
+    if (!section || !track || !reels.length) return;
 
-    const states = new WeakMap(); // card -> { userPaused: boolean, playing: boolean }
+    const matchMediaQuery = (query) => {
+      try {
+        return window.matchMedia && window.matchMedia(query).matches;
+      } catch (_) {
+        return false;
+      }
+    };
+    const prefersReducedMotion = matchMediaQuery('(prefers-reduced-motion: reduce)');
+    const hoverAutoplay = matchMediaQuery('(hover: hover) and (pointer: fine)') && !prefersReducedMotion;
 
-    function getVideoForCard(card, img, frame) {
-      if (card._videoElement) { return card._videoElement; }
-
-      const declaredSrc = card.getAttribute('data-video');
-      const fallbackSrc = img && img.getAttribute('src')
-        ? img.getAttribute('src').replace(/\.[^.]+$/, '.mov')
-        : '';
-      const videoSrc = declaredSrc || fallbackSrc;
-      if (!videoSrc) return null;
-
-      const video = document.createElement('video');
-      video.className = 'card-video';
-      video.src = videoSrc;
-      video.muted = true;
-      video.playsInline = true;
-      video.preload = 'metadata';
-      video.setAttribute('aria-hidden', 'true');
-      frame.appendChild(video);
-      card._videoElement = video;
-      return video;
+    function setButtonState(reel, playing) {
+      const btn = reel.querySelector('.pf-reel__play');
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      btn.setAttribute('aria-label', playing ? 'Pause reel' : 'Play reel');
     }
 
-    function startCard(card) {
-      const frame = card.querySelector('.card-frame');
-      const img = card.querySelector('img');
-      if (!frame || !img) return;
-      const video = getVideoForCard(card, img, frame);
-      if (!video) return;
-
-      const state = states.get(card) || { userPaused: false, playing: false };
-      if (state.userPaused || state.playing) return;
-
-      card.classList.add('is-video-visible', 'is-video-playing');
-      try { if (video.currentTime === video.duration) video.currentTime = 0; } catch (_) {}
-      const p = video.play();
-      state.playing = true;
-      states.set(card, state);
-      if (p && typeof p.catch === 'function') {
-        p.catch(() => { stopCard(card, { resetUserPaused: false }); });
-      }
-
-      if (!video._eventsBound) {
-        video.addEventListener('ended', () => {
-          stopCard(card, { resetUserPaused: true });
-        });
-        video.addEventListener('error', () => {
-          stopCard(card, { resetUserPaused: false });
-        });
-        video._eventsBound = true;
-      }
+    function setReelFlag(reel, key, enabled) {
+      if (!reel || !reel.dataset) return;
+      if (enabled) reel.dataset[key] = 'true';
+      else delete reel.dataset[key];
     }
 
-    function stopCard(card, opts) {
-      const options = Object.assign({ resetUserPaused: false, resetTime: true }, opts);
-      const video = card._videoElement || card.querySelector('video.card-video');
-      const state = states.get(card) || { userPaused: false, playing: false };
+    function updateReelState(reel, state = {}) {
+      setReelFlag(reel, 'playing', !!state.playing);
+      setReelFlag(reel, 'paused', !!state.paused);
+      setReelFlag(reel, 'ended', !!state.ended);
+    }
 
-      card.classList.remove('is-video-playing');
+    function stopReel(reel, options = {}) {
+      if (!reel) return;
+      const opts = Object.assign({ reason: 'pause' }, options);
+      const video = reel.querySelector('video.pf-reel__video');
       if (video) {
         try {
           video.pause();
-          if (options.resetTime) video.currentTime = 0;
+          if (opts.resetTime) video.currentTime = 0;
         } catch (_) {}
       }
-      state.playing = false;
-      if (options.resetUserPaused) state.userPaused = false;
-      card.classList.remove('is-video-visible');
-      states.set(card, state);
+
+      reel.classList.remove('is-video-visible', 'is-video-playing');
+      setButtonState(reel, false);
+
+      const paused = opts.reason === 'pause';
+      const ended = opts.reason === 'ended';
+      updateReelState(reel, { playing: false, paused, ended });
     }
 
-    cards.forEach((card) => {
-      const frame = card.querySelector('.card-frame');
-      const img = card.querySelector('img');
-      const control = card.querySelector('.card-play');
-      if (!frame || !img || !control) return;
+    function finishReel(reel) {
+      stopReel(reel, { reason: 'ended', resetTime: true });
+    }
 
-      states.set(card, { userPaused: false, playing: false });
-      const video = getVideoForCard(card, img, frame);
+    function ensureVideo(reel) {
+      const video = reel.querySelector('video.pf-reel__video');
+      if (!video) return null;
+
+      try {
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'metadata';
+      } catch (_) {}
+
+      const src = reel.getAttribute('data-video') || '';
+      if (src && !video.getAttribute('src')) {
+        try {
+          video.setAttribute('src', src);
+          video.load();
+        } catch (_) {}
+      }
+
+      if (!video._pfBound) {
+        video.addEventListener('ended', () => finishReel(reel));
+        video.addEventListener('error', () => stopReel(reel, { reason: 'system', resetTime: false }));
+        video._pfBound = true;
+      }
+
+      return video;
+    }
+
+    function playReel(reel) {
+      if (!reel || reel.dataset.playing === 'true') return;
+      const video = ensureVideo(reel);
       if (!video) return;
 
-      control.setAttribute('role', 'button');
-      control.setAttribute('tabindex', '0');
+      reel.classList.add('is-video-visible', 'is-video-playing');
+      setButtonState(reel, true);
+      updateReelState(reel, { playing: true, paused: false, ended: false });
 
-      // Hover starts playback; leaving hover does not stop
-      card.addEventListener('mouseenter', () => {
-        const st = states.get(card);
-        if (st && st.userPaused) return; // respect manual pause
-        startCard(card);
-      });
+      try { if (video.currentTime === video.duration) video.currentTime = 0; } catch (_) {}
+      try {
+        const promise = video.play();
+        if (promise && typeof promise.catch === 'function') {
+          promise.catch(() => stopReel(reel, { reason: 'system', resetTime: false }));
+        }
+      } catch (_) {
+        stopReel(reel, { reason: 'system', resetTime: false });
+      }
+    }
 
-      // Click toggles play/pause; pause resets and shows photo
-      const toggleVideo = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const st = states.get(card) || { userPaused: false, playing: false };
-        if (st.playing) {
-          st.userPaused = true;
-          states.set(card, st);
-          stopCard(card, { resetUserPaused: false });
-        } else {
-          st.userPaused = false;
-          states.set(card, st);
-          startCard(card);
-        }
-      };
-      control.addEventListener('click', toggleVideo);
-      control.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          toggleVideo(event);
-        }
-      });
+    function toggleReel(reel) {
+      if (!reel) return;
+      if (reel.dataset.playing === 'true') {
+        stopReel(reel, { reason: 'pause', resetTime: false });
+      } else {
+        playReel(reel);
+      }
+    }
+
+    function handleHoverCandidate(reel) {
+      if (!hoverAutoplay || !reel) return;
+      if (reel.dataset.playing === 'true') return;
+      playReel(reel);
+    }
+
+    reels.forEach((reel) => {
+      setButtonState(reel, false);
+      updateReelState(reel, { playing: false, paused: false, ended: false });
     });
 
-    // Offscreen optimization: pause and reset all when section not visible
-    if (section && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        const visible = entries.some((e) => e.isIntersecting);
-        if (!visible) {
-          cards.forEach((card) => stopCard(card, { resetUserPaused: false }));
-        }
-      }, { threshold: 0.01 });
-      io.observe(section);
+    if (hoverAutoplay) {
+      track.addEventListener('pointerover', (event) => {
+        const target = event.target && event.target.closest ? event.target.closest('.pf-reel') : null;
+        if (!target) return;
+        const previous = event.relatedTarget && event.relatedTarget.closest ? event.relatedTarget.closest('.pf-reel') : null;
+        if (target === previous) return;
+        handleHoverCandidate(target);
+      }, { passive: true });
     }
+
+    section.addEventListener('click', (event) => {
+      const btn = event.target && event.target.closest ? event.target.closest('.pf-reel__play') : null;
+      if (!btn) return;
+      const reel = btn.closest('.pf-reel');
+      if (!reel) return;
+      event.preventDefault();
+      toggleReel(reel);
+    });
+
   })();
 
   /* ==============================

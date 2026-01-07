@@ -130,13 +130,17 @@
   }
 
   .top-bar {
-    background: rgba(1, 15, 30, 0.45);
-    backdrop-filter: blur(18px) saturate(120%);
-    -webkit-backdrop-filter: blur(18px) saturate(120%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+      linear-gradient(180deg, rgba(5, 10, 18, 0.18), rgba(5, 10, 18, 0.08)),
+      rgba(5, 10, 18, 0.12);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: relative;
     padding: clamp(12px, 2vw, 18px) 0;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.42),
+      0 0 22px rgba(255, 255, 255, 0.06);
     transition:
       background 0.4s ease,
       padding 0.3s ease,
@@ -168,14 +172,15 @@
   }
 
   .site-header.is-condensed .top-bar {
-    background: rgba(3, 19, 36, 0.9);
+    background:
+      linear-gradient(180deg, rgba(4, 12, 22, 0.8), rgba(4, 12, 22, 0.85));
     padding: 10px 0;
     border-bottom-color: rgba(255, 255, 255, 0.22);
     box-shadow:
       0 12px 28px rgba(0, 0, 0, 0.65),
       0 0 18px rgba(244, 0, 18, 0.25);
-    backdrop-filter: blur(14px) saturate(130%);
-    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(135%);
+    -webkit-backdrop-filter: blur(10px) saturate(135%);
   }
 
   .site-header.is-condensed .top-bar::after {
@@ -604,22 +609,22 @@
 <header class="site-header">
   <div class="top-bar">
     <div class="container nav">
-      <a class="logo" href="#">
+      <a class="logo" href="../pages/home.html">
         <img src="../../assets/img/home/logo.png" alt="Party Fowl" />
         <span class="logo-badge" aria-hidden="true">Est. 2014</span>
       </a>
       <ul class="nav-menu">
-        <li><a href="#">Menu</a></li>
-        <li><a href="#">Catering</a></li>
-        <li><a href="#">Events &amp; Deals</a></li>
-        <li><a href="#">About Us</a></li>
+        <li><a href="../pages/menu.html">Menu</a></li>
+        <li><a href="../pages/catering.html">Catering</a></li>
+        <li><a href="../pages/events-deals.html">Events &amp; Deals</a></li>
+        <li><a href="../pages/about.html">About Us</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="#" class="btn-pill btn-locations">
+        <a href="../pages/locations.html" class="btn-pill btn-locations">
           <span class="btn-label">Locations</span>
           <span class="btn-icon btn-icon-location" aria-hidden="true"></span>
         </a>
-        <a href="#" class="btn-pill btn-order">
+        <a href="../pages/ordersnow.html" class="btn-pill btn-order">
           <span class="btn-label">Order Now</span>
           <span class="btn-icon btn-icon-order" aria-hidden="true"></span>
         </a>

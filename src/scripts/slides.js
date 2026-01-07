@@ -15,7 +15,7 @@
     { id: 'home-04-catering', desktop: 'home-04-catering-desktop.html', mobile: 'home-04-catering-mobile.html' },
     { id: 'home-05-the-latest', desktop: 'home-05-the-latest-desktop.html', mobile: 'home-05-the-latest-mobile.html' },
     { id: 'home-06-cta-section', desktop: 'home-06-cta-section-desktop.html', mobile: 'home-06-cta-section-mobile.html' },
-    { id: 'home-07-rewards', desktop: 'home-07-rewards-desktop.html', mobile: 'home-07-rewards-mobile.html' }
+    { id: 'home-08-contact', desktop: 'home-08-contact-desktop.html', mobile: 'home-08-contact-mobile.html' }
   ];
 
   let PARTIALS_BASE = (() => {
@@ -84,9 +84,12 @@
     return uniq[0] || new URL('./partials/home/', document.baseURI).toString();
   }
   const slidesRoot = document.getElementById('slidesRoot');
-  const mqDesktop = window.matchMedia('(min-width: 900px)');
+  const mqDesktop = window.matchMedia('(min-width: 1024px)');
   const mqReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (_) {}
+
+  const HEADER_EVENT_NAME = 'pfHeaderHeightChange';
+  const getHeaderHeight = () => Math.max(0, Math.round(window.__pfHeaderHeight || 0));
 
   if (!slidesRoot) return;
 
@@ -94,11 +97,32 @@
     slides: [], // { section, fDesktop, fMobile, index }
     fpIndex: null,
     fpTicking: false,
-    parallaxTicking: false,
-    revealObserver: null
+    revealObserver: null,
+    loadObserver: null,
+    mediaObserver: null,
+    nearSlides: new Set()
   };
   const skeletonLayer = document.getElementById('slideSkeleton');
   let skeletonHidden = false;
+
+  function setFrameHeaderHeight(frame, height = getHeaderHeight()) {
+    try {
+      const doc = frame && (frame.contentDocument || frame.contentWindow?.document);
+      if (!doc || !doc.documentElement) return;
+      const value = `${Math.max(0, Math.round(height || 0))}px`;
+      doc.documentElement.style.setProperty('--pf-header-height', value);
+      if (doc.body) doc.body.style.setProperty('--pf-header-height', value);
+    } catch (_) {
+      // ignore
+    }
+  }
+
+  function syncHeaderHeightToAllFrames() {
+    state.slides.forEach(({ fDesktop, fMobile }) => {
+      setFrameHeaderHeight(fDesktop);
+      setFrameHeaderHeight(fMobile);
+    });
+  }
 
   function removeSlideSkeleton() {
     if (skeletonHidden || !skeletonLayer) return;
@@ -124,354 +148,386 @@
   const isDesktop = () => mqDesktop.matches;
   const motionAllowed = () => !(mqReduceMotion && mqReduceMotion.matches);
   const toPx = (n) => `${Math.max(0, Math.ceil(n))}px`;
-  const isLoaded = (frame) => {
-    try {
-      const doc = frame && (frame.contentDocument || frame.contentWindow?.document);
-      return !!(doc && doc.readyState === 'complete');
-    } catch (_) {
+  const FRAME_SCROLL_BUFFER = 0;
+
+  const FULLBLEED_SLIDES = new Set([
+    'home-01-above-fold',
+    'home-02-social-media-reels',
+    'home-03-menu-carousel',
+    'home-04-catering',
+    'home-05-the-latest',
+    'home-06-cta-section',
+    'home-08-contact'
+  ]);
+
+  const FLUSH_SLIDES = new Set([
+    'home-01-above-fold',
+    'home-03-menu-carousel',
+    'home-04-catering'
+  ]);
+
+  const afterPaint = (cb) => {
+    const raf = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : (fn) => window.setTimeout(fn, 16);
+    raf(() => raf(() => cb()));
+  };
+
+  const runIdle = (cb, timeoutMs = 1200) => {
+    if (window.requestIdleCallback) {
+      return window.requestIdleCallback(cb, { timeout: timeoutMs });
+    }
+    return window.setTimeout(() => cb({ didTimeout: true, timeRemaining: () => 0 }), Math.min(250, timeoutMs));
+  };
+
+  function hydrateDeferredVideoSources(video, options = {}) {
+    if (!video) return false;
+    const { autoplayIfPossible = false } = options;
+    const reduceMotion = !motionAllowed();
+    const wantsAutoplay = !!(video.hasAttribute('autoplay') || video.dataset?.autoplay === '1');
+
+    if (reduceMotion && wantsAutoplay) {
+      try { video.pause(); } catch (_) {}
       return false;
     }
-  };
-  const FRAME_SCROLL_BUFFER = 0;
-  const nowMs = () => {
-    try {
-      return window.performance && window.performance.now ? window.performance.now() : Date.now();
-    } catch (_err) {
-      return Date.now();
-    }
-  };
-  const scrollVelocityState = {
-    lastY: window.scrollY || window.pageYOffset || 0,
-    lastTime: nowMs(),
-    resetTimeout: 0
-  };
-  const setScrollVelocity = (value) => {
-    try {
-      document.documentElement.style.setProperty('--scroll-velocity', value.toFixed ? value.toFixed(3) : String(value));
-    } catch (_err) {
-      // ignore if DOM not ready
-    }
-  };
 
-  function trackScrollVelocity() {
-    if (!motionAllowed()) {
-      setScrollVelocity(0);
-      return;
+    let touched = false;
+    const dataSrc = video.getAttribute('data-src') || video.dataset?.src;
+    if (dataSrc && !video.getAttribute('src')) {
+      try {
+        video.setAttribute('src', dataSrc);
+        video.removeAttribute('data-src');
+        if (video.dataset) delete video.dataset.src;
+        touched = true;
+      } catch (_) {}
     }
-    const now = nowMs();
-    const y = window.scrollY || window.pageYOffset || 0;
-    const delta = Math.max(16, now - scrollVelocityState.lastTime);
-    const distance = Math.abs(y - scrollVelocityState.lastY);
-    const ratio = distance / delta;
-    const speed = Math.min(1, ratio * 1.35);
-    scrollVelocityState.lastY = y;
-    scrollVelocityState.lastTime = now;
-    setScrollVelocity(speed);
-    if (scrollVelocityState.resetTimeout) window.clearTimeout(scrollVelocityState.resetTimeout);
-    scrollVelocityState.resetTimeout = window.setTimeout(() => setScrollVelocity(0), 140);
+
+    const sources = Array.from(video.querySelectorAll('source[data-src]'));
+    sources.forEach((source) => {
+      const src = source.getAttribute('data-src');
+      if (!src) return;
+      if (source.getAttribute('src')) return;
+      try {
+        source.setAttribute('src', src);
+        source.removeAttribute('data-src');
+        touched = true;
+      } catch (_) {}
+    });
+
+    if (touched) {
+      try { video.load(); } catch (_) {}
+    }
+
+    if (!reduceMotion && autoplayIfPossible && wantsAutoplay) {
+      try {
+        video.muted = true;
+        video.playsInline = true;
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      } catch (_) {}
+    }
+
+    return touched;
   }
 
-  function getParentScrollDriver(doc) {
+  function hydrateFrameMedia(frame, options = {}) {
     try {
-      const win = doc && doc.defaultView;
-      if (!win) return null;
-      if (win.__parentScrollDriver) return win.__parentScrollDriver;
-      const parentWin = win.parent;
-      if (!parentWin || parentWin === win) return null;
-
-      const raf = parentWin.requestAnimationFrame
-        ? parentWin.requestAnimationFrame.bind(parentWin)
-        : (cb) => parentWin.setTimeout(cb, 16);
-      const caf = parentWin.cancelAnimationFrame
-        ? parentWin.cancelAnimationFrame.bind(parentWin)
-        : parentWin.clearTimeout.bind(parentWin);
-      const now = () => {
-        try {
-          return parentWin.performance && parentWin.performance.now
-            ? parentWin.performance.now()
-            : Date.now();
-        } catch (_) {
-          return Date.now();
-        }
-      };
-
-      let rafId = 0;
-      let velocity = 0;
-      let lastTime = 0;
-      const stopThreshold = 0.4;
-
-      const scrollBy = (delta) => {
-        if (!delta) return;
-        try {
-          parentWin.scrollBy({ top: delta, left: 0, behavior: 'auto' });
-        } catch (_) {
-          try { parentWin.scrollBy(0, delta); } catch (_) {}
-        }
-      };
-
-      const record = (delta) => {
-        const t = now();
-        const dt = Math.max(8, t - (lastTime || t));
-        velocity = (delta / dt) * 16;
-        lastTime = t;
-      };
-
-      const cancel = () => {
-        if (rafId) caf(rafId);
-        rafId = 0;
-        velocity = 0;
-        lastTime = 0;
-      };
-
-      const start = () => {
-        if (rafId || Math.abs(velocity) < stopThreshold) return;
-        const step = () => {
-          velocity *= 0.92;
-          if (Math.abs(velocity) < stopThreshold) {
-            rafId = 0;
-            return;
-          }
-          scrollBy(velocity);
-          rafId = raf(step);
-        };
-        rafId = raf(step);
-      };
-
-      win.__parentScrollDriver = { scrollBy, record, start, cancel };
-      return win.__parentScrollDriver;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function ensureNoInnerVerticalScroll(doc) {
-    try {
-      if (!doc || !doc.head) return;
-      if (doc.getElementById('no-inner-vertical-scroll')) return;
-      const style = doc.createElement('style');
-      style.id = 'no-inner-vertical-scroll';
-      style.textContent = `
-        html, body { overflow-y: hidden !important; }
-      `;
-      doc.head.appendChild(style);
+      const doc = frame && (frame.contentDocument || frame.contentWindow?.document);
+      if (!doc || doc.readyState !== 'complete') return;
+      const autoplayIfPossible = !!options.autoplayIfPossible;
+      const videos = Array.from(doc.querySelectorAll('video[data-src], video source[data-src]'))
+        .map((node) => (node.tagName === 'VIDEO' ? node : node.closest('video')))
+        .filter(Boolean);
+      videos.forEach((v) => hydrateDeferredVideoSources(v, { autoplayIfPossible }));
     } catch (_) {
       // ignore
     }
   }
 
-  function enableTouchHorizontalScroll(doc) {
+  function getSlideIdFromFrame(frame) {
+    const section = frame?.closest?.('.slide');
+    return section?.dataset?.slideId || '';
+  }
+
+  function applyImageGuidance(frame, doc, preferLazy = true) {
+    if (!doc) return;
+    const images = Array.from(doc.images || []);
+    images.forEach((img) => {
+      if (preferLazy && !img.hasAttribute('loading')) {
+        img.setAttribute('loading', 'lazy');
+      }
+      if (!img.hasAttribute('decoding')) {
+        img.setAttribute('decoding', 'async');
+      }
+      const setIntrinsic = () => {
+        const hasWidth = img.hasAttribute('width');
+        const hasHeight = img.hasAttribute('height');
+        if (hasWidth && hasHeight) return;
+        const w = Math.round(img.naturalWidth || img.width || 0);
+        const h = Math.round(img.naturalHeight || img.height || 0);
+        if (w > 0 && h > 0) {
+          if (!hasWidth) img.setAttribute('width', w);
+          if (!hasHeight) img.setAttribute('height', h);
+        }
+      };
+      setIntrinsic();
+      if (!img.complete) {
+        img.addEventListener('load', () => {
+          setIntrinsic();
+          scheduleSize(frame);
+        }, { once: true });
+      }
+    });
+  }
+
+  function applyVideoGuidance(doc) {
+    if (!doc) return;
+    const videos = Array.from(doc.querySelectorAll('video'));
+    videos.forEach((video) => {
+      if (!video.hasAttribute('preload')) {
+        video.setAttribute('preload', 'metadata');
+      }
+      video.playsInline = true;
+      if (!video.hasAttribute('playsinline')) {
+        video.setAttribute('playsinline', '');
+      }
+      const poster = video.getAttribute('data-poster') || video.dataset?.poster;
+      if (poster && !video.getAttribute('poster')) {
+        video.setAttribute('poster', poster);
+      }
+    });
+  }
+
+  function applyFrameMediaHints(frame) {
+    if (!frame) return;
+    const doc = frame.contentDocument || frame.contentWindow?.document;
+    if (!doc) return;
+    const slideId = getSlideIdFromFrame(frame);
+    applyImageGuidance(frame, doc, slideId !== 'home-01-above-fold');
+    applyVideoGuidance(doc);
+  }
+
+  function pauseFrameVideos(frame) {
     try {
-      const win = doc && doc.defaultView;
-      if (!win || !('PointerEvent' in win)) return;
-      const scrollers = Array.from(doc.querySelectorAll('[data-scroll-x]'));
-      if (!scrollers.length) return;
-      const parentDriver = getParentScrollDriver(doc);
-      scrollers.forEach((el) => {
-        if (!el || el.__hScrollTouch) return;
-        el.__hScrollTouch = true;
-        // Allow vertical page scrolling on touch while we handle horizontal drag manually.
-        el.style.touchAction = 'pan-y';
-
-        let active = false;
-        let lock = null;
-        let startX = 0;
-        let startY = 0;
-        let startLeft = 0;
-        let pid = null;
-        const threshold = 8;
-
-        const onDown = (e) => {
-          if (e.pointerType && e.pointerType !== 'touch') return;
-          if (e.isPrimary === false) return;
-          active = true;
-          lock = null;
-          pid = e.pointerId;
-          startX = e.clientX;
-          startY = e.clientY;
-          startLeft = el.scrollLeft;
-          if (parentDriver) parentDriver.cancel();
-        };
-
-        const onMove = (e) => {
-          if (!active) return;
-          if (pid != null && e.pointerId !== pid) return;
-          const dx = e.clientX - startX;
-          const dy = e.clientY - startY;
-          const ax = Math.abs(dx);
-          const ay = Math.abs(dy);
-
-          if (lock === null) {
-            // Be stricter before locking to horizontal so we don't block vertical page scroll
-            if (ax > ay + threshold * 1.5) lock = 'x';
-            else if (ay > ax + threshold) lock = 'y';
-            else return;
-          }
-
-          // If the user changes intent to vertical, release the horizontal lock
-          if (lock === 'x' && ay > ax + threshold) {
-            lock = 'y';
-          }
-
-          if (lock !== 'x') return;
-          e.preventDefault();
-          el.scrollLeft = startLeft - dx;
-        };
-
-        const onEnd = () => {
-          active = false;
-          lock = null;
-          pid = null;
-        };
-
-        el.addEventListener('pointerdown', onDown);
-        el.addEventListener('pointermove', onMove, { passive: false });
-        el.addEventListener('pointerup', onEnd);
-        el.addEventListener('pointercancel', onEnd);
-        el.addEventListener('lostpointercapture', onEnd);
+      const doc = frame && (frame.contentDocument || frame.contentWindow?.document);
+      if (!doc || doc.readyState !== 'complete') return;
+      const videos = Array.from(doc.querySelectorAll('video'));
+      videos.forEach((video) => {
+        try { video.pause(); } catch (_) {}
       });
     } catch (_) {
       // ignore
     }
   }
-  function enableParentWheelScroll(doc) {
+
+  function resumeFrameAutoplayVideos(frame) {
+    if (!frame || !motionAllowed()) return;
     try {
-      const win = doc && doc.defaultView;
-      if (!win || win.__parentWheelScroll) return;
-      const parentWin = win.parent;
-      if (!parentWin || parentWin === win) return;
-      win.__parentWheelScroll = true;
-
-      const onWheel = (e) => {
-        // Forward wheel/trackpad scrolling to the parent page while the pointer is over the iframe.
-        // This prevents the "stuck" feeling when the user scrolls on a slide iframe.
-        const dy = e.deltaY || 0;
-        const dx = e.deltaX || 0;
-        if (!dx && !dy) return;
-        const absX = Math.abs(dx);
-        const absY = Math.abs(dy);
-        if (absX > absY * 1.1) return;
+      const doc = frame && (frame.contentDocument || frame.contentWindow?.document);
+      if (!doc || doc.readyState !== 'complete') return;
+      const videos = Array.from(doc.querySelectorAll('video[autoplay]'));
+      videos.forEach((video) => {
         try {
-          parentWin.scrollBy({ top: dy, left: 0, behavior: 'auto' });
-        } catch (_) {
-          try { parentWin.scrollBy(0, dy); } catch (_) {}
-        }
-        // Prevent the iframe from consuming the wheel event.
-        e.preventDefault();
-      };
-
-      // Non-passive is required because we call preventDefault.
-      doc.addEventListener('wheel', onWheel, { passive: false });
-    } catch (_) {
-      // ignore
-    }
-  }
-
-  function enableParentTouchScroll(doc) {
-    try {
-      const win = doc && doc.defaultView;
-      if (!win || win.__parentTouchScroll) return;
-      const parentWin = win.parent;
-      if (!parentWin || parentWin === win) return;
-      const driver = getParentScrollDriver(doc);
-      if (!driver) return;
-      win.__parentTouchScroll = true;
-
-      let active = false;
-      let axis = null;
-      let startX = 0;
-      let startY = 0;
-      let lastY = 0;
-      let pid = null;
-      const threshold = 8;
-
-      const begin = (x, y, id) => {
-        active = true;
-        axis = null;
-        pid = id != null ? id : null;
-        startX = x;
-        startY = y;
-        lastY = y;
-        driver.cancel();
-      };
-
-      const move = (x, y, id, ev) => {
-        if (!active) return;
-        if (pid != null && id != null && id !== pid) return;
-        const dx = x - startX;
-        const dy = y - startY;
-        const ax = Math.abs(dx);
-        const ay = Math.abs(dy);
-
-        if (axis === null) {
-          if (ax > ay + threshold) axis = 'x';
-          else if (ay > ax + threshold) axis = 'y';
-          else return;
-        }
-        if (axis !== 'y') return;
-
-        const deltaY = y - lastY;
-        lastY = y;
-        if (!deltaY) return;
-        try {
-          const scrollDelta = -deltaY;
-          driver.scrollBy(scrollDelta);
-          driver.record(scrollDelta);
+          video.muted = true;
+          video.playsInline = true;
+          const p = video.play();
+          if (p && typeof p.catch === 'function') p.catch(() => {});
         } catch (_) {}
-        ev.preventDefault();
-      };
-
-      const onEnd = () => {
-        if (active && axis === 'y') driver.start();
-        active = false;
-        axis = null;
-        pid = null;
-      };
-
-      if ('PointerEvent' in win) {
-        const onPointerStart = (e) => {
-          if (e.pointerType && e.pointerType !== 'touch') return;
-          if (e.isPrimary === false) return;
-          begin(e.clientX, e.clientY, e.pointerId);
-        };
-        const onPointerMove = (e) => {
-          if (e.pointerType && e.pointerType !== 'touch') return;
-          move(e.clientX, e.clientY, e.pointerId, e);
-        };
-        const onPointerEnd = (e) => {
-          if (e.pointerType && e.pointerType !== 'touch') return;
-          onEnd();
-        };
-        win.addEventListener('pointerdown', onPointerStart, { passive: true });
-        win.addEventListener('pointermove', onPointerMove, { passive: false });
-        win.addEventListener('pointerup', onPointerEnd, { passive: true });
-        win.addEventListener('pointercancel', onPointerEnd, { passive: true });
-        win.addEventListener('lostpointercapture', onPointerEnd, { passive: true });
-      } else {
-        const onStart = (e) => {
-          if (!e.touches || e.touches.length !== 1) return;
-          const t = e.touches[0];
-          begin(t.clientX, t.clientY, t.identifier);
-        };
-        const onMove = (e) => {
-          if (!active) return;
-          const t = e.touches && e.touches[0];
-          if (!t) return;
-          move(t.clientX, t.clientY, t.identifier, e);
-        };
-        win.addEventListener('touchstart', onStart, { passive: true });
-        win.addEventListener('touchmove', onMove, { passive: false });
-        win.addEventListener('touchend', onEnd, { passive: true });
-        win.addEventListener('touchcancel', onEnd, { passive: true });
-      }
+      });
     } catch (_) {
       // ignore
     }
   }
 
+  function sectionIsInViewport(section) {
+    if (!section) return false;
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    return rect.bottom > 0 && rect.top < vh;
+  }
+
+  function primeFrameMedia(frame) {
+    if (!frame || !frame.__srcActivated) return;
+    const section = frame.closest('.slide');
+    if (!section) return;
+    const active = activeFrameFor(section) === frame;
+    if (!active) return;
+
+    const slideId = section.dataset?.slideId || '';
+
+    // Hero: defer video source until after first paint/idle for a fast first render.
+    if (slideId === 'home-01-above-fold') {
+      if (frame.__heroMediaPrimed) return;
+      frame.__heroMediaPrimed = true;
+      afterPaint(() => {
+        runIdle(() => hydrateFrameMedia(frame, { autoplayIfPossible: true }), 1600);
+      });
+      return;
+    }
+
+    if (sectionIsInViewport(section)) {
+      hydrateFrameMedia(frame, { autoplayIfPossible: true });
+    }
+  }
+
+  function primeFrameInteractiveState(frame) {
+    if (!frame || !frame.__srcActivated) return;
+    const section = frame.closest('.slide');
+    if (!section) return;
+    if (activeFrameFor(section) !== frame) return;
+
+    const slideId = section.dataset?.slideId || '';
+    if (slideId !== 'home-03-menu-carousel') return;
+
+    try {
+      const win = frame.contentWindow;
+      if (win && typeof win.__setMenuCarouselAuto === 'function') {
+        win.__setMenuCarouselAuto(sectionIsInViewport(section) && motionAllowed());
+      }
+    } catch (_) {}
+  }
+
+  function activateFrame(frame, options = {}) {
+    if (!frame) return;
+    const { eager = false } = options;
+    const src = frame.getAttribute('data-src') || frame.dataset?.src;
+    if (!src) return;
+    if (frame.__srcActivated) return;
+    frame.__srcActivated = true;
+    try {
+      frame.loading = eager ? 'eager' : 'lazy';
+    } catch (_) {}
+    try {
+      frame.setAttribute('src', src);
+    } catch (_) {}
+  }
+
+  function activateActiveVariant(section, options = {}) {
+    const frame = activeFrameFor(section);
+    if (!frame) return;
+    activateFrame(frame, options);
+    // Seed a reasonable height so layout doesn't collapse before load completes.
+    if (!frame.__lastHeight) {
+      const viewportSeed = Math.max((window.innerHeight || 0) - getHeaderHeight(), 320);
+      const seed = Math.max(320, Math.min(1400, Math.max(viewportSeed, 600)));
+      frame.style.height = toPx(seed);
+      frame.style.visibility = 'visible';
+    }
+  }
+
+  function setupSlideLoadingObserver() {
+    if (state.loadObserver) {
+      state.loadObserver.disconnect();
+      state.loadObserver = null;
+    }
+
+    const preloadPx = isDesktop() ? 1400 : 1100;
+    const rootMargin = `${preloadPx}px 0px ${preloadPx}px 0px`;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      // Old browsers: load sequentially after the first slide.
+      const idle = window.requestIdleCallback
+        ? window.requestIdleCallback.bind(window)
+        : (cb) => window.setTimeout(() => cb({ timeRemaining: () => 0, didTimeout: true }), 250);
+      const queue = state.slides.slice(1).map((s) => s.section);
+      const drain = () => {
+        const next = queue.shift();
+        if (!next) return;
+        activateActiveVariant(next);
+        idle(drain);
+      };
+      idle(drain);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const section = entry.target;
+        if (entry.isIntersecting) {
+          state.nearSlides.add(section);
+          activateActiveVariant(section);
+        } else {
+          state.nearSlides.delete(section);
+        }
+      });
+    }, { root: null, rootMargin, threshold: 0.01 });
+
+    state.slides.forEach(({ section }) => observer.observe(section));
+    state.loadObserver = observer;
+  }
+
+  function setupSlideMediaObserver() {
+    if (state.mediaObserver) {
+      state.mediaObserver.disconnect();
+      state.mediaObserver = null;
+    }
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const section = entry.target;
+        const slideId = section.dataset?.slideId || '';
+        const frame = activeFrameFor(section);
+        const hiddenFrame = inactiveFrameFor(section);
+
+        if (hiddenFrame && hiddenFrame.__srcActivated) {
+          pauseFrameVideos(hiddenFrame);
+          try {
+            const win = hiddenFrame.contentWindow;
+            if (slideId === 'home-03-menu-carousel' && win && typeof win.__setMenuCarouselAuto === 'function') {
+              win.__setMenuCarouselAuto(false);
+            }
+          } catch (_) {}
+        }
+
+        if (entry.isIntersecting) {
+          if (!frame || !frame.__srcActivated) return;
+          if (slideId !== 'home-01-above-fold') {
+            hydrateFrameMedia(frame, { autoplayIfPossible: true });
+          } else {
+            // Hero is hydrated after first paint/idle via `primeFrameMedia`.
+            primeFrameMedia(frame);
+          }
+          resumeFrameAutoplayVideos(frame);
+          try {
+            const win = frame.contentWindow;
+            if (slideId === 'home-03-menu-carousel' && win && typeof win.__setMenuCarouselAuto === 'function') {
+              win.__setMenuCarouselAuto(!!motionAllowed());
+            }
+          } catch (_) {}
+        } else {
+          if (frame && frame.__srcActivated) pauseFrameVideos(frame);
+          if (hiddenFrame && hiddenFrame.__srcActivated) pauseFrameVideos(hiddenFrame);
+          try {
+            const win = frame && frame.contentWindow;
+            if (slideId === 'home-03-menu-carousel' && win && typeof win.__setMenuCarouselAuto === 'function') {
+              win.__setMenuCarouselAuto(false);
+            }
+          } catch (_) {}
+        }
+      });
+    }, { root: null, rootMargin: '0px', threshold: 0.12 });
+
+    state.slides.forEach(({ section }) => observer.observe(section));
+    state.mediaObserver = observer;
+  }
   function computeDocHeight(doc) {
     const body = doc.body;
     const html = doc.documentElement;
     if (!body || !html) return 0;
+    try {
+      const root = doc.querySelector('[data-pf-slide-root="true"], [data-pf-slide-root="1"], [data-pf-slide-root]');
+      if (root) {
+        const rect = root.getBoundingClientRect();
+        const h = Math.max(
+          rect ? rect.height : 0,
+          root.scrollHeight || 0,
+          root.offsetHeight || 0,
+          root.clientHeight || 0
+        );
+        if (h > 0) return Math.ceil(h);
+      }
+    } catch (_) {
+      // ignore
+    }
     // Prefer scrollHeight/offsetHeight; avoid +1px which can trigger feedback loops
     const h = Math.max(
       html.scrollHeight,
@@ -487,7 +543,6 @@
   function getTargetContentHeight(frame, doc) {
     try {
       if (!frame || !doc) return 0;
-      if (frame.__variant !== 'mobile') return 0;
       const section = frame.closest('.slide');
       if (!section || section.dataset.slideId !== 'home-06-cta-section') return 0;
       const target = doc.querySelector('.cta');
@@ -545,10 +600,8 @@
     try {
       const doc = frame.contentDocument || frame.contentWindow.document;
       if (!doc) return;
-      ensureNoInnerVerticalScroll(doc);
-      enableTouchHorizontalScroll(doc);
-      enableParentTouchScroll(doc);
-      enableParentWheelScroll(doc);
+      setFrameHeaderHeight(frame);
+      applyFrameMediaHints(frame);
 
       // Re-size on media load
       (Array.from(doc.images) || []).forEach((img) => {
@@ -574,17 +627,25 @@
         if (++ticks > 3) clearInterval(iv);
       }, 350);
       maybeHideSlideSkeleton(frame);
+      primeFrameMedia(frame);
+      primeFrameInteractiveState(frame);
     } catch (_) {
       // ignore
     }
   }
 
   function activeFrameFor(section) {
-    return isDesktop() ? section.querySelector('.view-desktop') : section.querySelector('.view-mobile');
+    if (!section) return null;
+    return isDesktop()
+      ? (section.querySelector('.pf-only-desktop') || section.querySelector('.view-desktop'))
+      : (section.querySelector('.pf-only-mobile') || section.querySelector('.view-mobile'));
   }
 
   function inactiveFrameFor(section) {
-    return isDesktop() ? section.querySelector('.view-mobile') : section.querySelector('.view-desktop');
+    if (!section) return null;
+    return isDesktop()
+      ? (section.querySelector('.pf-only-mobile') || section.querySelector('.view-mobile'))
+      : (section.querySelector('.pf-only-desktop') || section.querySelector('.view-desktop'));
   }
 
   function getFootprintsFrame(entry) {
@@ -691,30 +752,10 @@
     state.revealObserver = observer;
   }
 
-  function updateParallax() {
-    const applyZero = () => state.slides.forEach(({ section }) => section.style.setProperty('--frame-shift', '0px'));
-    if (!motionAllowed()) return applyZero();
-
-    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
-    if (!vh) return applyZero();
-
-    state.slides.forEach(({ section }) => {
-      const rect = section.getBoundingClientRect();
-      const center = rect.top + rect.height * 0.5;
-      const normalized = (center - vh * 0.5) / Math.max(rect.height || 1, vh);
-      const shift = Math.max(-18, Math.min(18, -normalized * 22));
-      section.style.setProperty('--frame-shift', `${shift.toFixed(2)}px`);
-    });
-  }
-
-  function scheduleParallax() {
-    if (state.parallaxTicking) return;
-    state.parallaxTicking = true;
-    (window.requestAnimationFrame || setTimeout)(() => {
-      state.parallaxTicking = false;
-      updateParallax();
-    });
-  }
+  window.addEventListener(HEADER_EVENT_NAME, () => {
+    syncHeaderHeightToAllFrames();
+    sizeVisibleFrames();
+  });
 
   function updateActiveVariant(section) {
     const a = activeFrameFor(section);
@@ -741,39 +782,13 @@
     if (a) {
       a.style.display = 'block';
       // If already loaded, size now; otherwise the load handler will size
-      try {
-        const doc = a.contentDocument || a.contentWindow.document;
-        if (doc && doc.readyState === 'complete') {
-          scheduleSize(a);
-        }
-      } catch (_) {}
-    }
-  }
-
-  function preloadActiveNear(anchor, before = 1, after = 3) {
-    if (!anchor) return;
-    const start = Math.max(0, anchor.index - before);
-    const end = Math.min(state.slides.length - 1, anchor.index + after);
-    for (let i = start; i <= end; i++) {
-      const { section } = state.slides[i];
-      const f = activeFrameFor(section);
-      if (!f) continue;
-      if (!isLoaded(f)) {
+      if (a.__srcActivated) {
         try {
-          f.loading = 'eager';
-          if (!f.__kickLoaded) {
-            f.__kickLoaded = true;
-            // Trigger a fetch if browser hasn't started due to lazy state
-            const src = f.getAttribute('src');
-            if (src) f.setAttribute('src', src);
+          const doc = a.contentDocument || a.contentWindow.document;
+          if (doc && doc.readyState === 'complete') {
+            scheduleSize(a);
           }
         } catch (_) {}
-      }
-      // Make sure it's visible and has a seeded height until load completes
-      f.style.visibility = 'visible';
-      if (!f.__lastHeight) {
-        const seed = Math.max(Math.min(1200, Math.max(window.innerHeight || 0, 320)), 320);
-        f.style.height = toPx(seed);
       }
     }
   }
@@ -781,60 +796,68 @@
   function buildSlides() {
     SLIDES.forEach((s, index) => {
       const section = document.createElement('section');
-      section.className = 'slide';
+      section.className = `slide pf-slide pf-slide--${s.id}`;
+      if (FULLBLEED_SLIDES.has(s.id)) section.classList.add('pf-slide--fullbleed');
+      if (FLUSH_SLIDES.has(s.id)) section.classList.add('pf-slide--flush');
+      if (s.id === 'home-08-contact') section.id = 'contact';
       section.dataset.slideId = s.id;
       section.dataset.slideIndex = String(index);
-      section.style.setProperty('--frame-shift', '0px');
       section.style.setProperty('--reveal-delay', '0s');
       if (index === 0) {
         section.classList.add('is-visible');
       }
 
+      const container = document.createElement('div');
+      container.className = 'pf-container';
+
       const fDesktop = document.createElement('iframe');
-      fDesktop.className = 'slide-frame view-desktop';
+      fDesktop.className = 'slide-frame view-desktop pf-only-desktop';
       fDesktop.setAttribute('title', `${s.id} (desktop)`);
       fDesktop.setAttribute('scrolling', 'no');
-      // Eager-load the active variant so all slides are present sequentially
-      fDesktop.loading = isDesktop() ? 'eager' : 'lazy';
-      fDesktop.src = PARTIALS_BASE + s.desktop;
+      fDesktop.loading = 'lazy';
+      fDesktop.setAttribute('data-src', PARTIALS_BASE + s.desktop);
       fDesktop.style.height = '0px';
       fDesktop.style.overflow = 'hidden';
       fDesktop.style.visibility = 'hidden';
       fDesktop.__variant = 'desktop';
 
       const fMobile = document.createElement('iframe');
-      fMobile.className = 'slide-frame view-mobile';
+      fMobile.className = 'slide-frame view-mobile pf-only-mobile';
       fMobile.setAttribute('title', `${s.id} (mobile)`);
       fMobile.setAttribute('scrolling', 'no');
-      // Eager-load the active variant so all slides are present sequentially
-      fMobile.loading = isDesktop() ? 'lazy' : 'eager';
-      fMobile.src = PARTIALS_BASE + s.mobile;
+      fMobile.loading = 'lazy';
+      fMobile.setAttribute('data-src', PARTIALS_BASE + s.mobile);
       fMobile.style.height = '0px';
       fMobile.style.overflow = 'hidden';
       fMobile.style.visibility = 'hidden';
       fMobile.__variant = 'mobile';
 
-      section.appendChild(fDesktop);
-      section.appendChild(fMobile);
+      container.appendChild(fDesktop);
+      container.appendChild(fMobile);
+      section.appendChild(container);
       slidesRoot.appendChild(section);
 
       // Auto-size when content loads
       fDesktop.addEventListener('load', () => {
+        if (!fDesktop.__srcActivated) return;
         prepareFrame(fDesktop);
         updateFootprintsDriver();
         maybeHideSlideSkeleton(fDesktop);
       });
       fMobile.addEventListener('load', () => {
+        if (!fMobile.__srcActivated) return;
         prepareFrame(fMobile);
         updateFootprintsDriver();
         maybeHideSlideSkeleton(fMobile);
       });
 
-      // Reserve space for the first visible variant to prevent initial jump
+      // Reserve space for the first visible variant to prevent initial jump and start loading it.
       if (index === 0) {
         const initial = isDesktop() ? fDesktop : fMobile;
-        initial.style.height = `${Math.max(window.innerHeight, 320)}px`;
+        const headerHeight = getHeaderHeight();
+        initial.style.height = `${Math.max((window.innerHeight || 0) - headerHeight, 320)}px`;
         initial.style.visibility = 'visible';
+        activateFrame(initial, { eager: true });
       }
 
       state.slides.push({ section, fDesktop, fMobile, index });
@@ -849,18 +872,17 @@
     state.slides.forEach(({ section }) => {
       updateActiveVariant(section);
     });
+    syncHeaderHeightToAllFrames();
   }
 
   function onResize() {
     sizeVisibleFrames();
     clearTimeout(window.__slidesReflow);
     window.__slidesReflow = setTimeout(sizeVisibleFrames, 200);
-    scheduleParallax();
     updateFootprintsDriver();
   }
 
   function updateFootprintsDriver() {
-    scheduleParallax();
     if (state.fpTicking) return;
     state.fpTicking = true;
     (window.requestAnimationFrame || setTimeout)(() => {
@@ -918,20 +940,39 @@
     buildSlides();
     sizeVisibleFrames();
     setupSlideReveals();
-    scheduleParallax();
-    setScrollVelocity(0);
+    setupSlideLoadingObserver();
+    setupSlideMediaObserver();
+    if (!window.__pfHashHandled) {
+      const hash = (window.location && window.location.hash) ? window.location.hash.trim() : '';
+      if (hash && hash !== '#') {
+        const target = document.getElementById(hash.slice(1));
+        if (target) {
+          window.__pfHashHandled = true;
+          setTimeout(() => {
+            try {
+              target.scrollIntoView({ behavior: 'auto', block: 'start' });
+            } catch (_) {
+              target.scrollIntoView();
+            }
+          }, 0);
+        }
+      }
+    }
 
     function onViewportModeChange() {
       const anchor = getViewportAnchor();
       // Switch variants with seeded heights to keep layout stable
       state.slides.forEach(({ section }) => updateActiveVariant(section));
-      // Preload active frames around viewport for smooth immediate display
-      preloadActiveNear(anchor, 1, 4);
+      // Ensure the active variant near the viewport is loaded after switching.
+      if (state.nearSlides && state.nearSlides.size) {
+        state.nearSlides.forEach((section) => activateActiveVariant(section, { eager: true }));
+      } else {
+        activateActiveVariant(state.slides[anchor.index]?.section, { eager: true });
+      }
       sizeVisibleFrames();
       setupSlideReveals();
-      scheduleParallax();
       // Restore the viewport anchor after heights settle
-      setTimeout(() => { sizeVisibleFrames(); preloadActiveNear(anchor, 1, 4); restoreViewportAnchor(anchor); updateFootprintsDriver(); }, 60);
+      setTimeout(() => { sizeVisibleFrames(); restoreViewportAnchor(anchor); updateFootprintsDriver(); }, 60);
       setTimeout(() => { sizeVisibleFrames(); restoreViewportAnchor(anchor); updateFootprintsDriver(); }, 160);
       setTimeout(() => { sizeVisibleFrames(); restoreViewportAnchor(anchor); updateFootprintsDriver(); }, 320);
     }
@@ -940,8 +981,6 @@
     else if (mqDesktop.addListener) mqDesktop.addListener(onViewportModeChange);
     window.addEventListener('resize', onResize);
     window.addEventListener('scroll', updateFootprintsDriver, { passive: true });
-    window.addEventListener('scroll', trackScrollVelocity, { passive: true });
-    document.addEventListener('scroll', updateFootprintsDriver, { passive: true, capture: true });
 
     window.addEventListener('load', () => {
       // Re-evaluate visible frames a few times while assets settle

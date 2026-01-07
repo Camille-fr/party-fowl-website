@@ -67,15 +67,12 @@
       width:100%;
       max-width:100%;
       overflow-x:hidden;
+      background: transparent;
     }
     html{ -webkit-text-size-adjust:100%; }
     body{
       margin:0;
-      background:
-        radial-gradient(max(860px, 150vw) max(520px, 72vh) at 50% 14%, rgba(53,240,255,.08), transparent 70%),
-        radial-gradient(max(780px, 140vw) max(520px, 72vh) at 18% 74%, rgba(255,43,91,.12), transparent 70%),
-        radial-gradient(max(720px, 140vw) max(460px, 64vh) at 82% 66%, rgba(255,212,156,.08), transparent 66%),
-        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 38%, var(--bg0) 100%);
+      background: transparent;
       color:var(--text);
       overflow-x:hidden;
       font-family: Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -100,65 +97,7 @@
     }
 
     .backdrop{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index:0;
-      isolation:isolate;
-    }
-    .backdrop-image{
-      position:absolute;
-      inset:0;
-      --bg-ratio: 0.428571;
-      --bg-tile: calc(100vw * var(--bg-ratio));
-      opacity:1;
-      filter: none;
-      transform: none;
-    }
-    .backdrop-image-mid{
-      position:absolute;
-      inset:0;
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: repeat-y;
-      background-size: 100% auto;
-      background-position: center var(--bg-tile);
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:0;
-    }
-    .backdrop-image::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      width:100%;
-      height: var(--bg-tile);
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      background-position: center top;
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:1;
-    }
-    .backdrop-image::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:0;
-      width:100%;
-      height: var(--bg-tile);
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      background-position: center bottom;
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:1;
+      display:none;
     }
 
     main{
@@ -171,7 +110,7 @@
       width:100%;
       display:flex;
       justify-content:center;
-      padding: calc(env(safe-area-inset-top) + clamp(24px, 7vw, 48px)) var(--edge) calc(clamp(44px, 9vw, 70px) + var(--sticky-safe));
+      padding: calc(env(safe-area-inset-top) + clamp(24px, 7vw, 48px)) var(--edge) calc(clamp(44px, 9vw, 70px) + env(safe-area-inset-bottom));
       isolation:isolate;
       overflow:hidden;
       scroll-margin-bottom: var(--sticky-safe);
@@ -352,14 +291,17 @@
       display:flex;
       gap: clamp(6px, 2vw, 10px);
       overflow-x:auto;
-      overflow-y:hidden;
+      overflow-y:visible;
       padding: 6px max(var(--edge), env(safe-area-inset-left)) 12px;
       padding-right: max(var(--edge), env(safe-area-inset-right));
       margin: 0;
       scroll-snap-type: x proximity;
       scroll-padding: var(--edge);
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior-inline: contain;
+      overscroll-behavior-block: auto;
       overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y pinch-zoom;
       z-index:2;
     }
 
@@ -571,7 +513,7 @@
               </h2>
 
               <p class="tagline">
-                Because the only thing better than hot chicken and boozy slushies… is getting them for free.
+                Because the only thing better than NASHVILLE HOT CHICKEN and boozy slushies… is getting them for free.
               </p>
 
               <p class="intro">

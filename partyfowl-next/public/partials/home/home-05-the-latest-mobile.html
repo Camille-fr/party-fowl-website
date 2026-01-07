@@ -1,0 +1,1057 @@
+<!-- Target: src/partials/home/home-05-the-latest-mobile.html | Mobile -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Party Fowl - The Latest (Mobile)</title>
+
+  <style>
+    /* ==============================
+       FONTS (LOCAL ONLY)
+    =============================== */
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("/assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "AshwoodExtraBold";
+      src: url("/assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Buttergone";
+      src: url("/assets/fonts/Buttergone OTF.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Newslab";
+      src: url("/assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("/assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ==============================
+       BASE / RESET
+    =============================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button {
+      border: 0;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+    }
+    button, a { touch-action: manipulation; }
+    :focus-visible {
+      outline: 2px solid rgba(244,0,18,0.9);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg: #030b16;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+      --panel: #0d131c;
+      --panel-2: #0a0f17;
+      --ink: #f4f6fb;
+      --muted: rgba(244,246,251,0.78);
+      --accent-red: #ff2a54;
+      --accent-teal: #7dc3b8;
+      --accent-gold: #f0d07a;
+      --accent-warm: #ff9a3c;
+      --line: rgba(255,255,255,0.12);
+      --line-soft: rgba(255,255,255,0.08);
+      --shadow: 0 22px 52px rgba(0,0,0,0.65);
+      --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --edge: clamp(16px, 4vw, 24px);
+      --edge-wide: clamp(18px, 5vw, 30px);
+      --sticky-safe: calc(env(safe-area-inset-bottom) + clamp(64px, 12vh, 96px));
+    }
+
+    body {
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: transparent;
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 0;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+      padding-bottom: 0;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    body::before,
+    body::after {
+      content: none;
+    }
+
+    .safe-top { padding-top: env(safe-area-inset-top); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+    .wrap {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 var(--edge);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==============================
+       THE LATEST (MOBILE)
+    =============================== */
+    .latest {
+      position: relative;
+      padding: clamp(28px, 6vw, 46px) 0 clamp(12px, 3vw, 18px);
+      background: transparent;
+      overflow: visible;
+      isolation: isolate;
+      scroll-margin-bottom: var(--sticky-safe);
+    }
+    .latest::before {
+      content: none;
+    }
+    .latest::after {
+      content: none;
+    }
+    .latest-bg-flip {
+      display: none;
+    }
+    .latest-topline { display: none; }
+
+    .latest-header {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 2px;
+      max-width: 520px;
+    }
+
+    .latest-title {
+      font-family: "AshwoodCondensed", "Adrenaline", sans-serif;
+      font-size: clamp(34px, 8vw, 42px);
+      letter-spacing: 0.06em;
+      text-transform: none;
+      line-height: 1.02;
+      color: var(--ink);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.7),
+        0 10px 28px rgba(0,0,0,0.45),
+        0 0 16px rgba(125,195,184,0.24);
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .latest-title-line{
+      display:block;
+      white-space: nowrap;
+    }
+    .lt-letter{
+      display:inline-block;
+      position:relative;
+      padding:0 0.02em;
+      transform: translateZ(0) scale(var(--scale, 1)) translateY(var(--dy, 0px)) rotate(var(--rot, 0deg));
+      transform-origin: 50% 82%;
+      transition: transform 0s, text-shadow 0.15s ease, filter 0.15s ease;
+      will-change: transform, filter;
+      z-index: var(--z, 0);
+      text-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.85),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 36px)) rgba(244, 0, 18, 0.60),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 20px)) rgba(244, 0, 18, 0.22);
+    }
+    .lt-letter::before{
+      content:"";
+      position:absolute;
+      left:50%; top:52%;
+      transform: translate(-50%, -50%) scale(calc(1 + (var(--scale, 1) - 1) * 1.4));
+      width: 1.22em; height: 1.08em;
+      pointer-events:none;
+      border-radius: 50%;
+      background:
+        radial-gradient(48% 46% at 50% 50%, rgba(244, 0, 18, 0.95) 0%, rgba(244, 0, 18, 0.45) 40%, rgba(244, 0, 18, 0) 72%);
+      filter: blur(14px) saturate(120%);
+      opacity: calc(var(--glow, 0) * 0.95);
+      mix-blend-mode: screen;
+      z-index: -1;
+      transition: opacity .18s ease-out, filter .20s ease-out, transform .20s ease-out;
+    }
+    .latest-title-line:hover .lt-letter::before{
+      filter: blur(18px) saturate(135%);
+      opacity: calc(var(--glow, 0) * 1.15);
+    }
+    .latest-title-line:hover .lt-letter{ filter:saturate(1.05); }
+
+    .latest-subtitle {
+      max-width: 42ch;
+      font-size: clamp(13px, 3.2vw, 14.5px);
+      color: var(--muted);
+      line-height: 1.4;
+      text-transform: none;
+    }
+
+    .latest-filters {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(20px, 4vw, 26px);
+      margin-bottom: clamp(16px, 3vw, 22px);
+      display: flex;
+      gap: 8px;
+      padding: clamp(12px, 3vw, 18px) 0 clamp(14px, 3vw, 18px);
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-inline: contain;
+      overscroll-behavior-block: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.24) transparent;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      touch-action: pan-x pan-y pinch-zoom;
+    }
+    .latest-filters::-webkit-scrollbar { height: 6px; }
+    .latest-filters::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.22);
+      border-radius: 999px;
+    }
+    .latest-filter-btn {
+      --filter-color: rgba(255, 255, 255, 0.95);
+      --filter-muted: rgba(255, 255, 255, 0.35);
+      --filter-glow: rgba(255, 255, 255, 0.28);
+      min-height: 44px;
+      padding: 10px 18px 9px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      border: 1px solid var(--filter-muted);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      box-shadow: none;
+      transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .latest-filter-btn:hover {
+      border-color: var(--filter-color);
+      color: #fff;
+      box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 16px var(--filter-glow);
+    }
+    .latest-filter-btn[data-active="true"] {
+      border-color: var(--filter-color);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.35),
+        0 0 20px var(--filter-glow);
+    }
+    .latest-filter-btn:active {
+      transform: translateY(1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+    .latest-filter-btn:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 2px rgba(3, 11, 22, 1),
+        0 0 14px var(--filter-glow, rgba(255, 31, 43, 0.6));
+    }
+    .latest-filter-btn[data-filter="event"] {
+      --filter-color: rgba(125, 195, 184, 0.95);
+      --filter-muted: rgba(125, 195, 184, 0.35);
+      --filter-glow: rgba(125, 195, 184, 0.44);
+    }
+    .latest-filter-btn[data-filter="deal"] {
+      --filter-color: rgba(240, 208, 122, 0.95);
+      --filter-muted: rgba(240, 208, 122, 0.32);
+      --filter-glow: rgba(240, 208, 122, 0.48);
+    }
+    .latest-filter-btn[data-filter="new"] {
+      --filter-color: rgba(244, 0, 18, 0.95);
+      --filter-muted: rgba(244, 0, 18, 0.35);
+      --filter-glow: rgba(244, 0, 18, 0.54);
+    }
+
+    .latest-list {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(14px, 3.5vw, 20px);
+      display: flex;
+      gap: clamp(14px, 4vw, 20px);
+      padding: clamp(8px, 3vw, 14px) clamp(8px, 3vw, 14px) clamp(6px, 2vw, 10px);
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-inline: contain;
+      overscroll-behavior-block: auto;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y pinch-zoom;
+    }
+    .latest-list::-webkit-scrollbar { display: none; }
+    .latest-card {
+      background: rgba(3, 11, 22, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
+      overflow: visible;
+      transition: border-color 0.2s ease, box-shadow 0.22s ease, transform 0.22s ease;
+      height: auto;
+      min-width: 0;
+      flex: 0 0 clamp(260px, 72vw, 320px);
+      scroll-snap-align: start;
+    }
+    .latest-card[hidden] { display: none; }
+    .latest-card__link {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+      padding: 12px;
+    }
+    .latest-card:focus-within,
+    .latest-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.16);
+      box-shadow:
+        0 20px 42px rgba(0,0,0,0.55),
+        0 0 18px rgba(125, 195, 184, 0.18);
+    }
+
+    .latest-card__media {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: rgba(3, 11, 22, 0.18);
+      border: 1px solid rgba(125, 195, 184, 0.7);
+      box-shadow:
+        0 0 16px rgba(125,195,184,0.26),
+        0 10px 22px rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .latest-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: none;
+    }
+    .latest-card__media::after {
+      content: none;
+    }
+
+    .latest-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    .latest-card__tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .latest-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px 5px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      background: rgba(255,255,255,0.06);
+      font-family: "Newslab", "Nunito Sans", system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(247,240,229,0.9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      text-shadow: none;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+    .latest-card__tag::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px rgba(0,0,0,0.35);
+    }
+    .latest-card__tag--event { color: rgba(125,195,184,0.95); background: rgba(125,195,184,0.14); }
+    .latest-card__tag--deal { color: rgba(240,208,122,0.95); background: rgba(240,208,122,0.14); }
+    .latest-card__tag--new { color: rgba(244,0,18,0.95); background: rgba(244,0,18,0.16); }
+
+    .latest-card__title {
+      font-family: "AshwoodExtraBold", "AshwoodCondensed", serif;
+      font-weight: 800;
+      font-size: clamp(17px, 4.8vw, 21px);
+      line-height: 1.14;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.5);
+      max-width: 26ch;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .latest-card__copy {
+      font-size: 12.5px;
+      color: rgba(244,246,251,0.86);
+      line-height: 1.5;
+      max-width: 44ch;
+      text-shadow: 0 5px 14px rgba(0,0,0,0.45);
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .latest-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 6px;
+      margin-top: auto;
+    }
+    .latest-card__rule {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--card-accent), rgba(255,255,255,0.12), var(--card-accent-2));
+      opacity: 0.85;
+    }
+    .latest-card__micro {
+      font-family: "Newslab", "Nunito Sans", system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(244,246,251,0.74);
+      white-space: nowrap;
+      text-shadow: 0 6px 14px rgba(0,0,0,0.45);
+    }
+
+    @media (max-width: 768px) {
+      .latest-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .latest-card__link {
+        padding: 12px;
+      }
+    }
+
+    .latest-cta {
+      position: relative;
+      z-index: 3;
+      margin-top: clamp(18px, 4vw, 28px);
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .latest-cta__btn {
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .btn-pill {
+      --btn-bg: linear-gradient(to bottom, #303030, #121212);
+      --btn-glow: rgba(255, 255, 255, 0.18);
+      --btn-shadow: rgba(0, 0, 0, 0.7);
+      text-decoration: none;
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      border-radius: 40px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--btn-bg);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      white-space: nowrap;
+      min-height: 48px;
+      text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.75),
+        0 0 3px rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        border-color 0.18s ease-out,
+        letter-spacing 0.2s ease-out;
+      cursor: pointer;
+    }
+
+    .btn-pill::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .btn-pill::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, var(--btn-glow), transparent 70%);
+      opacity: 0;
+      filter: blur(14px);
+      transition:
+        opacity 0.25s ease-out,
+        filter 0.25s ease-out;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .btn-pill:hover {
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: 0.08em;
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.8),
+        0 0 18px rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-pill:hover::after {
+      opacity: 0.85;
+      filter: blur(22px);
+    }
+
+    .btn-pill:focus-visible {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 180, 176, 0.85),
+        0 12px 24px rgba(0,0,0,0.55);
+    }
+
+    .btn-label {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-order {
+      --btn-bg:
+        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+      --btn-glow: rgba(244, 0, 18, 0.55);
+      color: #FFFFFF;
+      border-color: rgba(255, 180, 176, 0.85);
+    }
+
+    .btn-order:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.85),
+        0 0 34px rgba(244, 0, 18, 0.45);
+    }
+
+    .btn-icon-order {
+      background-image: url("/assets/img/home/order.png");
+    }
+
+    /* Slide 3 CTA style reused */
+    .menu-cta{
+      --glow: rgba(244, 0, 18, 0.68);
+      --border: rgba(244, 0, 18, 0.95);
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 22px;
+      min-height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color:#ff1f2b;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      font-size: 13px;
+      text-decoration:none;
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.65),
+        0 0 16px rgba(244, 0, 18, 0.56),
+        0 0 36px rgba(244, 0, 18, 0.32),
+        inset 0 0 12px rgba(244, 0, 18, 0.30);
+      text-shadow: 0 0 10px rgba(244, 0, 18, 0.24);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .16s ease, box-shadow .16s ease, letter-spacing .18s ease, border-color .16s ease, color .18s ease;
+      cursor:pointer;
+    }
+    .menu-cta::before{
+      content:""; position:absolute; inset:2px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10); pointer-events:none; opacity:.85;
+    }
+    .menu-cta::after{
+      content:""; position:absolute; inset:-30%; border-radius:999px; pointer-events:none;
+      background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
+      opacity:0; filter: blur(18px); transition: opacity .22s ease, filter .22s ease;
+      z-index:-1;
+    }
+    .menu-cta:hover{
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: .08em;
+      border-color: rgba(255, 120, 126, 1);
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.55),
+        0 0 22px rgba(244, 0, 18, 0.78),
+        0 0 46px rgba(244, 0, 18, 0.45),
+        inset 0 0 16px rgba(244, 0, 18, 0.36);
+      color: #ffd5d9;
+    }
+    .menu-cta:hover::after{ opacity:.85; filter: blur(22px); }
+    .menu-cta:active{ transform: translateY(0); }
+    .menu-cta:focus{ outline: none; }
+    .menu-cta:focus-visible{
+      box-shadow:
+        0 0 0 2px rgba(3,11,22,1),
+        0 0 0 4px rgba(255, 120, 126, 0.85),
+        0 14px 28px rgba(0,0,0,0.55);
+    }
+    .menu-cta .arrow{ display:inline-block; transition: transform .16s ease; }
+    .menu-cta:hover .arrow{ transform: translateX(2px); }
+
+    @media (max-width: 360px) {
+      .latest-title { font-size: 28px; }
+      .latest-filter-btn { letter-spacing: 0.08em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body class="safe-top safe-bottom">
+  <main>
+    <section id="the-latest" class="latest" aria-labelledby="the-latest-title">
+      <div class="latest-topline" aria-hidden="true"></div>
+      <div class="latest-bg-flip" aria-hidden="true"></div>
+      <div class="wrap">
+        <header class="latest-header">
+          <h2 id="the-latest-title" class="latest-title">
+            <span class="latest-title-line">What's Hot</span>
+            <span class="latest-title-line">Right Now.</span>
+          </h2>
+          <p class="latest-subtitle">The news, events, and moments you don't want to miss.</p>
+        </header>
+
+        <div class="latest-filters" role="tablist" aria-label="Filter what's hot" data-scroll-x>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="true" data-filter="all" data-active="true">All</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="event" data-active="false">Events</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="deal" data-active="false">Deals</button>
+          <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="new" data-active="false">New</button>
+        </div>
+
+        <div class="latest-list" role="list" data-scroll-x>
+          <article class="latest-card" role="listitem" data-type="event new" aria-label="Pre-Party Dine-In - Vanderbilt @ Aertson">
+            <a class="latest-card__link" href="/latest#pre-party-dine-in">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Friends sharing NASHVILLE HOT CHICKEN at a Party Fowl preview event"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="/assets/img/home/the-latest/pre-party-dine-in.png"
+                     data-fallback="https://images.pexels.com/photos/8921578/pexels-photo-8921578.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--new">New</span>
+                </div>
+                <h3 class="latest-card__title">Pre-Party Dine-In - Vanderbilt @ Aertson</h3>
+                <p class="latest-card__copy">
+                  Party Fowl invites guests to preview the new Vanderbilt location with a free dine-in meal and a sneak-peek at the bar. Boozy slushies and NASHVILLE HOT CHICKEN vibes (drinks available for purchase).
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Limited Preview</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="event new" aria-label="Pre-Party To-Go - Vanderbilt @ Aertson">
+            <a class="latest-card__link" href="tel:16156100750">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Crispy NASHVILLE HOT CHICKEN tenders packed for takeout"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="/assets/img/home/the-latest/pre-party-to-go.png"
+                     data-fallback="https://images.pexels.com/photos/30635702/pexels-photo-30635702.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--new">New</span>
+                </div>
+                <h3 class="latest-card__title">Pre-Party To-Go - Vanderbilt @ Aertson</h3>
+                <p class="latest-card__copy">
+                  Complimentary NASHVILLE HOT CHICKEN meals packed to enjoy at home. Reserve your pickup by calling (615) 610-0750.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Reserve Ahead</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="deal" aria-label="Happy Hour - All Day, Every Day">
+            <a class="latest-card__link" href="/latest#happy-hour">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Cocktails lined up on the Party Fowl bar"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="/assets/img/home/the-latest/happy-hour.png"
+                     data-fallback="https://images.pexels.com/photos/31553344/pexels-photo-31553344.png" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Happy Hour - All Day, Every Day</h3>
+                <p class="latest-card__copy">
+                  Running now through the end of the year: $2 domestic light beers, $3 single wells, $4 house wines and $5 house margaritas. All day, every day.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Happening Now</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="deal" aria-label="Cheap Chick Monday and Kids Eat Free">
+            <a class="latest-card__link" href="/latest#cheap-chick">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Child smiling while eating NASHVILLE HOT CHICKEN at Party Fowl"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="/assets/img/home/the-latest/cheap-chick-monday.png"
+                     data-fallback="https://images.pexels.com/photos/12788473/pexels-photo-12788473.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Cheap Chick Monday &amp; Kids Eat Free</h3>
+                <p class="latest-card__copy">
+                  Mondays (5 pm - close): $2 domestic drafts and an $8 two-tender basket. Kids eat free with the purchase of an adult entree - a perfect family night.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Mondays</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="latest-card" role="listitem" data-type="event deal" aria-label="Local Love / College Night - Wednesdays">
+            <a class="latest-card__link" href="/latest#local-love-college-night">
+              <div class="latest-card__media">
+                <img class="latest-card__img lazy-asset"
+                     alt="Friends toasting drinks and smiling"
+                     loading="lazy"
+                     decoding="async"
+                     data-src="/assets/img/home/the-latest/local-love-college-night.png"
+                     data-fallback="https://images.pexels.com/photos/6174132/pexels-photo-6174132.jpeg" />
+              </div>
+              <div class="latest-card__body">
+                <div class="latest-card__tags">
+                  <span class="latest-card__tag latest-card__tag--event">Event</span>
+                  <span class="latest-card__tag latest-card__tag--deal">Deal</span>
+                </div>
+                <h3 class="latest-card__title">Local Love / College Night - Wednesdays</h3>
+                <p class="latest-card__copy">
+                  Wednesdays (5 pm - close): $4 shotskis, $5 burgers and $6 boozy slushies. Rep your school colours and bring the zero-chill energy.
+                </p>
+                <div class="latest-card__meta" aria-hidden="true">
+                  <span class="latest-card__rule"></span>
+                  <span class="latest-card__micro">Wednesdays</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+
+        <div class="latest-cta">
+          <a class="latest-cta__btn menu-cta" href="../../pages/locations.html" target="_top" aria-label="See what's on near you">
+            <span class="btn-label">See What's On Near You</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.latest-card'));
+      const filters = Array.from(document.querySelectorAll('.latest-filter-btn'));
+
+      if (cards.length === 0) return;
+
+      function loadImage(img) {
+        if (!img || img.dataset.loaded === '1') return;
+        const src = img.getAttribute('data-src');
+        const fallback = img.getAttribute('data-fallback');
+        if (src) img.src = src;
+        if (fallback) {
+          img.onerror = () => {
+            if (img.src !== fallback) img.src = fallback;
+          };
+        }
+        img.dataset.loaded = '1';
+      }
+
+      const lazyImgs = Array.from(document.querySelectorAll('img.lazy-asset[data-src]'));
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const img = entry.target;
+            loadImage(img);
+            io.unobserve(img);
+          });
+        }, { rootMargin: '200px 0px', threshold: 0.01 });
+        lazyImgs.forEach((img) => io.observe(img));
+      } else {
+        lazyImgs.forEach(loadImage);
+      }
+
+      function setActiveFilter(btn) {
+        filters.forEach((b) => {
+          const active = b === btn;
+          b.dataset.active = active ? 'true' : 'false';
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+
+      function applyFilter(filter) {
+        cards.forEach((card) => {
+          const tags = (card.dataset.type || '').split(' ').filter(Boolean);
+          const visible = filter === 'all' || tags.includes(filter);
+          card.hidden = !visible;
+          card.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        });
+      }
+
+      filters.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setActiveFilter(btn);
+          applyFilter(btn.dataset.filter || 'all');
+        });
+      });
+
+      const initialFilter = filters.find((btn) => btn.dataset.active === 'true') || filters[0];
+      if (initialFilter) {
+        setActiveFilter(initialFilter);
+        applyFilter(initialFilter.dataset.filter || 'all');
+      } else {
+        applyFilter('all');
+      }
+    })();
+  </script>
+
+  <script>
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pointerFine = window.matchMedia('(pointer: fine)').matches;
+      if (prefersReduced || !pointerFine) return;
+
+      const lines = Array.from(document.querySelectorAll('.latest-title-line'));
+      if (!lines.length) return;
+
+      function attachWave(titleEl){
+        if (!titleEl || titleEl.dataset.splitLetters === '1') return;
+        titleEl.dataset.splitLetters = '1';
+        const raw = titleEl.textContent || '';
+        titleEl.textContent = '';
+        const frag = document.createDocumentFragment();
+        const letters = [];
+        for (const ch of raw){
+          const s = document.createElement('span');
+          s.className = 'lt-letter';
+          s.textContent = (ch === ' ') ? '\u00A0' : ch;
+          frag.appendChild(s);
+          letters.push(s);
+        }
+        titleEl.appendChild(frag);
+
+        const N = letters.length;
+        const state = new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        const target= new Array(N).fill(0).map(() => ({ s:1, dy:0, rot:0, z:0, g:0 }));
+        let rafId = 0, inside = false;
+
+        function computeTargets(idx){
+          const baseMaxBoost = 0.35;
+          const falloff = 0.92;
+          const maxTilt = 2.0;
+          const rect = titleEl.getBoundingClientRect();
+          const headroom = Math.max(0, rect.top);
+          const safety = Math.max(0.86, Math.min(1, headroom / 90));
+          const maxBoost = baseMaxBoost * safety;
+          for(let j=0;j<N;j++){
+            const d = idx < 0 ? Infinity : Math.abs(j-idx);
+            const boost = idx < 0 ? 0 : maxBoost * Math.exp(-d * falloff);
+            const s = 1 + boost;
+            const dy = idx < 0 ? 0 : 1.5 * Math.exp(-d * 1.08) * (boost / Math.max(0.0001, maxBoost));
+            const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
+            const z = 50 - (idx < 0 ? 0 : d);
+            const g = idx < 0 ? 0 : Math.max(0, Math.min(1, (boost / Math.max(0.0001, maxBoost)) * 1.0));
+            target[j].s = s;
+            target[j].dy = dy;
+            target[j].rot = rot;
+            target[j].z = z;
+            target[j].g = g;
+          }
+        }
+
+        function animate(){
+          let moving = false;
+          const k = 0.22;
+          for(let j=0;j<N;j++){
+            const st = state[j];
+            const tg = target[j];
+            st.s += (tg.s - st.s) * k;
+            st.dy += (tg.dy - st.dy) * k;
+            st.rot += (tg.rot - st.rot) * k;
+            st.z += (tg.z - st.z) * k;
+            st.g += (tg.g - st.g) * 0.28;
+
+            const el = letters[j];
+            el.style.setProperty('--scale', st.s.toFixed(3));
+            el.style.setProperty('--dy', st.dy.toFixed(2) + 'px');
+            el.style.setProperty('--rot', st.rot.toFixed(2) + 'deg');
+            el.style.setProperty('--z', String(st.z.toFixed(0)));
+            el.style.setProperty('--glow', st.g.toFixed(3));
+
+            if (Math.abs(tg.s - st.s) > 0.002 || Math.abs(tg.dy - st.dy) > 0.02 || Math.abs(tg.rot - st.rot) > 0.02) {
+              moving = true;
+            }
+          }
+          if (moving || inside) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            rafId = 0;
+          }
+        }
+
+        function ensure(){ if (!rafId) rafId = requestAnimationFrame(animate); }
+
+        function nearestIndexFromClientX(x){
+          let best = -1;
+          let bestDist = Infinity;
+          for(let j=0;j<N;j++){
+            const r = letters[j].getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const d = Math.abs(x - cx);
+            if (d < bestDist){ bestDist = d; best = j; }
+          }
+          return best;
+        }
+
+        titleEl.addEventListener('pointerenter', () => { inside = true; });
+        titleEl.addEventListener('pointermove', (e) => {
+          inside = true;
+          computeTargets(nearestIndexFromClientX(e.clientX));
+          ensure();
+        });
+        titleEl.addEventListener('pointerleave', () => {
+          inside = false;
+          computeTargets(-1);
+          ensure();
+        });
+
+        computeTargets(-1);
+      }
+
+      lines.forEach(attachWave);
+    })();
+  </script>
+</body>
+</html>

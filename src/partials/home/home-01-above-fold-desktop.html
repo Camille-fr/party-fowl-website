@@ -39,12 +39,14 @@
       color-scheme: dark;
       --bg-deep: #010915;
       --bg-mid: #03172b;
-    --bg-highlight: #06263d;
+   --bg-highlight: #06263d;
     --accent-red: #f40012;
     --accent-teal: #7dc3b8;
     --shell-max: 1440px;
     --shell-pad: clamp(24px, 4vw, 56px);
     --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --hero-viewport-height: 100svh;
+      --pf-header-height: 0px;
   }
 
     * {
@@ -54,50 +56,29 @@
     }
 
     html, body {
-      height: 100%;
+      height: auto;
+      min-height: 0;
     }
 
     html {
       scroll-behavior: smooth;
-      background-color: var(--bg-deep);
+      background-color: transparent;
     }
 
     body {
       font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-mid);
-      background-image:
-        radial-gradient(circle at 18% 0%, rgba(244, 0, 18, 0.06), transparent 42%),
-        radial-gradient(circle at 70% 16%, rgba(125, 195, 184, 0.08), transparent 55%),
-        linear-gradient(180deg, rgba(1, 20, 36, 0.95) 0%, rgba(2, 9, 17, 0.9) 46%, rgba(1, 2, 5, 1) 100%);
+      background: transparent;
       color: #fff;
       line-height: 1.5;
-      min-height: 100%;
+      min-height: 0;
       overflow-x: hidden;
       position: relative;
       isolation: isolate;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: var(--noise-texture);
-      opacity: 0.35;
-      mix-blend-mode: screen;
-      z-index: -1;
-    }
-
+    body::before,
     body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(244, 0, 18, 0.22), transparent 38%),
-        radial-gradient(circle at 10% 10%, rgba(125, 195, 184, 0.16), transparent 30%);
-      opacity: 0.5;
-      z-index: -2;
+      display: none;
     }
 
     img {
@@ -214,10 +195,13 @@
     .hero {
       position: relative;
       overflow: hidden;
-      min-height: 100vh;
       padding: 0;
       background-color: #000814;
       isolation: isolate;
+      min-height: var(--hero-viewport-height, 100vh);
+      box-sizing: border-box;
+      display: flex;
+      align-items: stretch;
     }
 
     .hero-video {
@@ -267,9 +251,9 @@
     .hero-inner {
       position: relative;
       z-index: 2;
-      min-height: 100vh;
-      padding-top: calc(clamp(140px, 18vh, 220px) + 40px);
-      padding-bottom: clamp(12px, 3vh, 32px);
+      min-height: var(--hero-viewport-height, 100vh);
+      padding-top: calc(var(--pf-header-height, 0px) + clamp(96px, 12vh, 164px));
+      padding-bottom: clamp(24px, 5vh, 52px);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -439,49 +423,6 @@
       z-index: 5;
     }
 
-    .hero-bottom-rip {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -4px;
-      height: 54px;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .hero-bottom-rip::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 50px;
-      background: none;
-      z-index: 1;
-    }
-
-    .hero-bottom-rip::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -8px;
-      height: 3px;
-      background: linear-gradient(
-        90deg,
-        rgba(244, 0, 18, 0) 0%,
-        rgba(244, 0, 18, 0.75) 20%,
-        rgba(244, 0, 18, 1) 50%,
-        rgba(244, 0, 18, 0.75) 80%,
-        rgba(244, 0, 18, 0) 100%
-      );
-      box-shadow:
-        0 0 8px rgba(244, 0, 18, 0.8),
-        0 0 16px rgba(244, 0, 18, 0.65);
-      border-radius: 999px;
-      z-index: 0;
-    }
-
     @media (min-width: 1024px) {
       .hero-inner {
         flex-direction: row;
@@ -533,21 +474,21 @@
 <body>
   <main class="desktop-preview">
     <section class="hero scene">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source src="../../assets/img/home/herov2.mp4" type="video/mp4" />
+      <video class="hero-video" muted loop playsinline preload="metadata" poster="../../assets/img/home/background.png" data-defer="idle" data-autoplay="1">
+        <source data-src="../../assets/img/home/herov2.mp4" type="video/mp4" />
       </video>
 
       <div class="container hero-inner">
         <div class="hero-main">
           <p class="hero-kicker">
-            Known for its legendary Nashville Hot Chicken and late-night party energy. <br />
+            Known for its legendary NASHVILLE HOT CHICKEN and late-night party energy. <br />
             Party Fowl is where groups come to eat, drink,
             and push their limits together.
           </p>
 
           <h1 class="hero-title-main">
             <span class="hero-line-ashwood">NASHVILLE HOT CHICKEN.</span>
-            <span class="hero-line-extrabold">BOZZY SLUSHIES.</span>
+            <span class="hero-line-extrabold">BOOZY SLUSHIES.</span>
             <span class="hero-line-cheap">ZERO CHILL.</span>
           </h1>
         </div>
@@ -561,10 +502,10 @@
         src="../../assets/img/home/chill.png"
         alt="Party Fowl – Chill Badge"
         class="hero-chill"
+        decoding="async"
       />
 
       <div class="hero-neon-separator" aria-hidden="true"></div>
-      <div class="hero-bottom-rip" aria-hidden="true"></div>
     </section>
   </main>
 
@@ -717,6 +658,58 @@
           });
         }
       }
+    })();
+  </script>
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const parentWindow = (() => {
+        try {
+          if (window.parent && window.parent !== window) return window.parent;
+        } catch (_) { /* cross-origin guard */ }
+        return null;
+      })();
+
+      function applyHeaderHeight(value) {
+        const height = Number.isFinite(value) ? value : Number(value) || 0;
+        root.style.setProperty('--pf-header-height', `${Math.max(0, height)}px`);
+      }
+
+      function refreshHeader(event) {
+        if (event && event.detail && typeof event.detail.height === 'number') {
+          applyHeaderHeight(event.detail.height);
+          return;
+        }
+        if (parentWindow) {
+          try {
+            const fromParent = parentWindow.__pfHeaderHeight;
+            if (typeof fromParent === 'number') {
+              applyHeaderHeight(fromParent);
+              return;
+            }
+          } catch (_) { /* ignore */ }
+        }
+        applyHeaderHeight(0);
+      }
+
+      function refreshViewportHeight() {
+        let viewportHeight = window.innerHeight || 0;
+        if (parentWindow) {
+          try {
+            viewportHeight = parentWindow.innerHeight || viewportHeight;
+          } catch (_) { /* ignore */ }
+        }
+        root.style.setProperty('--hero-viewport-height', `${Math.max(0, viewportHeight)}px`);
+      }
+
+      refreshHeader();
+      refreshViewportHeight();
+
+      if (parentWindow && parentWindow.addEventListener) {
+        parentWindow.addEventListener('pfHeaderHeightChange', refreshHeader);
+        parentWindow.addEventListener('resize', refreshViewportHeight);
+      }
+      window.addEventListener('resize', refreshViewportHeight);
     })();
   </script>
 </body>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Party Fowl – Mobile Hero</title>
-  <meta name="description" content="Legendary Nashville Hot Chicken, boozy slushies & late-night party energy. Mobile hero slide." />
+  <meta name="description" content="Legendary NASHVILLE HOT CHICKEN, boozy slushies & late-night party energy. Mobile hero slide." />
   <meta name="robots" content="index, follow" />
 
   <!-- Local fonts only -->
@@ -65,7 +65,8 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      height: 100%;
+      height: auto;
+      min-height: 0;
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
@@ -83,40 +84,19 @@
 
     body {
       font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-mid);
-      background-image:
-        radial-gradient(circle at 18% 0%, rgba(244, 0, 18, 0.08), transparent 42%),
-        radial-gradient(circle at 70% 16%, rgba(125, 195, 184, 0.10), transparent 55%),
-        linear-gradient(180deg, rgba(1, 20, 36, 0.95) 0%, rgba(2, 9, 17, 0.9) 48%, rgba(1, 2, 5, 1) 100%);
+      background: transparent;
       color: #fff;
       line-height: 1.5;
       overflow-x: hidden;
       padding-bottom: env(safe-area-inset-bottom);
-      min-height: 100%;
+      min-height: 0;
       position: relative;
       isolation: isolate;
       overscroll-behavior-y: auto;
     }
     body::before,
     body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-    body::before {
-      background-image: var(--noise-texture);
-      opacity: 0.35;
-      mix-blend-mode: screen;
-    }
-    body::after {
-      z-index: -2;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(244, 0, 18, 0.24), transparent 38%),
-        radial-gradient(circle at 8% 12%, rgba(125, 195, 184, 0.16), transparent 35%),
-        radial-gradient(circle at 90% 6%, rgba(244, 0, 18, 0.12), transparent 40%);
-      opacity: 0.55;
+      display: none;
     }
 
     img, video { max-width: 100%; display: block; }
@@ -150,11 +130,16 @@
     =============================== */
     .hero {
       position: relative;
-      height: 100svh;
-      min-height: 100svh;
       background: #000814;
       overflow: hidden;
       isolation: isolate;
+      min-height: 100svh;
+      min-height: 100dvh;
+      min-height: 100vh;
+      height: 100svh;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-end;
     }
 
     .hero-video {
@@ -190,15 +175,17 @@
     }
 
     .hero-inner {
-      position: absolute;
-      inset: 0;
+      position: relative;
       z-index: 2;
-      height: 100%;
       width: 100%;
-      padding-top: calc(env(safe-area-inset-top) + 72px);
-      padding-left: 0;
-      padding-right: 0;
-      padding-bottom: 0;
+      min-height: 100svh;
+      min-height: 100dvh;
+      min-height: 100vh;
+      padding-top: calc(var(--pf-header-height, 0px) + env(safe-area-inset-top) + 40px);
+      padding-bottom: clamp(52px, 12vh, 108px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       box-sizing: border-box;
       pointer-events: none;
     }
@@ -220,10 +207,7 @@
     }
 
     .hero-stack {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: clamp(24px, 6vh, 64px);
+      position: relative;
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -231,7 +215,7 @@
       gap: 10px;
       text-align: center;
       padding: 0 16px;
-      margin: 0;
+      margin: auto 0 0;
       pointer-events: auto;
       padding-top: 10px;
       padding-bottom: 10px;
@@ -317,49 +301,29 @@
       }
     }
 
-    /* Torn edge bottom */
-    .hero-bottom-rip {
-      position:absolute;
-      left:0; right:0;
-      bottom:0;
-      height: 54px;
-      z-index: 4;
-      pointer-events:none;
-    }
-    .hero-bottom-rip::before{
-      content:"";
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height: 50px;
-      background: none;
-      opacity: 0.95;
-    }
-    .hero-bottom-rip::after{
-      content:"";
-      position:absolute;
-      left:0; right:0; bottom:-8px;
-      height: 4px;
-      background:
-        radial-gradient(circle at 12% 50%, rgba(244,0,18,0.55), transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(244,0,18,0.95), rgba(244,0,18,0.7) 32%, transparent 55%),
-        radial-gradient(circle at 88% 50%, rgba(244,0,18,0.55), transparent 60%),
-        linear-gradient(90deg, rgba(244,0,18,0) 0%, rgba(244,0,18,0.88) 18%, rgba(244,0,18,1) 50%, rgba(244,0,18,0.88) 82%, rgba(244,0,18,0) 100%);
+    .hero-divider {
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      width: 100vw;
+      max-width: none;
+      transform: translateX(-50%);
+      height: 6px;
       border-radius: 999px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(244, 0, 18, 0) 0%,
+          rgba(244, 0, 18, 0.92) 35%,
+          rgba(244, 0, 18, 0.9) 65%,
+          rgba(244, 0, 18, 0) 100%
+        );
       box-shadow:
-        0 0 6px rgba(244,0,18,0.92),
-        0 0 20px rgba(244,0,18,0.58),
-        0 0 44px rgba(244,0,18,0.32);
-      animation: neonPulse 3.4s ease-in-out infinite;
-    }
-    @keyframes neonPulse {
-      0%, 100% {
-        filter: drop-shadow(0 0 16px rgba(244,0,18,0.65));
-        opacity: 0.92;
-      }
-      50% {
-        filter: drop-shadow(0 0 28px rgba(244,0,18,0.85));
-        opacity: 1;
-      }
+        0 0 18px rgba(244, 0, 18, 0.75),
+        0 0 32px rgba(244, 0, 18, 0.35),
+        inset 0 0 12px rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+      filter: drop-shadow(0 0 14px rgba(244, 0, 18, 0.45));
     }
 
 
@@ -373,9 +337,8 @@
     }
 
     @media (min-width: 820px){
-      body{ padding-bottom: calc(env(safe-area-inset-bottom) + 160px); }
+      body{ padding-bottom: calc(env(safe-area-inset-bottom) + 92px); }
       .wrap{ max-width: 900px; }
-      .hero{ min-height: 110svh; }
       .hero-stack{
         flex-direction: row;
         align-items: flex-end;
@@ -399,8 +362,8 @@
   <main>
     <!-- HERO = SLIDE 1 UNIQUEMENT -->
     <section class="hero" aria-label="Hero">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source src="../../assets/img/home/herov2.mp4" type="video/mp4" />
+      <video class="hero-video" muted loop playsinline preload="metadata" poster="../../assets/img/home/background.png" data-defer="idle" data-autoplay="1">
+        <source data-src="../../assets/img/home/herov2.mp4" type="video/mp4" />
       </video>
 
       <div class="wrap hero-inner">
@@ -412,7 +375,7 @@
           </h1>
 
           <p class="hero-kicker">
-            Known for its legendary Nashville Hot Chicken and late-night party energy. Party Fowl is where groups come to eat, drink, and push their limits together.
+            Known for its legendary NASHVILLE HOT CHICKEN and late-night party energy. Party Fowl is where groups come to eat, drink, and push their limits together.
           </p>
 
           <div class="hero-badge-wrap" aria-hidden="true">
@@ -421,7 +384,7 @@
         </div>
       </div>
 
-      <div class="hero-bottom-rip" aria-hidden="true"></div>
+      <div class="hero-divider" aria-hidden="true"></div>
     </section>
   </main>
 

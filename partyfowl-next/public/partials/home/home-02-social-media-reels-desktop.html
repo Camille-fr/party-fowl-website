@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Party Fowl – Social Media Reels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Local fonts only -->
+
+  <style>
+    /* --------- FONTS LOCALES --------- */
+    @font-face {
+      font-family: "BartenderBold";
+      src: url("/assets/fonts/Bartender-BoldSansLetterpress.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("/assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "AshwoodExtraBold";
+      src: url("/assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
+      font-weight: 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("/assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+    }
+    /* Alias Google Nunito Sans → local Adrenaline */
+    @font-face {
+      font-family: "Nunito Sans";
+      src: url("/assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: "Newslab";
+      src: url("/assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg-deep: #010915;
+      --bg-mid: #03172b;
+      --bg-highlight: #06263d;
+      --accent-red: #f40012;
+      --accent-teal: #7dc3b8;
+      --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      --reel-gap: clamp(14px, 1.6vw, 22px);
+      --pf-whats-new-media-height: clamp(420px, 47vw, 640px);
+      --pf-whats-new-media-width: min(1300px, 96vw);
+      --pf-reel-video-radius: clamp(16px, 1.3vw, 24px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: auto;
+      min-height: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: transparent;
+    }
+
+    body {
+      font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: transparent;
+      color: #fff;
+      line-height: 1.5;
+      min-height: 0;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: none;
+      opacity: 0;
+      z-index: -1;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .container {
+      width: min(100%, 1440px);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 3vw, 40px);
+    }
+
+    .desktop-preview {
+      width: 100%;
+      margin: 0;
+    }
+
+    @media (max-width: 1200px) {
+      .container { padding: 0 clamp(18px, 3.2vw, 32px); }
+    }
+
+    @media (max-width: 1023px) {
+      .container { padding: 0 clamp(16px, 4vw, 28px); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 clamp(14px, 5vw, 22px); }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 clamp(12px, 6vw, 18px); }
+    }
+
+
+    /* ------------------------------
+       WHAT'S NEW SECTION (SLIDE 2)
+    --------------------------------*/
+    .whats-new {
+      position: relative;
+      padding-top: clamp(40px, 5.2vw, 64px);
+      padding-bottom: clamp(28px, 3vw, 40px);
+      background: transparent;
+      overflow: visible;
+    }
+
+    .whats-new::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: none;
+      opacity: 0;
+    }
+
+    .whats-new .blue-dirt {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520' viewBox='0 0 520 520'%3E%3Cdefs%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.22' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='7 0 0 0 -3  0 7 0 0 -3  0 0 7 0 -3  0 0 0 1 0'/%3E%3C/feComponentTransfer%3E%3CfeFuncR type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3CfeFuncG type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3CfeFuncB type='table' tableValues='0 0 0 0 0.3 0.85 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C/defs%3E%3Crect width='520' height='520' fill='%236b1a22' filter='url(%23d)' opacity='0.85'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 520px 520px;
+    }
+
+    .whats-new-inner {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.6vw, 32px);
+      align-items: center;
+      padding-block: 0;
+      padding-top: clamp(12px, 1.8vw, 24px);
+      margin-inline: auto;
+    }
+
+    .whats-new-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: clamp(12px, 1.8vw, 18px);
+      position: relative;
+      z-index: 1;
+      padding-top: clamp(8px, 1.1vw, 16px);
+    }
+
+    .whats-new-title {
+      text-align: center;
+      font-family: "AshwoodCondensed", system-ui, sans-serif;
+      font-size: 68px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.95);
+      position: relative;
+      padding: 10px 0;
+      text-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.75),
+        0 0 10px rgba(244, 0, 18, 0.35);
+      z-index: 2;
+    }
+
+    .whats-new-title::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 96px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(244, 0, 18, 0) 0%,
+        rgba(244, 0, 18, 0.95) 50%,
+        rgba(244, 0, 18, 0) 100%
+      );
+      box-shadow:
+        0 0 10px rgba(244, 0, 18, 0.55),
+        0 0 22px rgba(244, 0, 18, 0.28);
+      border-radius: 999px;
+    }
+
+    /* Interactive per-letter title hover */
+    .whats-new-title {
+      overflow: visible; /* allow glow/scaling to overflow safely */
+    }
+    .wn-letter {
+      display: inline-block;
+      position: relative;
+      padding: 0 0.02em;
+      transform: translateZ(0) scale(var(--scale, 1)) translateY(var(--dy, 0px)) rotate(var(--rot, 0deg));
+      transform-origin: 50% 82%;
+      transition:
+        transform 0s,
+        text-shadow 0.15s ease,
+        filter 0.15s ease;
+      will-change: transform, filter;
+      z-index: var(--z, 0);
+      text-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.85),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 40px)) rgba(244, 0, 18, 0.55),
+        0 0 calc(max(0px, (var(--scale, 1) - 1) * 20px)) rgba(125, 195, 184, 0.28);
+    }
+    .whats-new-title:hover .wn-letter { filter: saturate(1.05); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wn-letter { transition: none; transform: none !important; }
+    }
+
+    /* SOCIAL ICON ROW */
+    .social-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(14px, 2.6vw, 24px);
+      margin-top: clamp(6px, 1.4vw, 12px);
+      margin-bottom: clamp(8px, 2vw, 14px);
+      position: relative;
+      isolation: isolate; /* allow a backdrop-blurred gradient behind without leaking */
+    }
+
+    .whats-new-media {
+      position: relative;
+      width: min(var(--pf-whats-new-media-width), 100%);
+      height: var(--pf-whats-new-media-height);
+      margin: 0 auto;
+      margin-bottom: clamp(26px, 3vw, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 0;
+    }
+
+    /* Remove blurred/halo background behind social buttons */
+    .social-row::before { content: none; display: none; }
+    .social-row:hover::before { content: none; display: none; }
+
+    .social-btn {
+      width: clamp(48px, 3.6vw, 64px);
+      height: clamp(48px, 3.6vw, 64px);
+      border-radius: 999px;
+      background: rgba(1, 15, 30, 0.08); /* even lighter, keeps the backdrop effect visible */
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      /* Match mobile subtitle font for consistency */
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      box-shadow:
+        0 10px 16px rgba(0, 0, 0, 0.50),
+        0 0 10px rgba(125, 195, 184, 0.12),
+        0 0 10px rgba(244, 0, 18, 0.08);
+      /* Remove backdrop blur behind each button */
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition:
+        transform 0.14s ease-out,
+        border-color 0.16s ease-out,
+        box-shadow 0.16s ease-out,
+        color 0.16s ease-out;
+      color: rgba(255, 255, 255, 0.82);
+      position: relative;
+      overflow: visible; /* let the halo breathe outside without clipping */
+      --glow-color: rgba(125, 195, 184, 0.35);
+      --halo-color: rgba(125, 195, 184, 0.28);
+    }
+
+    /* Outer circular halo (always round via border-radius) */
+    .social-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow:
+        0 0 18px 8px var(--halo-color),
+        0 0 34px 18px color-mix(in oklab, var(--halo-color) 60%, transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease-out, filter 0.25s ease-out;
+      filter: saturate(1);
+    }
+
+    /* Inner soft radial highlight (clipped to circle) */
+    .social-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        radial-gradient(closest-side, var(--glow-color), rgba(125, 195, 184, 0.0) 70%);
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.25s ease-out, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      /* No blend mode to avoid square artifacts; we keep it clean */
+    }
+
+    .social-btn svg {
+      width: clamp(22px, 1.6vw, 28px);
+      height: clamp(22px, 1.6vw, 28px);
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.98;
+    }
+
+    .social-btn .social-icon {
+      width: clamp(22px, 1.6vw, 28px);
+      height: clamp(22px, 1.6vw, 28px);
+      display: block;
+      object-fit: contain;
+      opacity: 0.96;
+      filter:
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.28))
+        drop-shadow(0 0 14px rgba(125, 195, 184, 0.18));
+    }
+
+    .social-btn:hover .social-icon {
+      filter:
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.34))
+        drop-shadow(0 0 18px rgba(125, 195, 184, 0.24));
+    }
+
+    .social-btn--hot:hover .social-icon {
+      filter:
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))
+        drop-shadow(0 0 18px rgba(244, 0, 18, 0.18));
+    }
+
+    .social-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.62);
+      color: rgba(125, 195, 184, 0.95);
+      box-shadow:
+        0 14px 24px rgba(0, 0, 0, 0.72),
+        0 0 16px rgba(125, 195, 184, 0.22),
+        0 0 12px rgba(244, 0, 18, 0.16);
+    }
+
+    .social-btn:hover::after {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+
+    .social-btn:hover::before {
+      opacity: 1;
+    }
+
+    /* Keyboard accessibility mirrors hover */
+    .social-btn:focus-visible {
+      outline: none;
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.62);
+      color: rgba(125, 195, 184, 0.95);
+      box-shadow:
+        0 14px 24px rgba(0, 0, 0, 0.72),
+        0 0 16px rgba(125, 195, 184, 0.22),
+        0 0 12px rgba(244, 0, 18, 0.16);
+    }
+    .social-btn:focus-visible::after { opacity: 0.9; transform: scale(1); }
+    .social-btn:focus-visible::before { opacity: 1; }
+
+    .social-btn:active {
+      transform: translateY(0);
+    }
+
+    .social-btn--hot:hover {
+      color: rgba(244, 0, 18, 0.92);
+      box-shadow:
+        0 14px 24px rgba(0, 0, 0, 0.72),
+        0 0 18px rgba(244, 0, 18, 0.22),
+        0 0 12px rgba(125, 195, 184, 0.1);
+    }
+
+    .social-btn--hot {
+      --glow-color: rgba(244, 0, 18, 0.38);
+      --halo-color: rgba(244, 0, 18, 0.26);
+    }
+
+    /* CAROUSEL */
+    .carousel {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: min(var(--pf-whats-new-media-width), 100%);
+      margin: 0 auto;
+      padding-inline: clamp(18px, 3vw, 32px);
+      overflow: visible;
+    }
+
+    /* HOME SLIDE 2 */
+    .carousel-track {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--reel-gap);
+      align-items: stretch;
+      overflow-x: auto;
+      overflow-y: visible;
+      padding: 0 clamp(18px, 2.5vw, 30px);
+      height: 100%;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+      max-width: 100%;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+
+    .pf-reels {
+      --reel-width: clamp(360px, 26vw, 470px);
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+
+    .pf-reel {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      flex: 0 0 var(--reel-width);
+      max-width: var(--reel-width);
+      height: 100%;
+      min-height: 0;
+      scroll-snap-align: start;
+    }
+
+    .pf-reel__frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 2 / 3;
+      min-height: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      border-radius: var(--pf-reel-video-radius);
+    }
+
+    .pf-reel__media {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: var(--pf-reel-video-radius);
+      clip-path: inset(0 round var(--pf-reel-video-radius));
+      -webkit-mask-image: linear-gradient(#fff 0 0);
+      mask-image: linear-gradient(#fff 0 0);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .pf-reel__poster,
+    .pf-reel__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: block;
+      background: transparent;
+      border-radius: var(--pf-reel-video-radius);
+      clip-path: inset(0 round var(--pf-reel-video-radius));
+      -webkit-mask-image: linear-gradient(#fff 0 0);
+      mask-image: linear-gradient(#fff 0 0);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      filter: none;
+      transition: opacity 220ms ease, clip-path 220ms ease, border-radius 220ms ease;
+      will-change: opacity;
+    }
+
+    .pf-reel__poster {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .pf-reel__video {
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .pf-reel.is-video-visible .pf-reel__poster {
+      opacity: 0;
+    }
+
+    .pf-reel.is-video-visible .pf-reel__video {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pf-reel__play {
+      position: absolute;
+      top: auto;
+      bottom: clamp(110px, calc(2.8rem + 2vw), 150px);
+      right: clamp(16px, calc(1rem + 1.4vw), 32px);
+      width: clamp(46px, 3.4vw, 58px);
+      height: clamp(46px, 3.4vw, 58px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px) saturate(200%);
+      -webkit-backdrop-filter: blur(16px) saturate(200%);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 5;
+      color: #fff;
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.42),
+        inset 0 0 6px rgba(255, 255, 255, 0.35),
+        0 0 18px rgba(255, 255, 255, 0.15);
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        box-shadow 200ms ease,
+        border-color 200ms ease,
+        background 200ms ease;
+      padding: 0;
+    }
+
+    .pf-reel__playBtn {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .pf-reel__icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .pf-reel__icon--pause {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+
+    .pf-reel__playBtn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: currentColor;
+      filter:
+        drop-shadow(0 0 8px rgba(125, 195, 184, 0.4))
+        drop-shadow(0 0 14px rgba(244, 0, 18, 0.2));
+    }
+
+    .pf-reel__icon--play svg {
+      transform: translateX(1px);
+    }
+
+    .pf-reel.is-video-playing .pf-reel__icon--play {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+
+    .pf-reel.is-video-playing .pf-reel__icon--pause {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .pf-reel__play:hover {
+      transform: translateY(-1px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow:
+        0 20px 38px rgba(0, 0, 0, 0.6),
+        0 0 22px rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* FOOTPRINTS */
+    .whats-new {
+      overflow: visible;
+    }
+
+    .footprints-layer {
+      position: absolute;
+      left: 50%;
+      top: clamp(-92px, -6vw, -62px);
+      transform: translate(-50%, 0);
+      width: 100vw;
+      height: clamp(94px, 4.8vw, 110px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.98;
+    }
+
+    .footprints-path {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    .footprint {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      opacity: 0;
+      transform-origin: center;
+      --footprint-scale: 1;
+      transform: rotate(var(--footprint-rotation, 0deg)) scale(var(--footprint-scale, 1));
+      filter:
+        drop-shadow(0 0 12px rgba(194, 17, 38, 0.42))
+        drop-shadow(0 0 30px rgba(194, 17, 38, 0.2));
+      transition:
+        opacity 0.2s ease-out,
+        transform 0.22s ease-out,
+        filter 0.22s ease-out;
+      will-change: opacity, transform, filter;
+      border-radius: 999px;
+      isolation: isolate;
+    }
+
+    .footprint img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: transparent;
+    }
+
+    .footprints-path .footprint[data-step="0"]  { left: -4%;  top: 64%; --footprint-rotation: 86deg; }
+    .footprints-path .footprint[data-step="1"]  { left: 2%;   top: 40%; --footprint-rotation: 94deg; }
+    .footprints-path .footprint[data-step="2"]  { left: 8%;   top: 70%; --footprint-rotation: 88deg; }
+    .footprints-path .footprint[data-step="3"]  { left: 14%;  top: 42%; --footprint-rotation: 96deg; }
+    .footprints-path .footprint[data-step="4"]  { left: 20%;  top: 74%; --footprint-rotation: 90deg; }
+    .footprints-path .footprint[data-step="5"]  { left: 26%;  top: 43%; --footprint-rotation: 100deg; }
+    .footprints-path .footprint[data-step="6"]  { left: 32%;  top: 72%; --footprint-rotation: 92deg; }
+    .footprints-path .footprint[data-step="7"]  { left: 38%;  top: 44%; --footprint-rotation: 104deg; }
+    .footprints-path .footprint[data-step="8"]  { left: 44%;  top: 70%; --footprint-rotation: 94deg; }
+    .footprints-path .footprint[data-step="9"]  { left: 50%;  top: 41%; --footprint-rotation: 106deg; }
+    .footprints-path .footprint[data-step="10"] { left: 56%;  top: 74%; --footprint-rotation: 96deg; }
+    .footprints-path .footprint[data-step="11"] { left: 62%;  top: 39%; --footprint-rotation: 108deg; }
+    .footprints-path .footprint[data-step="12"] { left: 68%;  top: 68%; --footprint-rotation: 98deg; }
+    .footprints-path .footprint[data-step="13"] { left: 74%;  top: 40%; --footprint-rotation: 110deg; }
+    .footprints-path .footprint[data-step="14"] { left: 80%;  top: 68%; --footprint-rotation: 100deg; }
+    .footprints-path .footprint[data-step="15"] { left: 86%;  top: 39%; --footprint-rotation: 112deg; }
+    .footprints-path .footprint[data-step="16"] { left: 92%;  top: 64%; --footprint-rotation: 102deg; }
+    .footprints-path .footprint[data-step="17"] { left: 98%;  top: 44%; --footprint-rotation: 114deg; }
+    .footprints-path .footprint[data-step="18"] { left: 104%; top: 64%; --footprint-rotation: 108deg; }
+
+    .footprint::before {
+      content: "";
+      position: absolute;
+      inset: -24px;
+      z-index: -1;
+      opacity: var(--glow, 0);
+      pointer-events: none;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 55%, rgba(244, 0, 18, 0.95) 0%, rgba(194, 17, 38, 0.48) 40%, rgba(194, 17, 38, 0) 70%);
+      filter: blur(18px);
+      transform: scale(calc(var(--footprint-scale, 1) + 0.05));
+      transition:
+        opacity 0.22s ease-out,
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .footprint.is-on::before { opacity: var(--glow, 0.95); }
+
+    .footprint.is-on {
+      opacity: 0.98;
+      filter:
+        drop-shadow(0 0 20px rgba(194, 17, 38, 0.7))
+        drop-shadow(0 0 50px rgba(194, 17, 38, 0.32));
+    }
+
+    .footprint.is-trail {
+      opacity: 0.25;
+      filter:
+        drop-shadow(0 0 12px rgba(194, 17, 38, 0.38))
+        drop-shadow(0 0 24px rgba(194, 17, 38, 0.2));
+    }
+
+    .footprint.is-off {
+      opacity: 0;
+      filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+    }
+
+    @media (max-width: 1024px) {
+      .footprint {
+        width: 26px;
+        height: 26px;
+      }
+      .footprints-layer {
+        height: 52px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .footprint {
+        width: 22px;
+        height: 22px;
+      }
+      .footprints-layer {
+        height: 48px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .whats-new {
+        padding-bottom: clamp(38px, 4vw, 64px);
+      }
+
+      .carousel-track {
+        scroll-snap-type: none;
+        padding-inline: clamp(12px, 3vw, 20px);
+      }
+
+      .pf-reels {
+        justify-content: space-between;
+      }
+
+      .pf-reel {
+        flex: 1 1 calc((100% - (var(--reel-gap) * 3)) / 4);
+        max-width: calc((100% - (var(--reel-gap) * 3)) / 4);
+        min-width: 220px;
+      }
+
+      .pf-reel__play {
+        bottom: clamp(126px, calc(2.6rem + 2vw), 168px);
+      }
+    }
+
+    /* ------------------------------
+       RESPONSIVE
+    --------------------------------*/
+    @media (max-width: 1024px) {
+      .whats-new-header {
+        text-align: center;
+      }
+
+      .whats-new-media {
+        height: auto;
+      }
+
+      .carousel {
+        flex-direction: column;
+      }
+
+      .carousel-track {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        height: auto;
+        padding: clamp(10px, 3vw, 16px);
+      }
+
+      .pf-reel {
+        flex: 0 0 min(320px, 100%);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .whats-new-title {
+        font-size: 42px;
+      }
+
+      .carousel-track {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding: clamp(12px, 4vw, 18px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="desktop-preview">
+    <section class="whats-new scene">
+      <div class="blue-dirt" aria-hidden="true"></div>
+
+      <div class="container whats-new-inner">
+        <div class="whats-new-header">
+          <div class="footprints-layer" aria-hidden="true">
+            <div class="footprints-path" id="footprintsPath">
+              <div class="footprint" data-step="0"  style="left: -4%;  top: 64%; transform: rotate(86deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="1"  style="left: 2%;   top: 40%; transform: rotate(94deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="2"  style="left: 8%;   top: 70%; transform: rotate(88deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="3"  style="left: 14%;  top: 42%; transform: rotate(96deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="4"  style="left: 20%;  top: 74%; transform: rotate(90deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="5"  style="left: 26%;  top: 43%; transform: rotate(100deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="6"  style="left: 32%;  top: 72%; transform: rotate(92deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="7"  style="left: 38%;  top: 44%; transform: rotate(104deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="8"  style="left: 44%;  top: 70%; transform: rotate(94deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="9"  style="left: 50%;  top: 41%; transform: rotate(106deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="10" style="left: 56%;  top: 74%; transform: rotate(96deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="11" style="left: 62%;  top: 39%; transform: rotate(108deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="12" style="left: 68%;  top: 68%; transform: rotate(98deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="13" style="left: 74%;  top: 40%; transform: rotate(110deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="14" style="left: 80%;  top: 68%; transform: rotate(100deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="15" style="left: 86%;  top: 39%; transform: rotate(112deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="16" style="left: 92%;  top: 64%; transform: rotate(102deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="17" style="left: 98%;  top: 44%; transform: rotate(114deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="footprint" data-step="18" style="left: 104%; top: 64%; transform: rotate(108deg);">
+                <img src="/assets/img/home/pattepoulet.png" alt="" loading="lazy" decoding="async" />
+              </div>
+            </div>
+          </div>
+
+          <h2 class="whats-new-title">WHAT'S NEW</h2>
+        </div>
+
+        <div class="social-row">
+          <button class="social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.2"></circle>
+              <circle cx="16.6" cy="7.4" r="0.9" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </button>
+          <button class="social-btn social-btn--hot" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 9h3V6h-3c-2 0-3 1-3 3v3H8v3h3v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z"></path>
+            </svg>
+          </button>
+          <button class="social-btn" aria-label="X">
+            <img class="social-icon" src="/assets/img/home/x.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          </button>
+        </div>
+
+        <div class="carousel">
+          <div class="whats-new-media">
+            <div class="carousel-track pf-reels">
+            <article class="pf-reel" data-video="/assets/img/home/insta1.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="/assets/img/home/insta1.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="pf-reel" data-video="/assets/img/home/insta2.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="/assets/img/home/insta2.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="pf-reel" data-video="/assets/img/home/insta3.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="/assets/img/home/insta3.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <article class="pf-reel" data-video="/assets/img/home/insta4.mov">
+              <div class="pf-reel__frame">
+                <div class="pf-reel__media" aria-hidden="true">
+                  <img class="pf-reel__poster" src="/assets/img/home/insta4.png" alt="" loading="lazy" decoding="async" />
+                  <video class="pf-reel__video" preload="metadata" playsinline muted aria-hidden="true"></video>
+                </div>
+                <button class="pf-reel__play" type="button" aria-label="Play reel" aria-pressed="false">
+                  <span class="pf-reel__playBtn" aria-hidden="true">
+                    <span class="pf-reel__icon pf-reel__icon--play">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M9 7.5v9l8-4.5-8-4.5z"></path>
+                      </svg>
+                    </span>
+                    <span class="pf-reel__icon pf-reel__icon--pause">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 7.5h3v9h-3zm4 0h3v9h-3z"></path>
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+<script>
+  /* ==============================
+    HOME SLIDE 2: REEL VIDEO (hover/click controls)
+    - Hover starts or resumes playback on pointer-fine viewports
+    - Pause keeps the poster visible and sets per-reel state flags
+    - Ended triggers the fade to photo and resets playback
+  =============================== */
+  (function () {
+    const section = document.querySelector('.whats-new');
+    const track = document.querySelector('.carousel-track');
+    const reels = Array.from(document.querySelectorAll('.carousel .pf-reel[data-video]'));
+    if (!section || !track || !reels.length) return;
+
+    const matchMediaQuery = (query) => {
+      try {
+        return window.matchMedia && window.matchMedia(query).matches;
+      } catch (_) {
+        return false;
+      }
+    };
+    const prefersReducedMotion = matchMediaQuery('(prefers-reduced-motion: reduce)');
+    const hoverAutoplay = matchMediaQuery('(hover: hover) and (pointer: fine)') && !prefersReducedMotion;
+
+    function setButtonState(reel, playing) {
+      const btn = reel.querySelector('.pf-reel__play');
+      if (!btn) return;
+      btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      btn.setAttribute('aria-label', playing ? 'Pause reel' : 'Play reel');
+    }
+
+    function setReelFlag(reel, key, enabled) {
+      if (!reel || !reel.dataset) return;
+      if (enabled) reel.dataset[key] = 'true';
+      else delete reel.dataset[key];
+    }
+
+    function updateReelState(reel, state = {}) {
+      setReelFlag(reel, 'playing', !!state.playing);
+      setReelFlag(reel, 'paused', !!state.paused);
+      setReelFlag(reel, 'ended', !!state.ended);
+    }
+
+    function stopReel(reel, options = {}) {
+      if (!reel) return;
+      const opts = Object.assign({ reason: 'pause' }, options);
+      const video = reel.querySelector('video.pf-reel__video');
+      if (video) {
+        try {
+          video.pause();
+          if (opts.resetTime) video.currentTime = 0;
+        } catch (_) {}
+      }
+
+      reel.classList.remove('is-video-visible', 'is-video-playing');
+      setButtonState(reel, false);
+
+      const paused = opts.reason === 'pause';
+      const ended = opts.reason === 'ended';
+      updateReelState(reel, { playing: false, paused, ended });
+    }
+
+    function finishReel(reel) {
+      stopReel(reel, { reason: 'ended', resetTime: true });
+    }
+
+    function ensureVideo(reel) {
+      const video = reel.querySelector('video.pf-reel__video');
+      if (!video) return null;
+
+      try {
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'metadata';
+      } catch (_) {}
+
+      const src = reel.getAttribute('data-video') || '';
+      if (src && !video.getAttribute('src')) {
+        try {
+          video.setAttribute('src', src);
+          video.load();
+        } catch (_) {}
+      }
+
+      if (!video._pfBound) {
+        video.addEventListener('ended', () => finishReel(reel));
+        video.addEventListener('error', () => stopReel(reel, { reason: 'system', resetTime: false }));
+        video._pfBound = true;
+      }
+
+      return video;
+    }
+
+    function playReel(reel) {
+      if (!reel || reel.dataset.playing === 'true') return;
+      const video = ensureVideo(reel);
+      if (!video) return;
+
+      reel.classList.add('is-video-visible', 'is-video-playing');
+      setButtonState(reel, true);
+      updateReelState(reel, { playing: true, paused: false, ended: false });
+
+      try { if (video.currentTime === video.duration) video.currentTime = 0; } catch (_) {}
+      try {
+        const promise = video.play();
+        if (promise && typeof promise.catch === 'function') {
+          promise.catch(() => stopReel(reel, { reason: 'system', resetTime: false }));
+        }
+      } catch (_) {
+        stopReel(reel, { reason: 'system', resetTime: false });
+      }
+    }
+
+    function toggleReel(reel) {
+      if (!reel) return;
+      if (reel.dataset.playing === 'true') {
+        stopReel(reel, { reason: 'pause', resetTime: false });
+      } else {
+        playReel(reel);
+      }
+    }
+
+    function handleHoverCandidate(reel) {
+      if (!hoverAutoplay || !reel) return;
+      if (reel.dataset.playing === 'true') return;
+      playReel(reel);
+    }
+
+    reels.forEach((reel) => {
+      setButtonState(reel, false);
+      updateReelState(reel, { playing: false, paused: false, ended: false });
+    });
+
+    if (hoverAutoplay) {
+      track.addEventListener('pointerover', (event) => {
+        const target = event.target && event.target.closest ? event.target.closest('.pf-reel') : null;
+        if (!target) return;
+        const previous = event.relatedTarget && event.relatedTarget.closest ? event.relatedTarget.closest('.pf-reel') : null;
+        if (target === previous) return;
+        handleHoverCandidate(target);
+      }, { passive: true });
+    }
+
+    section.addEventListener('click', (event) => {
+      const btn = event.target && event.target.closest ? event.target.closest('.pf-reel__play') : null;
+      if (!btn) return;
+      const reel = btn.closest('.pf-reel');
+      if (!reel) return;
+      event.preventDefault();
+      toggleReel(reel);
+    });
+
+  })();
+
+  /* ==============================
+    WHAT'S NEW title – per-letter hover wave
+  =============================== */
+  (function () {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pointerFine = window.matchMedia('(pointer: fine)').matches;
+    if (prefersReduced || !pointerFine) return;
+
+    const title = document.querySelector('.whats-new-title');
+    if (!title || title.dataset.splitLetters === '1') return;
+    title.dataset.splitLetters = '1';
+
+    const raw = title.textContent || '';
+    title.textContent = '';
+    const frag = document.createDocumentFragment();
+    const letters = [];
+    for (const ch of raw) {
+      const s = document.createElement('span');
+      s.className = 'wn-letter';
+      s.textContent = ch === ' ' ? '\u00A0' : ch;
+      frag.appendChild(s);
+      letters.push(s);
+    }
+    title.appendChild(frag);
+
+    const N = letters.length;
+    const state = new Array(N).fill(0).map(() => ({ s: 1, dy: 0, rot: 0, z: 0 }));
+    const target = new Array(N).fill(0).map(() => ({ s: 1, dy: 0, rot: 0, z: 0 }));
+    let hoverIdx = -1;
+    let rafId = 0;
+    let inside = false;
+
+    function computeTargets(idx) {
+      const baseMaxBoost = 0.6;   // elegant, not too punchy
+      const falloff = 0.92;       // wave tightness
+      const maxTilt = 3.0;        // degrees
+
+      const rect = title.getBoundingClientRect();
+      const headroom = Math.max(0, rect.top);
+      const safety = Math.max(0.86, Math.min(1, headroom / 90));
+      const maxBoost = baseMaxBoost * safety;
+
+      for (let j = 0; j < N; j++) {
+        const d = idx < 0 ? Infinity : Math.abs(j - idx);
+        const boost = idx < 0 ? 0 : maxBoost * Math.exp(-d * falloff);
+        const s = 1 + boost;
+        const dy = idx < 0 ? 0 : 3 * Math.exp(-d * 1.08) * (boost / Math.max(0.0001, maxBoost));
+        const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
+        const z = 50 - (idx < 0 ? 0 : d);
+        target[j].s = s;
+        target[j].dy = dy;
+        target[j].rot = rot;
+        target[j].z = z;
+      }
+    }
+
+    function animate() {
+      let moving = false;
+      const k = 0.22; // smoothing
+      for (let j = 0; j < N; j++) {
+        const st = state[j];
+        const tg = target[j];
+        st.s += (tg.s - st.s) * k;
+        st.dy += (tg.dy - st.dy) * k;
+        st.rot += (tg.rot - st.rot) * k;
+        st.z += (tg.z - st.z) * k;
+
+        const el = letters[j];
+        el.style.setProperty('--scale', st.s.toFixed(3));
+        el.style.setProperty('--dy', st.dy.toFixed(2) + 'px');
+        el.style.setProperty('--rot', st.rot.toFixed(2) + 'deg');
+        el.style.setProperty('--z', String(st.z.toFixed(0)));
+
+        if (Math.abs(tg.s - st.s) > 0.002 || Math.abs(tg.dy - st.dy) > 0.02 || Math.abs(tg.rot - st.rot) > 0.02) {
+          moving = true;
+        }
+      }
+      if (moving || inside) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = 0;
+      }
+    }
+
+    function ensureAnim() { if (!rafId) rafId = requestAnimationFrame(animate); }
+
+    function nearestIndexFromClientX(clientX) {
+      let best = -1;
+      let bestDist = Infinity;
+      for (let j = 0; j < N; j++) {
+        const r = letters[j].getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const d = Math.abs(clientX - cx);
+        if (d < bestDist) { bestDist = d; best = j; }
+      }
+      return best;
+    }
+
+    title.addEventListener('pointerenter', () => { inside = true; });
+    title.addEventListener('pointermove', (e) => {
+      inside = true;
+      const idx = nearestIndexFromClientX(e.clientX);
+      hoverIdx = idx;
+      computeTargets(hoverIdx);
+      ensureAnim();
+    });
+    title.addEventListener('pointerleave', () => {
+      inside = false;
+      hoverIdx = -1;
+      computeTargets(hoverIdx);
+      ensureAnim();
+    });
+
+    // Init neutral
+    computeTargets(-1);
+  })();
+
+  (function () {
+    const section = document.querySelector('.whats-new');
+    const steps = Array.from(document.querySelectorAll('#footprintsPath .footprint'));
+    if (!section || steps.length === 0) return;
+
+    const TRAIL_LENGTH = 6;
+    const SPEED = 1.25;
+    window.__footprintsConfig = { startTopRatio: 0.88, speed: SPEED };
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function applyProgress(p) {
+      const maxIndex = steps.length - 1;
+      const t = p * maxIndex;
+      const activeIndex = Math.min(maxIndex, Math.floor(t));
+
+      steps.forEach((el, i) => {
+        const prevState = el.__state || 'off';
+        const dist = t - i;
+        let nextState = 'off';
+        let opacity = 0;
+        let scale = 1;
+        let glow = 0;
+
+        if (dist >= 0 && dist < 0.65) {
+          nextState = 'on';
+          opacity = 0.92 - dist * 0.22;
+          scale = (i === activeIndex) ? 1.10 : 1.02;
+          glow = 0.85;
+        } else if (dist >= 0.65 && dist < TRAIL_LENGTH) {
+          nextState = 'trail';
+          const k = 1 - (dist - 0.65) / (TRAIL_LENGTH - 0.65);
+          opacity = 0.10 + k * 0.16;
+          scale = 1.0;
+          glow = 0.38 * k;
+        }
+
+        if (nextState !== prevState) {
+          el.classList.remove('is-on', 'is-trail', 'is-off');
+          el.classList.add(nextState === 'on' ? 'is-on' : nextState === 'trail' ? 'is-trail' : 'is-off');
+          el.__state = nextState;
+        }
+        // Apply visual properties
+        el.style.opacity = String(Math.max(0, Math.min(1, opacity)));
+        el.style.setProperty('--footprint-scale', String(scale));
+        el.style.setProperty('--glow', String(Math.max(0, Math.min(1, glow))));
+        // Normalize rotation-based transform to CSS variables once
+        if (!el.__rotFixed) {
+          const m = (el.style.transform || '').match(/rotate\(([-0-9\.]+)deg\)/);
+          if (m) {
+            el.style.setProperty('--footprint-rotation', `${m[1]}deg`);
+            el.style.transform = '';
+          }
+          el.__rotFixed = true;
+        }
+      });
+    }
+
+    function updateFromSelfScroll() {
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const startTop = vh * 0.88;
+      const endTop = vh - rect.height;
+      const total = (startTop - endTop) || 1;
+      const p = clamp(((startTop - rect.top) / total) * SPEED, 0, 1);
+      applyProgress(p);
+    }
+
+    // Expose hooks for the parent page to drive progress based on parent scroll
+    function offsetTopAcc(el){
+      var y = 0, n = el;
+      while (n) { y += (n.offsetTop || 0); n = n.offsetParent; }
+      return y;
+    }
+    window.__getFootprintsMetrics = function () {
+      try {
+        return { topOffset: offsetTopAcc(section), height: section.offsetHeight || section.getBoundingClientRect().height };
+      } catch (_) {
+        return { topOffset: 0, height: section.getBoundingClientRect().height };
+      }
+    };
+    window.__updateFootprintsProgress = function (p) {
+      applyProgress(clamp(p, 0, 1));
+    };
+
+    // Fallback when used standalone (no parent driver)
+    const USE_FALLBACK = (function(){ try { return window.self === window.top; } catch(_) { return false; } })();
+    if (USE_FALLBACK) {
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(() => {
+            ticking = false;
+            updateFromSelfScroll();
+          });
+        }
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        const any = entries.some(e => e.isIntersecting);
+        if (any) {
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll);
+          onScroll();
+        } else {
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('resize', onScroll);
+        }
+      }, { root: null, threshold: 0.05 });
+
+      io.observe(section);
+    }
+  })();
+</script>
+</body>
+</html>

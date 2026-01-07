@@ -43,36 +43,33 @@
       --ink:#ffffff;
 
       /* Layout breathing room top/bottom only (left/right must be flush) */
-      --vPad: 26px;
+      --vPadTop: 0px;
 
       /* Carousel geometry */
-      --capH: 112px;
-      --titleH: clamp(64px, 4.4vw, 92px); /* taller slot to avoid clipping top/bottom */
-      --descH: 56px;       /* fixed slot for description start alignment */
-      --captionGap: 8px;   /* space between desc and title */
-      --panelW: clamp(280px, 26vw, 440px);
+      --capH: 138px;
+      --titleH: clamp(78px, 5vw, 112px); /* taller slot to avoid clipping top/bottom */
+      --descH: 68px;       /* fixed slot for description start alignment */
+      --captionGap: 12px;  /* space between desc and title */
+      --panelW: clamp(300px, 28vw, 480px);
       --sep: 2px; /* thin black divider between panels */
       --leftSafe: clamp(360px, 38vw, 620px);
-      --slideH: clamp(720px, 90vh, 1000px);
       /* Progress bar area height at bottom */
-      --progAreaH: clamp(48px, 6vh, 72px);
-      --bottomPad: clamp(48px, 6vh, 120px);
+      --progAreaH: clamp(54px, 7vh, 86px);
+      --bottomPad: clamp(56px, 7vh, 128px);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:auto; }
-    html{ scroll-behavior:smooth; background-color: #000; }
+    html{ scroll-behavior:smooth; background: transparent; }
     body{
       margin:0;
       color:#fff;
       line-height:1.5;
-      padding-bottom: var(--bottomPad);
       min-height:0;
       overflow:hidden; /* we keep hidden to avoid stray scrollbars in iframe */
       position:relative;
       isolation:isolate;
-      background-color: #000; /* plain black background for this slide */
-      background-image: none;
+      background: transparent;
     }
 
     /* Fixed overlays copied from slide 02 for identical look */
@@ -81,31 +78,15 @@
 
     .slide{
       position:relative;
-      width:100vw;
-      height: var(--slideH);
+      width:100%;
+      padding: var(--vPadTop) 0 var(--bottomPad);
       overflow:hidden;
-      background:#000; /* ensure the slide area itself is black */
+      background: transparent;
     }
-    .slide::before{
-      content:"";
-      position:absolute;
-      top:0; left:0; right:0;
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.92), transparent);
-      box-shadow:
-        0 0 8px rgba(255,255,255,0.65),
-        0 0 16px rgba(255,255,255,0.35);
-      pointer-events:none;
-      z-index: 7;
-    }
-
     /* FULL-BLEED carousel: flush left & right; airy top/bottom via inset */
     .track{
-      position:absolute;
-      /* Reserve space at bottom for progress indicator */
-      inset: 0 0 var(--progAreaH) 0;
+      position:relative;
       display:flex;
-      height:auto;
       width:100%;
       overflow-x:auto;
       overflow-y:hidden;
@@ -121,9 +102,6 @@
       /* Keep horizontal scroll self-contained; let vertical scroll bubble */
       overscroll-behavior-x: contain;
       overscroll-behavior-y: auto;
-      /* Promote to its own compositor layer for smoother updates */
-      transform: translateZ(0);
-      will-change: transform;
     }
     .track::-webkit-scrollbar{ display:none; }
     .track.dragging{ cursor: grabbing; }
@@ -131,13 +109,29 @@
     .panel{
       position:relative;
       flex:0 0 var(--panelW);
-      height:100%;
+      height:auto;
+      aspect-ratio: 2 / 3.15;
       overflow:hidden;
       /* Transparent so the single shared slide background shows through */
       background: transparent;
       border-radius:0; /* square angles */
       /* Isolate paint to reduce large repaints during scroll */
       contain: paint;
+    }
+    .panelLink{
+      position:absolute;
+      inset:0;
+      display:block;
+      z-index:3;
+      color:inherit;
+      text-decoration:none;
+      border-radius:0;
+      outline:none;
+    }
+    .panelLink:focus-visible{
+      box-shadow:
+        inset 0 0 0 2px rgba(3,11,22,1),
+        inset 0 0 0 4px rgba(125,195,184,0.85);
     }
     /* Thin black divider between photos */
     .panel:not(:last-child)::after{
@@ -170,12 +164,15 @@
       will-change: transform, filter;
     }
     /* Hover: color + gentle scale for a satisfying emphasis */
-    .panel:hover .media img{
+    .panel:hover .media img,
+    .panel.is-active .media img,
+    .panel:focus-within .media img{
       filter: grayscale(0) saturate(1.08) contrast(1.06);
       transform: scale(1.06);
     }
     /* While dragging the carousel, avoid hover animations */
     .track.dragging .panel .media img{ transition: none; }
+    .track.dragging .panelLink{ pointer-events: none; }
     .media::before{
       content:"";
       position:absolute;
@@ -190,7 +187,7 @@
       position:absolute;
       left:0; right:0; bottom:0;
       min-height: var(--capH);
-      padding: 16px 18px 18px;
+      padding: clamp(26px, 3vw, 36px) 20px clamp(32px, 4vw, 44px);
       display:grid;
       grid-template-rows: var(--titleH) var(--descH);
       align-content: end; /* pin rows to bottom */
@@ -205,7 +202,7 @@
       content:"";
       position:absolute;
       left:0; right:0; bottom:0;
-      height: max(48%, calc(var(--capH) + 40px));
+      height: max(52%, calc(var(--capH) + 54px));
       background:
         linear-gradient(180deg,
           rgba(0, 0, 0, 0.00) 0%,
@@ -229,13 +226,13 @@
       -webkit-line-clamp: 2; /* WebKit/Chromium */
       line-clamp: 2; /* modern fallback */
       text-align: center;
-      margin: 2px 18px 4px;
+      margin: 10px 18px 4px;
       max-width: calc(100% - 36px);
       font-family:"Buttergone", system-ui, -apple-system, Segoe UI, Roboto, Arial;
       letter-spacing:.06em;
-      text-transform: none; /* JS below enforces First letter upper, rest lower */
-      font-size: clamp(18px, 2.2vw, 26px);
-      line-height:1.18;
+      text-transform: none;
+      font-size: clamp(22px, 2.8vw, 32px);
+      line-height:1.14;
       color: #ffebee;
       /* No surrounding pill/background/border */
       padding: 2px 0 2px;
@@ -251,13 +248,15 @@
       /* Neon red text-only glow */
       transition: text-shadow .18s ease, color .18s ease;
       text-shadow:
-        0 0 1px rgba(255, 64, 64, 0.75),
-        0 0 4px rgba(255, 64, 64, 0.70),
-        0 0 8px rgba(244, 0, 18, 0.60),
-        0 0 14px rgba(244, 0, 18, 0.45);
+        0 0 2px rgba(255, 64, 64, 0.75),
+        0 0 6px rgba(255, 64, 64, 0.70),
+        0 0 12px rgba(244, 0, 18, 0.60),
+        0 0 18px rgba(244, 0, 18, 0.45);
     }
     /* Hover: switch neon from red to white, slightly stronger */
-    .panel:hover .capTitle{
+    .panel:hover .capTitle,
+    .panel.is-active .capTitle,
+    .panel:focus-within .capTitle{
       color: #ffffff;
       text-shadow:
         0 0 2px rgba(255,255,255,0.85),
@@ -270,10 +269,10 @@
       height: var(--descH);
       align-self: stretch;
       font-family:"Newslab", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      font-size:12px;
+      font-size: clamp(13px, 1.4vw, 15px);
       letter-spacing:.02em;
       color: rgba(255,255,255,.74);
-      line-height:1.35;
+      line-height:1.45;
       display:-webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -290,14 +289,17 @@
       display:flex;
       align-items:flex-start; /* place content at top */
       justify-content:flex-start;
-      padding: 0 34px 0 42px; /* no top padding to stay flush with top of carousel */
+      padding: clamp(36px, 3vw, 64px) 34px 0 42px; /* move the copy down inside the media band */
       z-index: 5;
       pointer-events:none;
     }
     .fixedLeft::before{
       content:"";
       position:absolute;
-      inset:0;
+      top: var(--vPadTop);
+      left: 0;
+      right: 0;
+      bottom: calc(var(--progAreaH) + var(--bottomPad) + 12px);
       background:
         linear-gradient(90deg,
           rgba(0,0,0,.84) 0%,
@@ -308,7 +310,7 @@
     }
     .titleBox{
       max-width: 560px;
-      transform: translateY(24px); /* lowered further from the top */
+      transform: translateY(0); /* lowered via padding instead of extra offset */
       /* Allow pointer events for title hover animation while keeping the overlay non-blocking */
       pointer-events: auto;
     }
@@ -457,7 +459,7 @@
       .track{ scroll-behavior:auto; }
     }
     @media (max-width: 1100px){
-      :root{ --sep: 2px; --vPad: 22px; }
+      :root{ --sep: 2px; --vPadTop: clamp(6px, 1vw, 10px); }
       .fixedLeft{ padding-left:28px; padding-right:28px; }
     }
 
@@ -471,13 +473,12 @@
        Neon progress indicator
        ======================== */
     .progressWrap{
-      position:absolute;
-      left:0; right:0; bottom:0;
+      position:relative;
       height: var(--progAreaH);
       display:flex;
-      align-items:flex-end; /* push the bar to the very bottom */
+      align-items:center;
       justify-content:center;
-      padding-bottom: 8px; /* visual gap between carousel and bar */
+      margin-top: 10px;
       pointer-events:none; /* let only the inner bar receive events */
       z-index: 6;
       background: none; /* keep the bottom area clean */
@@ -543,127 +544,101 @@
           <span class="menu-title-line">MENU</span>
           <span class="menu-title-line">HIGHLIGHTS</span>
         </div>
-        <p class="sub">Scroll to explore our top picks.</p>
-        <a class="menu-cta" href="#" aria-label="Explore full menu">Explore Full Menu <span class="arrow" aria-hidden="true">→</span></a>
+        <p class="sub">Scroll to explore menu categories.</p>
+        <a class="menu-cta" href="../../pages/menu.html" target="_top" aria-label="Explore full menu">Explore Full Menu <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </aside>
 
     <!-- FULL-BLEED INFINITE CAROUSEL -->
-    <section class="track" id="menuTrack" role="list" aria-label="Carousel menu highlights">
-      <!-- 10 items (will be cloned by JS for infinite loop) -->
+    <section class="track" id="menuTrack" role="list" aria-label="Carousel menu categories">
+      <!-- Category cards (will be cloned by JS for infinite loop) -->
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="brunch">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Brunch"></a>
         <div class="media">
-          <img alt="&quot;NASHVILLE HOT&quot; HALF BIRD" loading="lazy"
-               data-src="../../assets/img/home/menu/HALF_BIRD.png" />
+          <img alt="Brunch" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/brunch/nacho-ordinary-breakfast-nachos.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">&quot;NASHVILLE HOT&quot; HALF BIRD</div>
-          <div class="capDesc">The OG Nashville hot experience: crispy, juicy, and built to make you sweat in the best way. Welcome to the party.</div>
+          <div class="capTitle">Brunch</div>
+          <div class="capDesc">Late-morning legends stacked with bold spice and brunch energy.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="for-the-table">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore For the Table"></a>
         <div class="media">
-          <img alt="HOT CHICKEN AND BEIGNETS" loading="lazy"
-               data-src="../../assets/img/home/menu/HOT_CHICKEN_AND_BEIGNETS.png" />
+          <img alt="For the Table" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/for-the-table/chips-queso.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">HOT CHICKEN AND BEIGNETS</div>
-          <div class="capDesc">Sweet + spicy chaos done right. Hot chicken meets powdered-sugar beignets for maximum weekend energy.</div>
+          <div class="capTitle">For the Table</div>
+          <div class="capDesc">Shareable plates loaded with punchy dips for every table.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="soups-salads">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Soups &amp; Salads"></a>
         <div class="media">
-          <img alt="HOT CHICKEN N' CHEDDAR" loading="lazy"
-               data-src="../../assets/img/home/menu/HOT_CHICKEN_N_CHEDDAR.png" />
+          <img alt="Soups &amp; Salads" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/soups-salads/hot-chick-caesar-salad.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">HOT CHICKEN N' CHEDDAR</div>
-          <div class="capDesc">Crispy hot chicken stacked with cheddar and all the fixins. Messy, loud, and worth it.</div>
+          <div class="capTitle">Soups &amp; Salads</div>
+          <div class="capDesc">Crisp greens and smoky bowls finished with tangy heat.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="hot-chicken">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Nashville Hot Chicken"></a>
         <div class="media">
-          <img alt="CHICKEN FRIED CHICKEN" loading="lazy"
-               data-src="../../assets/img/home/menu/NASHVILLE_HOT_CHICKEN_FRIED CHICKEN.png" />
+          <img alt="Nashville Hot Chicken" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/nashville-hot-chicken/half-bird-fried.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">CHICKEN FRIED CHICKEN</div>
-          <div class="capDesc">Double-breaded comfort with a heat level that doesn’t apologize. Gravy, mash, and full send.</div>
+          <div class="capTitle">Nashville Hot Chicken</div>
+          <div class="capDesc">Signature Nashville-level spice layered over perfectly fried chicken.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="handhelds">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Not Hot Chicken &amp; Handhelds"></a>
         <div class="media">
-          <img alt="HOT STUFFED QUESADILLA" loading="lazy"
-               data-src="../../assets/img/home/menu/HOT_STUFFED_QUESADILLA.png" />
+          <img alt="Not Hot Chicken &amp; Handhelds" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/handhelds/cowboy-burger.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">HOT STUFFED QUESADILLA</div>
-          <div class="capDesc">Crispy tortilla, melty cheese, and your choice of protein. Dip it, dunk it, repeat.</div>
+          <div class="capTitle">Not Hot Chicken &amp; Handhelds</div>
+          <div class="capDesc">Juicy burgers, wraps, and handhelds delivering comfort without the burn.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="sides">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Sides"></a>
         <div class="media">
-          <img alt="BRUNCH FOR TWO" loading="lazy"
-               data-src="../../assets/img/home/menu/BRUNCH_FOR_TWO.png" />
+          <img alt="Sides" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/sides/fried-cheese-curds.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">BRUNCH FOR TWO</div>
-          <div class="capDesc">A 55 oz Bloody Mary situation that’s basically a meal with attitude. Go big or go home.</div>
+          <div class="capTitle">Sides</div>
+          <div class="capDesc">Crisp sides and creamy dips that elevate every order.</div>
         </div>
       </article>
 
-      <article class="panel" role="listitem">
+      <article class="panel" role="listitem" data-category="tasty-treats">
+        <a class="panelLink" href="../../pages/menu.html" target="_top" aria-label="Explore Tasty Treats"></a>
         <div class="media">
-          <img alt="LOADED HOT CHICKEN BISCUIT" loading="lazy"
-               data-src="../../assets/img/home/menu/LOADED_HOT_CHICKEN_BISCUIT.png" />
+          <img alt="Tasty Treats" loading="lazy" decoding="async"
+               data-src="../../assets/img/home/menu/official_Food_images/tasty-treats/hot-chicken-beignets.jpg" />
         </div>
         <div class="caption">
-          <div class="capTitle">LOADED HOT CHICKEN BISCUIT</div>
-          <div class="capDesc">Open-face biscuits, hot chicken, sawmill gravy, and eggs your way. The cure for last night’s decisions.</div>
-        </div>
-      </article>
-
-      <article class="panel" role="listitem">
-        <div class="media">
-          <img alt="NASHVILLE HOT COBB" loading="lazy"
-               data-src="../../assets/img/home/menu/NASHVILLE_HOT_COBB.png" />
-        </div>
-        <div class="caption">
-          <div class="capTitle">NASHVILLE HOT COBB</div>
-          <div class="capDesc">A cobb salad that refuses to be boring: bacon, egg, avocado, and hot chicken bringing the heat.</div>
-        </div>
-      </article>
-
-      <article class="panel" role="listitem">
-        <div class="media">
-          <img alt="ONION LOAF" loading="lazy"
-               data-src="../../assets/img/home/menu/ONION_LOAF.png" />
-        </div>
-        <div class="caption">
-          <div class="capTitle">ONION LOAF</div>
-          <div class="capDesc">Thin-sliced onions, fried until reckless, served for sharing… technically. Dip in chipotle ranch and disappear.</div>
-        </div>
-      </article>
-
-      <article class="panel" role="listitem">
-        <div class="media">
-          <img alt="FRENCH TOAST BITES" loading="lazy"
-               data-src="../../assets/img/home/menu/FRENCH_TOAST_BITES.png" />
-        </div>
-        <div class="caption">
-          <div class="capTitle">FRENCH TOAST BITES</div>
-          <div class="capDesc">Bite-sized french toast tossed in cinnamon sugar with bourbon glaze. Sweet, sinful, and gone in 60 seconds.</div>
+          <div class="capTitle">Tasty Treats</div>
+          <div class="capDesc">Sweet endings with sugar-dusted beignets and neon glow.</div>
         </div>
       </article>
 
       <p class="srOnly" id="srHint">
-        Faites glisser, utilisez le trackpad ou la molette pour défiler horizontalement. Le carrousel boucle à l’infini.
+        Drag, trackpad, or scroll to browse categories. The carousel loops infinitely.
       </p>
     </section>
 
@@ -717,14 +692,14 @@
           img.src = inlineFallback;
         };
 
-        const setFallback = () => {
-          if (fb && fb !== 'TODO') {
-            img.onerror = setInline;
-            img.src = fb;
-          } else {
-            setInline();
-          }
-        };
+	        const setFallback = () => {
+	          if (fb) {
+	            img.onerror = setInline;
+	            img.src = fb;
+	          } else {
+	            setInline();
+	          }
+	        };
 
         if (local) {
           img.onerror = setFallback;
@@ -742,85 +717,19 @@
       resolveAllImgs();
 
       // ---------------------------
-      // Wheel handling: lock to horizontal when there is real horizontal intent
-      // - Route horizontal gestures to the carousel and block vertical chaining
-      // - Let vertical scroll bubble to the page
-      // ---------------------------
-      const wheelLock = { axis: null, until: 0 };
-      const wheelLockMs = 180;
-      const horizRatio = 0.6;
-
-      function resolveWheelAxis(absX, absY, isShift){
-        if (isShift && absY > 0) return 'x';
-        if (absX === 0 && absY === 0) return null;
-        if (absX === 0) return 'y';
-        if (absY === 0) return 'x';
-        return (absX / absY) >= horizRatio ? 'x' : 'y';
-      }
-
-      track.addEventListener('wheel', (e) => {
-        const absX = Math.abs(e.deltaX);
-        const absY = Math.abs(e.deltaY);
-        const now = performance.now();
-
-        if (wheelLock.axis && now > wheelLock.until) {
-          wheelLock.axis = null;
-        }
-        if (!wheelLock.axis) {
-          const axis = resolveWheelAxis(absX, absY, e.shiftKey);
-          if (!axis) return;
-          wheelLock.axis = axis;
-        }
-        wheelLock.until = now + wheelLockMs;
-
-        if (wheelLock.axis !== 'x') return;
-        e.preventDefault();
-        const dx = (e.shiftKey && absX < 1) ? e.deltaY : e.deltaX;
-        track.scrollLeft += dx;
-        updateProgressBar();
-      }, { passive:false });
-
-      // Forward vertical scroll intent to the parent page so the slide never traps scrolling.
-      (function enableParentScroll(){
-        let axis = null;
-        let until = 0;
-        const lockMs = 160;
-        const intentRatio = 0.6;
-        const pickAxis = (absX, absY, isShift) => {
-          if (isShift && absY > 0) return 'x';
-          if (absX === 0 && absY === 0) return null;
-          if (absX === 0) return 'y';
-          if (absY === 0) return 'x';
-          return (absX / absY) >= intentRatio ? 'x' : 'y';
-        };
-
-        window.addEventListener('wheel', (e) => {
-          if (e.defaultPrevented) return;
-          const absX = Math.abs(e.deltaX);
-          const absY = Math.abs(e.deltaY);
-          if (absX === 0 && absY === 0) return;
-          const now = performance.now();
-          if (axis && now > until) axis = null;
-          if (!axis) axis = pickAxis(absX, absY, e.shiftKey);
-          until = now + lockMs;
-          if (axis !== 'y') return;
-          try{
-            if (window.parent && window.parent !== window) {
-              window.parent.scrollBy({ top: e.deltaY, left: 0, behavior: 'auto' });
-            }
-          }catch(_){ /* ignore cross-origin */ }
-        }, { passive:true });
-      })();
-
-      // ---------------------------
       // Drag-to-scroll
       // ---------------------------
-      let isDown = false, startX = 0, startLeft = 0, pid = null;
+      let isDown = false, startX = 0, startY = 0, startLeft = 0, pid = null, dragged = false;
+      const DRAG_CLICK_THRESHOLD = 6;
       track.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') return;
+        if (auto && typeof auto.pause === 'function') auto.pause(1600);
         isDown = true;
+        dragged = false;
         pid = e.pointerId;
         track.setPointerCapture(pid);
         startX = e.clientX;
+        startY = e.clientY;
         startLeft = track.scrollLeft;
         track.style.scrollBehavior = 'auto';
         track.classList.add('dragging');
@@ -828,6 +737,10 @@
       track.addEventListener('pointermove', (e) => {
         if(!isDown) return;
         const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (!dragged && (Math.abs(dx) > DRAG_CLICK_THRESHOLD || Math.abs(dy) > DRAG_CLICK_THRESHOLD)) {
+          dragged = true;
+        }
         track.scrollLeft = startLeft - dx;
         updateProgressBar();
       });
@@ -838,10 +751,19 @@
         // Garder un comportement instantané pour éviter des micro à-coups
         track.style.scrollBehavior = 'auto';
         track.classList.remove('dragging');
+        setTimeout(() => { dragged = false; }, 0);
       };
       track.addEventListener('pointerup', endDrag);
       track.addEventListener('pointercancel', endDrag);
       track.addEventListener('pointerleave', endDrag);
+      track.addEventListener('click', (e) => {
+        if (!dragged) return;
+        const link = e.target.closest('.panelLink');
+        if (!link) return;
+        e.preventDefault();
+        e.stopPropagation();
+        dragged = false;
+      }, true);
 
       // ---------------------------
       // Infinite loop carousel (both directions)
@@ -868,6 +790,20 @@
         return panelW;
       }
 
+      const allPanels = Array.from(track.querySelectorAll('.panel'));
+      let activePanel = null;
+      function updateActivePanel(){
+        const w = panelW || computePanelWidth();
+        if (!w) return;
+        const center = track.scrollLeft + (track.clientWidth * 0.5);
+        const idx = Math.max(0, Math.min(allPanels.length - 1, Math.floor(center / w)));
+        const next = allPanels[idx];
+        if (!next || next === activePanel) return;
+        if (activePanel) activePanel.classList.remove('is-active');
+        activePanel = next;
+        activePanel.classList.add('is-active');
+      }
+
       function snapToRealStart(){
         const w = panelW || computePanelWidth();
         if(!w) return;
@@ -875,6 +811,7 @@
         const offset = Math.max(0, w - peek);
         track.scrollLeft = (w * n) + offset; // start near slide 02 with a subtle left/right peek
         updateProgressBar();
+        updateActivePanel();
       }
 
       // Gestion du bouclage en douceur (sans écouteur scroll à chaque frame)
@@ -891,6 +828,18 @@
         }
       }
 
+      // Keep progress/active states in sync for any scroll input (wheel, drag, touch inertia).
+      let scrollRaf = 0;
+      track.addEventListener('scroll', () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          scrollRaf = 0;
+          wrapIfNeeded();
+          updateProgressBar();
+          updateActivePanel();
+        });
+      }, { passive: true });
+
       let resizeTO = null;
       window.addEventListener('resize', () => {
         clearTimeout(resizeTO);
@@ -901,36 +850,35 @@
       requestAnimationFrame(() => { computePanelWidth(); snapToRealStart(); });
 
       // ---------------------------
-      // Gentle auto-scroll loop (continuous, subtle)
-      // Always runs (hover or not, anywhere on page)
+      // Gentle auto-scroll loop (only when the slide is visible)
       // ---------------------------
-      const auto = {
-        speed: 90, // px/sec (un peu plus lent et fluide)
-        raf: 0,
-        iv: 0,
-        last: 0,
-        pausedUntil: 0,
-        running: false,
-        pause(ms){ this.pausedUntil = performance.now() + Math.max(0, ms|0); }
-      };
-      // Respecte l’accessibilité si l’utilisateur préfère moins d’animations
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      // Réduire la vitesse si PRM est activé, mais ne pas désactiver totalement l’auto défilement
+      const auto = {
+        speed: 90, // px/sec
+        raf: 0,
+        last: 0,
+        enabled: false,
+        resumeTO: 0,
+        pause(ms) {
+          if (!this.enabled) return;
+          stopAuto();
+          if (this.resumeTO) window.clearTimeout(this.resumeTO);
+          this.resumeTO = window.setTimeout(() => {
+            this.resumeTO = 0;
+            if (this.enabled && !prefersReducedMotion) startAuto();
+          }, Math.max(0, ms | 0));
+        }
+      };
       if (prefersReducedMotion) auto.speed = Math.max(10, auto.speed * 0.45);
-      // Ensure immediate scroll updates (no CSS smooth) during auto-run
       track.style.scrollBehavior = 'auto';
 
       function step(dtSec){
-        if (!auto.running) return;
-        const now = performance.now();
-        if (now >= auto.pausedUntil) {
-          track.scrollLeft += auto.speed * dtSec; // boundary handler above wraps around
-        }
+        track.scrollLeft += auto.speed * dtSec;
         wrapIfNeeded();
         updateProgressBar();
+        updateActivePanel();
       }
       function autoTick(t){
-        if (!auto.running) return;
         const last = auto.last || (t - 16);
         const dtSec = Math.min(0.08, Math.max(0, (t - last) / 1000)) || (1/60);
         auto.last = t;
@@ -938,30 +886,31 @@
         auto.raf = requestAnimationFrame(autoTick);
       }
       function startAuto(){
-        if (auto.running) return;
-        auto.running = true;
+        if (!auto.enabled || prefersReducedMotion || auto.raf) return;
         auto.last = performance.now();
         auto.raf = requestAnimationFrame(autoTick);
       }
       function stopAuto(){
-        if (!auto.running) return;
-        auto.running = false;
         if (auto.raf) cancelAnimationFrame(auto.raf);
         auto.raf = 0;
-        if (auto.iv) clearInterval(auto.iv);
-        auto.iv = 0;
+        auto.last = 0;
       }
-
-      // Ne jamais mettre en pause sur interactions (survol, clic, wheel, drag).
-      // L’auto‑défilement reste actif en permanence.
-
-      // Pause/stop when tab/iframe not visible; resume only if also in view
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
+      function setAutoEnabled(enabled){
+        auto.enabled = !!enabled;
+        if (!auto.enabled) {
           stopAuto();
-        } else {
-          startAuto();
+          if (auto.resumeTO) window.clearTimeout(auto.resumeTO);
+          auto.resumeTO = 0;
+          return;
         }
+        startAuto();
+      }
+      // Parent page toggles this based on slide visibility.
+      window.__setMenuCarouselAuto = setAutoEnabled;
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopAuto();
+        else if (auto.enabled) startAuto();
       });
 
       // ============================
@@ -1005,6 +954,7 @@
         track.scrollLeft = base + Math.max(0, Math.min(1, p)) * totalReal;
         wrapIfNeeded();
         updateProgressBar();
+        updateActivePanel();
       }
 
       // Interactions: click & drag on progress rail/knob to scrub
@@ -1054,8 +1004,10 @@
       // Initial measures and start
       measureProgress();
       updateProgressBar();
-      // Démarrer immédiatement
-      startAuto();
+      updateActivePanel();
+      // Standalone preview: keep the subtle motion on.
+      const STANDALONE = (function(){ try { return window.self === window.top; } catch(_) { return true; } })();
+      setAutoEnabled(STANDALONE && !prefersReducedMotion);
     })();
   </script>
 
@@ -1150,25 +1102,5 @@
     })();
   </script>
 
-  <!-- Normalize dish titles: first letter uppercase, rest lowercase; no extra wrappers -->
-  <script>
-    (function(){
-      try{
-        const isFine = window.matchMedia('(pointer: fine)').matches;
-        const titles = Array.from(document.querySelectorAll('.capTitle'));
-        const reLetter = /[A-Za-zÀ-ÖØ-öø-ÿ]/;
-        titles.forEach((el) => {
-          const raw = (el.textContent || '').trim();
-          if (!raw) return;
-          const lower = raw.toLowerCase();
-          const arr = Array.from(lower);
-          let idx = -1;
-          for (let i=0;i<arr.length;i++){ if (reLetter.test(arr[i])) { idx = i; break; } }
-          if (idx >= 0){ arr[idx] = arr[idx].toUpperCase(); }
-          el.textContent = arr.join('');
-        });
-      }catch(_){ /* ignore */ }
-    })();
-  </script>
 </body>
 </html>

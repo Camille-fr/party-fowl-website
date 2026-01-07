@@ -50,14 +50,11 @@
     *{box-sizing:border-box}
     html,body{
       min-height:100%;
+      background: transparent;
     }
     body{
       margin:0;
-      background:
-        radial-gradient(max(1280px, 140vw) max(820px, 92vh) at 50% 18%, rgba(53,240,255,.08), transparent 70%),
-        radial-gradient(max(1200px, 132vw) max(760px, 90vh) at 14% 74%, rgba(255,43,91,.11), transparent 70%),
-        radial-gradient(max(1100px, 124vw) max(640px, 86vh) at 86% 66%, rgba(255,212,156,.07), transparent 66%),
-        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 38%, var(--bg0) 100%);
+      background: transparent;
       color:var(--text);
       overflow-x:hidden;
       overflow-y:auto;
@@ -66,70 +63,13 @@
     }
 
     .backdrop{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index:0;
-      isolation:isolate;
-    }
-    .backdrop-image{
-      position:absolute;
-      inset:0;
-      --bg-ratio: 0.428571;
-      --bg-tile: calc(100vw * var(--bg-ratio));
-      opacity:1;
-      filter: none;
-      transform: none;
-    }
-    .backdrop-image-mid{
-      position:absolute;
-      inset:0;
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: repeat-y;
-      background-size: 100% auto;
-      background-position: center var(--bg-tile);
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:0;
-    }
-    .backdrop-image::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      width:100%;
-      height: var(--bg-tile);
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      background-position: center top;
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:1;
-    }
-    .backdrop-image::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:0;
-      width:100%;
-      height: var(--bg-tile);
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      background-position: center bottom;
-      transform: scaleY(-1);
-      transform-origin: center;
-      pointer-events:none;
-      z-index:1;
+      display:none;
     }
 
     main{
       position:relative;
       z-index:1;
+      background: transparent;
     }
 
     .slide{
@@ -143,6 +83,7 @@
       padding-top: 0;
       isolation:isolate;
       overflow:hidden;
+      background: transparent;
     }
     .slide::before{ content:none; }
 
@@ -156,10 +97,7 @@
     .board{
       position:relative;
       border-radius: 0;
-      background:
-        linear-gradient(145deg, rgba(13,20,27,0.94), rgba(6,12,18,0.9)),
-        radial-gradient(130% 120% at 14% 18%, rgba(255,43,91,0.12), transparent 48%),
-        radial-gradient(110% 120% at 84% 22%, rgba(53,240,255,0.12), transparent 56%);
+      background: transparent;
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow:
         0 28px 120px rgba(0,0,0,0.62),
@@ -167,26 +105,6 @@
         0 0 36px rgba(53,240,255,0.16);
       overflow:hidden;
       padding: clamp(42px, 4.6vw, 68px) clamp(38px, 5vw, 80px);
-    }
-    .board::before{
-      content:"";
-      position:absolute;
-      inset:-34% -28% 42% -28%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
-      transform: rotate(-9deg);
-      filter: blur(46px);
-      opacity:.52;
-      pointer-events:none;
-    }
-    .board::after{
-      content:"";
-      position:absolute;
-      inset:-10px;
-      border-radius: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
-      mix-blend-mode: screen;
-      opacity:.5;
-      pointer-events:none;
     }
 
     .content{
@@ -486,9 +404,10 @@
       position:relative;
       width:100%;
       display:block;
-      border-radius: 0;
+      border-radius: clamp(32px, 2vw, 52px);
       overflow:hidden;
-      background: radial-gradient(60% 60% at 50% 42%, rgba(255,43,91,.12), rgba(13,63,75,.28), rgba(0,0,0,.70));
+      padding: 0;
+      background: transparent;
       border:1px solid rgba(255,255,255,.12);
       box-shadow:
         0 18px 46px rgba(0,0,0,.35),
@@ -497,11 +416,14 @@
     }
     .heroVideo{
       width:100%;
-      height:auto;
+      height:100%;
       display:block;
       object-fit:contain;
       filter: saturate(1.05) contrast(1.06);
-      background: #050a0d;
+      background: transparent;
+      border-radius: inherit;
+      margin: 0;
+      padding: 0;
     }
 
     @media (prefers-reduced-motion:no-preference){
@@ -598,9 +520,6 @@
     .board {
       animation: boardFloat 32s ease-in-out infinite;
     }
-    .board::after {
-      animation: glowPulse 26s ease-in-out infinite;
-    }
     .cta {
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
@@ -616,14 +535,9 @@
       0%, 100% { transform: translate3d(0, 0, 0); }
       50% { transform: translate3d(0, -7px, 0); }
     }
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.42; }
-      50% { opacity: 0.6; }
-    }
 
     @media (prefers-reduced-motion: reduce) {
       .board,
-      .board::after,
       .cta {
         animation: none !important;
         transition: none !important;
@@ -654,7 +568,7 @@
             </h1>
 
             <p class="tagline">
-              Because the only thing better than hot chicken and boozy slushies… is getting them for free.
+              Because the only thing better than NASHVILLE HOT CHICKEN and boozy slushies… is getting them for free.
             </p>
 
             <p class="intro">
@@ -897,7 +811,7 @@
 
       async function resolveSrc(el){
         const local = el.getAttribute("data-src");
-        const fallback = el.getAttribute("data-fallback") || "TODO";
+        const fallback = el.getAttribute("data-fallback") || "";
         try{
           const res = await fetch(local, { method: "HEAD", cache: "force-cache" });
           if (res && res.ok) return local;
@@ -914,7 +828,7 @@
           el.dataset._loaded = "1";
 
           const src = await resolveSrc(el);
-          if (src && src !== "TODO") el.src = src;
+          if (src) el.src = src;
           else { el.src = ""; el.style.opacity = "0"; }
         }
       }, { root: null, rootMargin: "220px 0px", threshold: 0.01 });

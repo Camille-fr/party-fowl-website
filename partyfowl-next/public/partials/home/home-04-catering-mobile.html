@@ -1,0 +1,903 @@
+<!--
+Responsive rules: Single-column stack with media first, desktop typography families/letter-spacing preserved with mobile-friendly sizes, subtle glass styling, focus-visible kept and CTA touch target >=48px, high-contrast overlays on media.
+Diff: Synced desktop copy + icon bullets, aligned background texture with desktop slide, tightened vertical spacing for smoother section transitions.
+Test plan: Load on mobile viewport (≤768px) and confirm video cover + readable overlays; tab to CTA to verify visible focus ring; scroll between slides to ensure no background flash; click CTA to see micro-bounce.
+-->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catering &amp; Events - Mobile</title>
+  <meta name="description" content="Party Fowl catering &amp; events mobile slide." />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#03172b;
+      --bg-ink:#010915;
+      --white:#f4f6fb;
+      --muted: rgba(244,246,251,.82);
+      --muted2: rgba(244,246,251,.68);
+      --accent-teal:#7dc3b8;
+      --accent-red:#f40012;
+      --accent-teal-dark:#1b605c;
+      --panel: rgba(3,11,22,.42);
+      --panel-soft: rgba(3,11,22,.24);
+      --border-strong: rgba(125,195,184,.45);
+      --border-soft: rgba(125,195,184,.18);
+      --shadow-strong: 0 20px 46px rgba(0,0,0,.52);
+      --shadow-soft: 0 14px 30px rgba(0,0,0,.42);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --grain-opacity: .2;
+      --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.24'/%3E%3C/svg%3E");
+      --gutter: clamp(16px, 5vw, 24px);
+      --stack: clamp(12px, 4vw, 20px);
+      --text-gap: 10px;
+      --visuals-pad: 12px;
+      --media-shift: 0px;
+      --cta-ease: cubic-bezier(.25,.6,.25,1);
+      --sticky-safe: calc(env(safe-area-inset-bottom) + clamp(28px, 6vh, 54px));
+      --scroll-ambient-strength: 0.28;
+    }
+
+    /* Local fonts (as requested) */
+    @font-face{
+      font-family:"AshwoodCondensed";
+      src:url("/assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Newslab";
+      src:url("/assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"WoodblockSans";
+      src:url("/assets/fonts/Woodblock-Sans-.otf") format("opentype");
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Buttergone";
+      src:url("/assets/fonts/Buttergone OTF.otf") format("opentype");
+      font-display:swap;
+    }
+
+    *{box-sizing:border-box}
+    a{ color:inherit; text-decoration:none; }
+    html,body{
+      height:auto;
+      min-height:0;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+      background: transparent;
+    }
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0;
+      font-family:"Newslab", Georgia, serif;
+      background: transparent;
+      color:var(--white);
+      min-height:0;
+      padding-bottom: env(safe-area-inset-bottom);
+      isolation:isolate;
+      overflow-x:hidden;
+      font-synthesis-weight:none;
+      position: relative;
+      z-index: 0;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(140% 120% at 18% 18%, rgba(125, 195, 184, 0.12), transparent 56%),
+        radial-gradient(140% 120% at 78% 12%, rgba(244, 0, 18, 0.08), transparent 58%),
+        linear-gradient(180deg, rgba(1, 20, 36, 0.92), rgba(1, 4, 10, 0.94) 42%, rgba(1, 2, 5, 1)),
+        url("/assets/img/home/background.png");
+      background-size: 140% 140%, 140% 140%, 100% 100%, cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(0.96) brightness(0.9);
+      transform: translateZ(0);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        linear-gradient(160deg, rgba(1, 18, 32, 0.76), rgba(1, 6, 12, 0.9)),
+        radial-gradient(210% 180% at 20% -8%, rgba(255, 43, 91, calc(var(--scroll-ambient-strength) * 0.32)), transparent 62%),
+        radial-gradient(190% 150% at 78% -12%, rgba(53, 240, 255, calc(var(--scroll-ambient-strength) * 0.24)), transparent 64%),
+        url("/assets/img/home/backgg.png");
+      background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+      background-size: cover, 150% 150%, 150% 150%, 380px 380px;
+      background-position: center;
+      background-blend-mode: normal, screen, screen, soft-light;
+      opacity: 0.42;
+      filter: saturate(0.92);
+    }
+    .stage{
+      display:block;
+      position: relative;
+      z-index: 1;
+    }
+
+    #catering-and-events-mobile{
+      background: transparent;
+      overflow-x:hidden;
+    }
+
+    .slide{
+      position:relative;
+      width:100%;
+      overflow:hidden;
+      scroll-margin-bottom: var(--sticky-safe);
+      padding: 0;
+    }
+    .slide::before{
+      content:"";
+      position:absolute; inset:0;
+      pointer-events:none;
+      background: none;
+      opacity: 0;
+      mix-blend-mode: normal;
+      filter: none;
+      z-index:0;
+    }
+    .slide::after{
+      content:"";
+      position:absolute; inset:-40px;
+      background: none;
+      mix-blend-mode:normal;
+      opacity:0;
+      filter: none;
+      z-index:0;
+    }
+
+	    .wrap{
+	      position:relative;
+	      z-index:1;
+	      width:100%;
+	      max-width: 720px;
+	      margin:0 auto;
+	      padding: var(--gutter);
+	      padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom));
+	      display:flex;
+	      flex-direction:column;
+	      gap: var(--stack);
+	      align-items:stretch;
+	      isolation:isolate;
+	    }
+    .wrap::before{
+      content:"";
+      position:absolute;
+      inset:-18% -12%;
+      background:
+        radial-gradient(42% 32% at 24% 12%, rgba(125,195,184,.16), transparent 68%),
+        linear-gradient(180deg, rgba(8,12,22,.52) 0%, rgba(8,12,22,.32) 30%, rgba(8,12,22,0) 90%);
+      filter: blur(18px);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .catering-mobile__video{
+      position:relative;
+      width: calc(100% + (var(--gutter) * 2));
+      margin: 0 calc(-1 * var(--gutter)) var(--stack);
+      overflow:hidden;
+      z-index:1;
+      box-shadow: var(--shadow-strong);
+    }
+    .catering-mobile__video-inner{
+      position:relative;
+      width:100%;
+      aspect-ratio: 3 / 2;
+      overflow:hidden;
+      background:#000;
+    }
+    .catering-mobile__video-inner::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.36) 58%, rgba(0,0,0,.6) 100%),
+        radial-gradient(520px 260px at 18% 8%, rgba(125,195,184,.20), transparent 70%);
+      pointer-events:none;
+      z-index:1;
+    }
+    .catering-mobile__video video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.06) contrast(1.05) brightness(0.92);
+      transform: translateY(var(--media-shift));
+    }
+
+    .visuals{
+      position:relative;
+      width:100%;
+      aspect-ratio: 4 / 3;
+      border-radius: calc(var(--radius-lg) + 2px);
+      overflow:hidden;
+      box-shadow:var(--shadow-strong);
+      background:var(--panel-soft);
+      border:1px solid var(--border-soft);
+      isolation:isolate;
+    }
+    .visualsBg{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      filter: contrast(1.12) saturate(1.08) brightness(0.72);
+      transform: scale(1.02);
+      opacity:.55;
+      z-index:0;
+    }
+    .heroMedia{
+      position:absolute;
+      inset:var(--visuals-pad);
+      border-radius:var(--radius-md);
+      overflow:hidden;
+      z-index:2;
+      box-shadow:
+        0 0 0 1px rgba(243,155,74,.26),
+        0 18px 50px rgba(0,0,0,.55);
+      background: transparent;
+      isolation:isolate;
+    }
+    .heroMedia video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.08) contrast(1.06);
+      transform: translateY(var(--media-shift));
+    }
+    .heroMedia::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.36) 58%, rgba(0,0,0,.58) 100%),
+        radial-gradient(420px 240px at 18% 8%, rgba(243,155,74,.28), transparent 70%);
+      pointer-events:none;
+      z-index:2;
+    }
+    .heroMedia::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      padding:3px;
+      border-radius:10px;
+      background:
+        linear-gradient(135deg,
+          rgba(243,155,74,1) 0%,
+          rgba(217,57,46,.9) 52%,
+          rgba(243,155,74,.6) 100%);
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events:none;
+      box-shadow:
+        0 0 0 1px rgba(243,155,74,.72) inset,
+        0 0 18px rgba(217,57,46,.55),
+        0 0 36px rgba(243,155,74,.4),
+        0 0 54px rgba(243,155,74,.22);
+      filter: drop-shadow(0 0 10px rgba(217,57,46,.65))
+              drop-shadow(0 0 20px rgba(243,155,74,.45));
+      mix-blend-mode: screen;
+      opacity:.9;
+      z-index:3;
+    }
+
+    .text{
+      position:relative;
+      background:
+        radial-gradient(62% 56% at 18% 10%, rgba(125,195,184,.16), transparent 70%),
+        radial-gradient(58% 52% at 82% 0%, rgba(244,0,18,.12), transparent 68%),
+        linear-gradient(180deg, rgba(8,12,22,.74) 0%, rgba(8,12,22,.52) 62%, rgba(8,12,22,.46) 100%);
+      border:1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: clamp(16px, 6vw, 22px);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .text::before{
+      content:"";
+      position:absolute;
+      inset:-12% 8% auto 8%;
+      height:52%;
+      background: linear-gradient(180deg, rgba(8,12,22,.68) 0%, rgba(8,12,22,.26) 62%, transparent 100%);
+      filter: blur(14px);
+      opacity:.9;
+      pointer-events:none;
+      z-index:0;
+    }
+    .textContent{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      gap:var(--text-gap);
+    }
+
+    .title{ margin:0; }
+    .catering-title{
+      position:relative;
+      z-index:2;
+      font-family:"AshwoodCondensed", serif;
+      letter-spacing:.085em;
+      text-transform:uppercase;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .catering-title-line{
+      display:block;
+      font-size: clamp(40px, 11vw, 68px);
+      line-height:.92;
+      color: rgba(244,246,251,0.98);
+      text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 14px rgba(244,0,18,0.32);
+    }
+    .catering-title-line:nth-child(2){
+      font-size: clamp(34px, 9.8vw, 60px);
+    }
+
+    .subtitle{
+      font-family:"Newslab", Georgia, serif;
+      font-size:15px;
+      line-height:1.45;
+      color:var(--muted);
+      margin:2px 0 2px 0;
+      text-shadow: 0 8px 18px rgba(0,0,0,.55);
+    }
+
+    .bullets{
+      margin:0;
+      padding:0;
+      list-style:none;
+      font-family:"Newslab", Georgia, serif;
+      color:var(--muted2);
+      font-size:15px;
+      line-height:1.52;
+      display:grid;
+      gap:12px;
+      text-shadow: 0 8px 18px rgba(0,0,0,.55);
+    }
+    .bullets li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      margin:0;
+    }
+    .bullet-icon{
+      width:38px;
+      height:38px;
+      flex:0 0 auto;
+      margin-top:2px;
+      border-radius:999px;
+      border:1px solid rgba(125,195,184,.6);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(125,195,184,.45), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(125,195,184,.18), transparent 55%),
+        rgba(3,11,22,.38);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--accent-teal);
+      box-shadow:
+        0 0 12px rgba(125,195,184,.28),
+        0 6px 14px rgba(0,0,0,.35),
+        inset 0 0 10px rgba(125,195,184,.16);
+    }
+    .bullet-icon svg{
+      width:20px;
+      height:20px;
+    }
+    .bullet-text{
+      flex:1 1 auto;
+    }
+
+    .mini{
+      font-family:"Newslab", Georgia, serif;
+      font-size: clamp(17px, 4.8vw, 20px);
+      line-height:1.32;
+      color:var(--white);
+      margin:4px 0 6px 0;
+      text-shadow: 0 8px 18px rgba(0,0,0,.55);
+      text-wrap: balance;
+    }
+    .mini .mini-line{
+      display:block;
+    }
+    .mini.neon-white{
+      font-family:"Buttergone", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing:.06em;
+      color: #f7fffd;
+      text-shadow:
+        0 0 2px rgba(247,255,253,0.92),
+        0 0 8px rgba(125,195,184,0.75),
+        0 0 16px rgba(125,195,184,0.45);
+    }
+
+    .accent{
+      color:#e9fffb;
+      text-shadow: 0 0 12px rgba(125,195,184,.42);
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      --glow: rgba(53, 240, 255, 0.42);
+      --border: rgba(53, 240, 255, 0.72);
+      border:1px solid var(--border);
+      background: rgba(3,11,22,0.22);
+      color:#9ef1ea;
+      font-family:"Newslab", "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      padding:14px 22px;
+      margin:0;
+      min-height:50px;
+      border-radius:var(--radius-pill);
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.55),
+        0 0 16px rgba(53, 240, 255, 0.28),
+        inset 0 0 12px rgba(33, 184, 255, 0.18);
+      text-shadow: 0 0 8px rgba(53,240,255,0.22);
+      position:relative;
+      overflow:hidden;
+      text-decoration:none;
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      cursor:pointer;
+      user-select:none;
+      touch-action:manipulation;
+      transition: transform .18s var(--cta-ease), box-shadow .18s var(--cta-ease), letter-spacing .18s var(--cta-ease), border-color .18s var(--cta-ease);
+    }
+    .cta::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .cta::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      border-radius:999px;
+      background: radial-gradient(circle at center, var(--glow), transparent 70%);
+      opacity:0;
+      filter: blur(16px);
+      transition: opacity .2s ease, filter .2s ease;
+      pointer-events:none;
+      z-index:-1;
+    }
+    .cta:hover{
+      transform: translateY(-1px);
+      letter-spacing:.11em;
+      border-color: rgba(126, 241, 234, 0.92);
+      box-shadow:
+        0 12px 26px rgba(0,0,0,0.55),
+        0 0 22px rgba(53, 240, 255, 0.38),
+        inset 0 0 14px rgba(33, 184, 255, 0.22);
+    }
+    .cta:hover::after{ opacity:.78; filter: blur(20px); }
+    .cta:active{ transform: translateY(1px) scale(.985); box-shadow: 0 10px 20px rgba(0,0,0,0.58); }
+    .cta:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(8,12,22,1),
+        0 0 0 4px rgba(233,255,251,.9),
+        0 14px 30px rgba(0,0,0,.62);
+    }
+    .cta .cta-arrow{ display:inline-block; transition: transform .16s ease; }
+    .cta:hover .cta-arrow{ transform: translateX(2px); }
+
+    .sr-only{
+      position:absolute !important;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
+    }
+
+    @media (min-height: 900px){
+      :root{
+        --media-shift: 6px;
+      }
+    }
+
+    @media (max-width: 720px){
+      .wrap{ padding: var(--gutter); }
+      .subtitle{ font-size:16px; }
+    }
+    @media (max-width: 540px){
+      .text{ padding: clamp(16px, 6vw, 24px); }
+      .bullet-icon{ width:34px; height:34px; }
+      .bullets{ gap:10px; }
+      .catering-title{ letter-spacing:.07em; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+      }
+      .catering-mobile__video video{ transform:none !important; }
+      .cta,.bullet-icon{ transition:none !important; }
+    }
+
+    /* HOME SLIDE 4 */
+    .pf-catering{
+      position:relative;
+      z-index:1;
+    }
+
+	    .pf-catering__wrap{
+	      position:relative;
+	      z-index:1;
+	      width:min(100%, 960px);
+	      margin:0 auto;
+	      padding: var(--gutter);
+	      padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom));
+	      display:grid;
+	      grid-template-columns: 1fr;
+	      gap: clamp(16px, 3vw, 40px);
+	      align-items:start;
+      isolation:isolate;
+    }
+
+    .pf-catering__media,
+    .pf-catering__card{
+      min-width:0;
+    }
+
+    .pf-catering__media{
+      position:relative;
+      border-radius: calc(var(--radius-lg) + 2px);
+      overflow:hidden;
+      aspect-ratio: 4 / 3;
+      background: rgba(3,11,22,.16);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+      isolation:isolate;
+    }
+
+    .pf-catering__media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.26) 60%, rgba(0,0,0,.46) 100%),
+        radial-gradient(520px 300px at 18% 10%, rgba(125,195,184,.16), transparent 70%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .pf-catering__video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.06) contrast(1.05);
+      transform: translateY(var(--media-shift));
+    }
+
+    .pf-catering__card{
+      width:100%;
+      max-width:none;
+      justify-self:stretch;
+      padding: clamp(18px, 2.2vw, 28px);
+      border-radius: 24px;
+      background:
+        radial-gradient(62% 56% at 18% 10%, rgba(125,195,184,.14), transparent 70%),
+        radial-gradient(58% 52% at 82% 0%, rgba(244,0,18,.10), transparent 68%),
+        linear-gradient(180deg, rgba(10,10,12,.64) 0%, rgba(10,10,12,.52) 100%);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+    }
+
+    .pf-catering__headline{
+      margin:0 0 12px 0;
+      font-family:"AshwoodCondensed", serif;
+      font-size: clamp(34px, 4.2vw, 74px);
+      line-height: 1.02;
+      letter-spacing: .07em;
+      text-transform:uppercase;
+      color: rgba(244,246,251,0.98);
+      text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 14px rgba(244,0,18,0.30);
+      text-wrap: balance;
+      overflow-wrap:anywhere;
+    }
+
+    @media (max-width: 420px){
+      .pf-catering__headline{ letter-spacing: .055em; }
+    }
+
+    .pf-catering__subtitle{
+      margin:0 0 14px 0;
+      font-family:"Newslab", Georgia, serif;
+      font-size:15px;
+      line-height:1.45;
+      color:var(--muted);
+      text-shadow: 0 8px 18px rgba(0,0,0,.55);
+      max-width: 52ch;
+    }
+
+    .pf-catering__accent{
+      color:#e9fffb;
+      text-shadow: 0 0 12px rgba(125,195,184,.42);
+    }
+
+    .pf-catering__features{
+      margin:0 0 14px 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:12px;
+      font-family:"Newslab", Georgia, serif;
+      color:var(--muted2);
+      font-size:15px;
+      line-height:1.52;
+      text-shadow: 0 8px 18px rgba(0,0,0,.55);
+      --pf-icon: 44px;
+    }
+
+    @media (max-width: 420px){
+      .pf-catering__features{ --pf-icon: 40px; }
+    }
+
+    .pf-catering__feature{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      margin:0;
+    }
+
+    .pf-catering__feature-icon{
+      width:var(--pf-icon);
+      height:var(--pf-icon);
+      flex:0 0 var(--pf-icon);
+      margin-top:2px;
+      border-radius:999px;
+      border:1px solid rgba(125,195,184,.6);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(125,195,184,.45), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(125,195,184,.18), transparent 55%),
+        rgba(3,11,22,.38);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--accent-teal);
+      box-shadow:
+        0 0 12px rgba(125,195,184,.28),
+        0 6px 14px rgba(0,0,0,.35),
+        inset 0 0 10px rgba(125,195,184,.16);
+    }
+
+    .pf-catering__feature-icon svg{
+      width: calc(var(--pf-icon) * 0.55);
+      height: calc(var(--pf-icon) * 0.55);
+    }
+
+    .pf-catering__script{
+      margin:4px 0 10px 0;
+      font-family:"Buttergone", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: clamp(18px, 4.8vw, 22px);
+      line-height:1.32;
+      letter-spacing:.06em;
+      color: #f7fffd;
+      text-shadow:
+        0 0 2px rgba(247,255,253,0.92),
+        0 0 8px rgba(125,195,184,0.75),
+        0 0 16px rgba(125,195,184,0.45);
+      text-wrap: balance;
+    }
+    .pf-catering__script-line{ display:block; }
+
+    .pf-catering__cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      --glow: rgba(53, 240, 255, 0.42);
+      --border: rgba(53, 240, 255, 0.72);
+      border:1px solid var(--border);
+      background: rgba(3,11,22,0.22);
+      color:#9ef1ea;
+      font-family:"Newslab", "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      padding:14px 22px;
+      margin:0;
+      min-height:50px;
+      border-radius:var(--radius-pill);
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.55),
+        0 0 16px rgba(53, 240, 255, 0.28),
+        inset 0 0 12px rgba(33, 184, 255, 0.18);
+      text-shadow: 0 0 8px rgba(53,240,255,0.22);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      user-select:none;
+      touch-action:manipulation;
+      transition: transform .18s var(--cta-ease), box-shadow .18s var(--cta-ease), letter-spacing .18s var(--cta-ease), border-color .18s var(--cta-ease);
+    }
+    .pf-catering__cta::before{
+      content:"";
+      position:absolute;
+      inset:2px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .pf-catering__cta::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      border-radius:999px;
+      background: radial-gradient(circle at center, var(--glow), transparent 70%);
+      opacity:0;
+      filter: blur(16px);
+      transition: opacity .2s ease, filter .2s ease;
+      pointer-events:none;
+      z-index:-1;
+    }
+    .pf-catering__cta:hover{
+      transform: translateY(-1px);
+      letter-spacing:.11em;
+      border-color: rgba(126, 241, 234, 0.92);
+      box-shadow:
+        0 12px 26px rgba(0,0,0,0.55),
+        0 0 22px rgba(53, 240, 255, 0.38),
+        inset 0 0 14px rgba(33, 184, 255, 0.22);
+    }
+    .pf-catering__cta:hover::after{ opacity:.78; filter: blur(20px); }
+    .pf-catering__cta:active{ transform: translateY(1px) scale(.985); box-shadow: 0 10px 20px rgba(0,0,0,0.58); }
+    .pf-catering__cta:focus-visible{
+      outline:none;
+      box-shadow:
+        0 0 0 2px rgba(8,12,22,1),
+        0 0 0 4px rgba(233,255,251,.9),
+        0 14px 30px rgba(0,0,0,.62);
+    }
+    .pf-catering__cta-arrow{ display:inline-block; transition: transform .16s ease; }
+    .pf-catering__cta:hover .pf-catering__cta-arrow{ transform: translateX(2px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pf-catering__cta,
+      .pf-catering__cta::after,
+      .pf-catering__cta-arrow{
+        transition:none !important;
+      }
+      .pf-catering__video{ transform:none !important; }
+    }
+  </style>
+</head>
+<body style="background: transparent; background-color: transparent;">
+  <main class="stage" aria-label="Catering &amp; Events mobile slide" style="background: transparent; background-color: transparent;">
+    <section id="catering-and-events-mobile" class="slide pf-catering" aria-labelledby="catering-and-events-title" style="background: transparent; background-color: transparent;">
+      <div class="pf-catering__wrap">
+        <div class="pf-catering__media" aria-label="Catering video">
+          <video class="pf-catering__video" muted loop playsinline autoplay preload="metadata" poster="/assets/img/home/catering/backgroundslide4.png" data-defer="visible" data-autoplay="1">
+            <source data-src="/assets/img/home/catering/04_catering.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div class="pf-catering__card">
+          <h2 id="catering-and-events-title" class="pf-catering__headline">BRING THE PARTY TO YOU</h2>
+
+          <p class="pf-catering__subtitle">
+            NASHVILLE HOT CHICKEN spreads, boozy slushie bars &amp; private spaces built for <span class="pf-catering__accent">big nights.</span>
+          </p>
+
+          <ul class="pf-catering__features" aria-label="Catering highlights">
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4.5 19.5l8.8-3.6-5.1-6-3.7 9.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M7.6 13.8l3-1.2M8.6 16.6l3.2-1.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M12.8 8.2l3.8-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M16.6 3.6v2.2M19.6 5.2l2-1M14.8 5l-2-1M18.2 8.2l2.2 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <circle cx="20.2" cy="8.4" r="0.9" fill="currentColor"/>
+                  <circle cx="13.4" cy="3.4" r="0.8" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Catering trays for game days, office events &amp; celebrations</span>
+            </li>
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3.5" y="4" width="9.5" height="16" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="10.2" cy="12" r="0.8" fill="currentColor"/>
+                  <circle cx="17.5" cy="9" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="21" cy="10.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M15 16.2c.6-2 2.3-3.3 4.2-3.3 1.9 0 3.6 1.3 4.2 3.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Private rooms from cozy dinners to 200-guest parties</span>
+            </li>
+            <li class="pf-catering__feature">
+              <span class="pf-catering__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 8h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="9" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M3 14h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="6" cy="14" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M16 7h5l-1 10a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2l-1-10z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M18 5v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="pf-catering__feature-text">Custom menus, heat levels &amp; drink setups for your crew</span>
+            </li>
+          </ul>
+
+          <p class="pf-catering__script">
+            <span class="pf-catering__script-line">From The Coop to intimate VIP rooms,</span>
+            <span class="pf-catering__script-line">your next party starts here.</span>
+          </p>
+
+          <button class="pf-catering__cta" type="button" aria-label="Explore Catering &amp; Events">
+            <span>Explore Catering &amp; Events</span>
+            <span class="pf-catering__cta-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const cta = document.querySelector('.pf-catering__cta');
+      if (cta) {
+        cta.addEventListener('click', () => {
+          cta.animate(
+            [{ transform: 'translateY(-2px)' }, { transform: 'translateY(0)' }],
+            { duration: 180, easing: 'ease-out' }
+          );
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

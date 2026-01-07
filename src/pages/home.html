@@ -14,9 +14,19 @@
       --desktop-shell: 1440px;
       --desktop-shell-pad: clamp(18px, 2.2vw, 28px);
       --desktop-shell-total: calc(var(--desktop-shell) + var(--desktop-shell-pad) + var(--desktop-shell-pad));
-      --scroll-velocity: 0;
       --scroll-ambient-strength: 0.28;
       --scroll-glow-opacity: 0.32;
+      --pf-section-gap-xl: clamp(60px, 4vw, 86px);
+      --pf-section-gap-lg: clamp(44px, 3.4vw, 68px);
+      --pf-section-gap-md: clamp(36px, 4.6vw, 58px);
+      --pf-section-gap-sm: clamp(28px, 5vw, 48px);
+      --pf-section-gap-tight: clamp(12px, 2vw, 18px);
+      --pf-section-gap-mobile: clamp(10px, 2vw, 16px);
+      --pf-section-stack-gap: clamp(10px, 2vw, 16px);
+      --pf-section-pad-lg: clamp(46px, 4.6vw, 78px);
+      --pf-section-pad-md: clamp(38px, 4.8vw, 68px);
+      --pf-section-pad-sm: clamp(30px, 5.4vw, 56px);
+      --pf-section-pad-xs: clamp(24px, 6vw, 46px);
     }
     * { box-sizing: border-box; }
     html, body {
@@ -30,8 +40,8 @@
     }
     html {
       scroll-behavior: smooth;
-      overscroll-behavior: contain;
     }
+    /* Intentionally avoid global `overscroll-behavior: contain`; apply containment only on horizontal scrollers. */
     @font-face {
       font-family: "Adrenaline";
       src: url("../assets/fonts/Adrenaline-Regular.otf") format("opentype");
@@ -56,7 +66,7 @@
     }
     body {
       margin: 0;
-      background: #030b16;
+      background: #050b14;
       color: #fff;
       font-family: "Adrenaline", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       /* Reserve space for mobile dock so content isn't hidden */
@@ -65,8 +75,10 @@
         background 0.85s ease,
         color 0.5s ease;
       position: relative;
+      z-index: 0;
     }
 
+    /* Global fixed background pulled from slide 2 */
     body::before {
       content: "";
       position: fixed;
@@ -74,12 +86,34 @@
       z-index: 0;
       pointer-events: none;
       background:
-        radial-gradient(200% 160% at 20% -10%, rgba(255, 43, 91, calc(var(--scroll-ambient-strength) * 0.5)), transparent 58%),
-        radial-gradient(220% 180% at 72% -18%, rgba(53, 240, 255, calc(var(--scroll-ambient-strength) * 0.4)), transparent 60%),
-        radial-gradient(180% 140% at 50% 110%, rgba(255, 255, 255, calc(var(--scroll-glow-opacity) * 0.4)), transparent 60%);
-      opacity: calc(0.35 + var(--scroll-ambient-strength) * 0.35);
-      filter: blur(calc(24px + var(--scroll-velocity) * 14px));
-      animation: ambientPulse 30s ease-in-out infinite;
+        radial-gradient(140% 120% at 18% 18%, rgba(125, 195, 184, 0.12), transparent 56%),
+        radial-gradient(140% 120% at 78% 12%, rgba(244, 0, 18, 0.08), transparent 58%),
+        linear-gradient(180deg, rgba(1, 20, 36, 0.92), rgba(1, 4, 10, 0.94) 42%, rgba(1, 2, 5, 1)),
+        url("../assets/img/home/background.png");
+      background-size: 140% 140%, 140% 140%, 100% 100%, cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(0.96) brightness(0.9);
+      transform: translateZ(0);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(160deg, rgba(1, 18, 32, 0.76), rgba(1, 6, 12, 0.9)),
+        radial-gradient(210% 180% at 20% -8%, rgba(255, 43, 91, calc(var(--scroll-ambient-strength) * 0.32)), transparent 62%),
+        radial-gradient(190% 150% at 78% -12%, rgba(53, 240, 255, calc(var(--scroll-ambient-strength) * 0.24)), transparent 64%),
+        url("../assets/img/home/backgg.png");
+      background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+      background-size: cover, 150% 150%, 150% 150%, 380px 380px;
+      background-position: center;
+      background-blend-mode: normal, screen, screen, soft-light;
+      opacity: 0.42;
+      filter: saturate(0.92);
     }
 
     html::-webkit-scrollbar {
@@ -198,13 +232,214 @@
       width: 100%;
       max-width: 100vw;
       margin: 0 auto;
-      min-height: 100vh;
+      min-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      scroll-padding-top: var(--pf-header-height, 0px);
       overflow-x: hidden;
       overflow-anchor: none;
       position: relative;
-      background: linear-gradient(180deg, #05070d 0%, #030b16 100%);
+      background: transparent;
       isolation: isolate;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Homepage-only slide rhythm + container system */
+    .pf-home {
+      --pf-slide-pad-block: var(--pf-section-pad-lg);
+      --pf-container-max: var(--desktop-shell);
+      --pf-container-pad: clamp(18px, 2.2vw, 28px);
+      --pf-container-pad-sm: clamp(16px, 3vw, 24px);
+      --pf-container-pad-xs: clamp(14px, 4vw, 20px);
+    }
+
+    .container {
+      width: min(var(--pf-container-max), 100%);
+      margin-inline: auto;
+      padding-inline: var(--pf-container-pad);
+    }
+
+    .pf-home .pf-slide {
+      width: 100%;
+      margin: 0;
+      padding-block: var(--pf-slide-pad-block);
+      scroll-margin-top: var(--pf-header-height, 0px);
+      position: relative;
+      overflow: hidden;
+      background-color: transparent;
+      min-height: 0;
+      box-shadow: none;
+    }
+
+    .pf-home .pf-slide::before {
+      content: none;
+    }
+
+    .pf-home .pf-slide .pf-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pf-home .pf-container {
+      width: 100%;
+      max-width: var(--pf-container-max);
+      margin-inline: auto;
+      padding-inline: var(--pf-container-pad);
+    }
+
+    .pf-home .pf-slide--fullbleed .pf-container {
+      width: 100%;
+      max-width: 100%;
+      padding-inline: 0;
+    }
+
+    .pf-home .pf-slide--flush {
+      padding-block: 0;
+    }
+
+    /* Hide Rewards footer link on home to match the updated content mix. */
+    [data-role="site-footer"] .footer-link-rewards {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      .pf-home {
+        --pf-slide-pad-block: var(--pf-section-pad-md);
+        --pf-container-pad: clamp(16px, 3vw, 24px);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .pf-home {
+        --pf-slide-pad-block: var(--pf-section-pad-sm);
+        --pf-container-pad: var(--pf-container-pad-sm);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .slide[data-slide-id="home-02-social-media-reels"] {
+        --pf-slide-pad-block: clamp(8px, 1.6vw, 20px);
+        padding-top: clamp(10px, 3vw, 22px);
+        margin-top: 0;
+      }
+      .slide[data-slide-id="home-02-social-media-reels"] .pf-container {
+        padding-inline: var(--pf-container-pad);
+      }
+      .slide[data-slide-id="home-01-above-fold"] {
+        padding: 0;
+      }
+      .pf-home {
+        --pf-slide-pad-block: var(--pf-section-pad-xs);
+        --pf-container-pad: var(--pf-container-pad-xs);
+      }
+      .slides-root {
+        gap: 0;
+      }
+      .pf-home .pf-slide {
+        padding-bottom: calc(var(--pf-slide-pad-block) + var(--pf-section-gap-mobile));
+      }
+      .pf-home .pf-slide:last-child {
+        padding-bottom: var(--pf-slide-pad-block);
+      }
+      .slide[data-slide-id="home-04-catering"] {
+        padding-bottom: calc(var(--pf-section-gap-mobile) + 4px);
+      }
+      .slide,
+      .slide-frame {
+        border: none;
+        box-shadow: none;
+      }
+      .slide::before,
+      .slide::after,
+      .slide-frame::before,
+      .slide-frame::after {
+        content: none;
+      }
+      .slide[data-slide-id="home-03-menu-carousel"] {
+        margin-top: 0;
+      }
+      .slide[data-slide-id="home-05-the-latest"] {
+        padding-block: 0;
+        background: transparent;
+      }
+      .slide[data-slide-id="home-05-the-latest"] .slide-frame {
+        border-radius: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        filter: saturate(1);
+      }
+      .slide[data-slide-id="home-06-cta-section"],
+      .slide[data-slide-id="home-08-contact"] {
+        padding-top: 0;
+        padding-bottom: 0;
+        background: transparent;
+      }
+      .slide[data-slide-id="home-06-cta-section"] .slide-frame,
+      .slide[data-slide-id="home-08-contact"] .slide-frame {
+        border: 0;
+        box-shadow: none !important;
+        filter: saturate(1);
+        background: transparent;
+      }
+      .slide[data-slide-id="home-06-cta-section"] + .slide[data-slide-id="home-08-contact"] {
+        margin-top: 0;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .pf-home {
+        --pf-slide-pad-block: clamp(16px, 2vw, 28px);
+      }
+      .slide[data-slide-id="home-01-above-fold"],
+      .slide[data-slide-id="home-02-social-media-reels"] {
+        box-shadow: none;
+      }
+      .slide[data-slide-id="home-01-above-fold"] {
+        padding-bottom: clamp(8px, 1.2vw, 18px);
+      }
+      .slide[data-slide-id="home-02-social-media-reels"] {
+        padding-top: 0;
+        padding-bottom: 0;
+        --pf-slide-pad-block: 0;
+      }
+      .slide[data-slide-id="home-03-menu-carousel"] {
+        padding-top: 0;
+        padding-bottom: 0;
+        --pf-slide-pad-block: 0;
+      }
+      .slide.is-visible[data-slide-id="home-01-above-fold"] .slide-frame,
+      .slide.is-visible[data-slide-id="home-02-social-media-reels"] .slide-frame,
+      .slide.is-visible[data-slide-id="home-03-menu-carousel"] .slide-frame {
+        box-shadow: 0 20px 68px rgba(0, 0, 0, 0.36);
+      }
+      .slide[data-slide-id="home-01-above-fold"] .slide-frame,
+      .slide[data-slide-id="home-02-social-media-reels"] .slide-frame {
+        box-shadow: none !important;
+        filter: saturate(1);
+      }
+      .slide[data-slide-id="home-04-catering"] {
+        padding-bottom: clamp(10px, 1.6vw, 18px);
+      }
+      .slide[data-slide-id="home-05-the-latest"] {
+        padding-top: clamp(8px, 1.4vw, 20px);
+        padding-bottom: clamp(10px, 1.6vw, 20px);
+      }
+      .slide[data-slide-id="home-06-cta-section"] {
+        padding-bottom: 0;
+      }
+      .slide[data-slide-id="home-08-contact"] {
+        padding-top: clamp(8px, 1.4vw, 20px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pf-home {
+        --pf-container-pad: clamp(12px, 4vw, 18px);
+      }
     }
     html, body {
       overflow-anchor: none;
@@ -217,26 +452,22 @@
       margin: 0;
       padding: 0;
       min-height: 0;
-      background-color: #030b16;
+      background-color: transparent;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: stretch;
       position: relative;
       overflow-x: hidden;
-      --frame-shift: 0px;
       --reveal-delay: 0s;
       opacity: 0;
       transform: translateY(26px) scale(0.992);
       transition:
         opacity 0.75s ease-out,
-        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.6s ease,
-        box-shadow 0.6s ease;
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform, opacity;
       isolation: isolate;
-      filter: saturate(calc(0.92 + var(--scroll-velocity, 0) * 0.18)) brightness(calc(0.95 + var(--scroll-velocity, 0) * 0.12));
-      box-shadow: 0 30px 80px rgba(2, 6, 15, calc(0.55 + var(--scroll-velocity, 0) * 0.26));
+      box-shadow: 0 22px 66px rgba(2, 6, 15, 0.32);
     }
 
     .slide.is-visible {
@@ -245,14 +476,78 @@
       transition-delay: var(--reveal-delay, 0s);
     }
 
-    @media (min-width: 900px) {
+    .slide[data-slide-id="home-02-social-media-reels"] {
+      --pf-slide-pad-block: clamp(16px, 2vw, 28px);
+      margin-top: clamp(-10px, -0.7vw, -2px);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .slide[data-slide-id="home-03-menu-carousel"] {
+      margin-top: 0;
+    }
+
+    .slide[data-slide-id="home-04-catering"] {
+      margin-top: 0;
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      box-shadow: none;
+    }
+    .slide[data-slide-id="home-04-catering"] .slide-frame,
+    .slide[data-slide-id="home-04-catering"] .pf-container {
+      background: transparent;
+      background-color: transparent;
+      background-image: none;
+      box-shadow: none;
+    }
+    .slide[data-slide-id="home-04-catering"]::before,
+    .slide[data-slide-id="home-04-catering"]::after,
+    .slide[data-slide-id="home-04-catering"] .slide-frame::before,
+    .slide[data-slide-id="home-04-catering"] .slide-frame::after {
+      background: none;
+      background-image: none;
+    }
+    .slide[data-slide-id="home-04-catering"] .slide.is-visible .slide-frame {
+      box-shadow: none;
+      filter: none;
+    }
+
+    .slide[data-slide-id="home-08-contact"] {
+      scroll-margin-top: clamp(72px, 10vw, 120px);
+    }
+
+    .slide[data-slide-id="home-06-cta-section"],
+    .slide[data-slide-id="home-08-contact"] {
+      padding-block: 0;
+    }
+
+    @media (min-width: 1024px) {
       .slides-root {
         max-width: 100%;
         padding-inline: 0;
       }
+      .pf-home {
+        --pf-slide-pad-block: clamp(32px, 3vw, 48px);
+      }
       .slide {
         max-width: 100%;
         margin: 0;
+        box-shadow: none;
+      }
+      .slide-frame {
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .slide {
+        box-shadow: none;
+      }
+      .slide-frame,
+      .slide.is-visible .slide-frame {
+        box-shadow: none;
+        filter: saturate(1);
       }
     }
 
@@ -260,16 +555,18 @@
     .slide-frame {
       display: block;
       width: 100%;
+      max-width: 100%;
       min-height: 0;
       border: 0;
       background: transparent;
+      position: relative;
+      z-index: 1;
       /* The height is set dynamically once the content loads */
       pointer-events: none;
       visibility: hidden; /* revealed once sized to avoid clipping during load */
       transform: translateZ(0);
       transition:
-        box-shadow 0.45s ease,
-        filter 0.4s ease;
+        box-shadow 0.45s ease;
       filter: saturate(0.96);
     }
 
@@ -280,7 +577,7 @@
 
     .slide.is-visible .slide-frame {
       box-shadow:
-        0 20px 68px rgba(0, 0, 0, 0.42),
+        0 20px 68px rgba(0, 0, 0, 0.36),
         0 0 0 1px rgba(255, 255, 255, 0.05);
       filter: saturate(1);
     }
@@ -289,16 +586,28 @@
     .slide-placeholder { min-height: 0; }
 
     /* Responsive selection: show only matching variant */
-	    @media (max-width: 899px) {
-	      .view-desktop { display: none !important; }
-	      .view-mobile { display: block; }
-	      body { padding-bottom: env(safe-area-inset-bottom, 0px); }
-	      .slides-root { min-height: 0; }
-	      /* Keep the fixed mobile dock from covering the footer (no visual gap between last slide + footer). */
-	      [data-role="site-footer"] .pf-footer {
-	        padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px) + 92px);
-	      }
-	      /* Make the join between slide 7 and footer obvious (home page only). */
+		    @media (max-width: 1023px) {
+		      .pf-only-desktop,
+		      .view-desktop { display: none !important; }
+		      .pf-only-mobile,
+		      .view-mobile { display: block; }
+		      body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+		      body::before,
+		      body::after {
+		        position: fixed;
+		        filter: none;
+		        opacity: 0.52;
+		      }
+		      .slides-root { min-height: 0; }
+		      /* Keep the fixed mobile dock from covering the footer (no visual gap between last slide + footer). */
+		      [data-role="site-footer"] .pf-footer {
+		        padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px) + 92px);
+		      }
+		      .mobile-dock::before {
+		        backdrop-filter: blur(8px) saturate(110%);
+		        -webkit-backdrop-filter: blur(8px) saturate(110%);
+		      }
+	      /* Make the join between the final slide and footer obvious (home page only). */
 	      [data-role="site-footer"] .pf-footer::before {
 	        height: 6px;
 	        background: linear-gradient(
@@ -310,39 +619,83 @@
 	        box-shadow:
 	          0 0 18px rgba(53,240,255,0.55),
 	          0 0 26px rgba(244,0,18,0.24);
-	      }
-	    }
-    @media (min-width: 900px) {
+		    }
+    }
+
+    @media (max-width: 768px) {
+      [data-role="site-footer"] .pf-footer::before {
+        display: none;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .pf-only-desktop,
       .view-desktop { display: block; }
+      .pf-only-mobile,
       .view-mobile { display: none !important; }
     }
 
-    /* Optional: small visual separators to help debugging stacking */
-    .slide + .slide { /* no visible separator by default */ }
+	    /* Optional: small visual separators to help debugging stacking */
+	    .slide + .slide { /* no visible separator by default */ }
 
-    /* Slides 6–7: ensure there is ZERO perceived gap on desktop (no shadows/borders between the two visuals). */
-    @media (min-width: 900px) {
+	    /* Slides 6–8: keep clean joins on desktop (no outer shadows/borders between sections). */
+	    @media (min-width: 1024px) {
+      .slide[data-slide-id="home-05-the-latest"],
       .slide[data-slide-id="home-06-cta-section"],
-      .slide[data-slide-id="home-07-rewards"] {
+      .slide[data-slide-id="home-08-contact"] {
         background: transparent;
         box-shadow: none;
         filter: none;
       }
 
+	      .slide[data-slide-id="home-05-the-latest"] {
+	        padding-bottom: 0;
+	      }
+
+      .slide[data-slide-id="home-06-cta-section"] {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .slide[data-slide-id="home-05-the-latest"] .slide-frame,
       .slide[data-slide-id="home-06-cta-section"] .slide-frame,
-      .slide[data-slide-id="home-07-rewards"] .slide-frame {
+      .slide[data-slide-id="home-08-contact"] .slide-frame {
         box-shadow: none !important;
         filter: none !important;
       }
+	    }
 
-      /* Hide possible 1px rounding seams between auto-sized iframes */
-      .slide[data-slide-id="home-06-cta-section"] { margin-bottom: -2px; }
+    @media (min-width: 768px) {
+      .slide[data-slide-id="home-04-catering"] {
+        background: transparent;
+        background-color: transparent;
+        background-image: none;
+        border: 0;
+        box-shadow: none;
+      }
+      .slide[data-slide-id="home-04-catering"] .slide-frame,
+      .slide[data-slide-id="home-04-catering"] .pf-container {
+        background: transparent;
+        background-color: transparent;
+        background-image: none;
+        border: 0;
+        box-shadow: none;
+      }
+      .slide[data-slide-id="home-04-catering"]::before,
+      .slide[data-slide-id="home-04-catering"]::after,
+      .slide[data-slide-id="home-04-catering"] .slide-frame::before,
+      .slide[data-slide-id="home-04-catering"] .slide-frame::after {
+        background: none;
+        background-image: none;
+        box-shadow: none;
+      }
+      .slide[data-slide-id="home-04-catering"].is-visible .slide-frame {
+        box-shadow: none;
+        filter: none;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      :root {
-        --scroll-velocity: 0 !important;
-      }
       html {
         scroll-behavior: auto !important;
         overscroll-behavior: auto !important;
@@ -361,6 +714,14 @@
         animation: none !important;
         filter: none !important;
       }
+      body::after {
+        animation: none !important;
+        filter: none !important;
+      }
+      .mobile-dock::before {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
     }
   </style>
 </head>
@@ -368,7 +729,7 @@
   <div id="slideSkeleton" class="slide-skeleton" aria-hidden="true">
     <div class="slide-skeleton__content">
       <div class="slide-skeleton__logo" aria-hidden="true">
-        <img src="../assets/img/home/logo.png" alt="Party Fowl logo" />
+        <img src="../assets/img/home/logo.png" alt="Party Fowl logo" decoding="async" fetchpriority="high" />
       </div>
       <span class="sr-only">Party Fowl</span>
       <p class="slide-skeleton__title">Get ready!</p>
@@ -378,7 +739,7 @@
       </div>
     </div>
   </div>
-  <main class="slides-root" id="slidesRoot" aria-label="Home slides"></main>
+  <main class="slides-root pf-home" id="slidesRoot" aria-label="Home slides"></main>
 
   <!-- Mobile sticky dock: Locations + Order Now -->
   <div class="mobile-dock" aria-label="Quick actions on mobile">
@@ -396,7 +757,7 @@
 
   <style>
     /* Mobile sticky dock styles */
-    @media (min-width: 900px) { .mobile-dock { display: none !important; } }
+    @media (min-width: 1024px) { .mobile-dock { display: none !important; } }
     .mobile-dock {
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -415,9 +776,8 @@
       z-index: 0;
       /* Lighter blur and a vertical fade from bottom to top */
       background: linear-gradient(180deg, rgba(3,11,22,0.14) 0%, rgba(3,11,22,0.08) 45%, rgba(3,11,22,0.02) 85%, rgba(3,11,22,0) 100%);
-      backdrop-filter: blur(14px) saturate(120%);
-      -webkit-backdrop-filter: blur(14px) saturate(120%);
-      will-change: backdrop-filter;
+      backdrop-filter: blur(8px) saturate(110%);
+      -webkit-backdrop-filter: blur(8px) saturate(110%);
       /* Smooth, non-abrupt fade of the blur influence from bottom to top */
       -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.12) 85%, rgba(0,0,0,0) 100%);
       mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.12) 85%, rgba(0,0,0,0) 100%);
@@ -486,6 +846,7 @@
     .dock-btn--order .dock-icon { background-image: url('../assets/img/home/order.png'); filter: drop-shadow(0 0 10px rgba(255,163,0,0.45)); }
   </style>
 
+  <script src="../scripts/debug-scroll.js" defer></script>
   <script src="../scripts/slides.js" defer></script>
   <script src="../scripts/layout.js" defer></script>
 </body>

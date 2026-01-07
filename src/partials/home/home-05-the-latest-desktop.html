@@ -5,279 +5,143 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Latest – What’s Hot Right Now</title>
-  <style>
-    /* -----------------------------
-      Fonts (local only)
-    ------------------------------*/
-    @font-face{
-      font-family:"AshwoodCondensed";
-      src:url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
-      font-display:swap;
+    <style>
+    @font-face {
+      font-family: "Adrenaline";
+      src: url("../../assets/fonts/Adrenaline-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
     }
-    @font-face{
-      font-family:"AshwoodExtraBold";
-      src:url("../../assets/fonts/Ashwood Extra Bold WF Regular.ttf") format("truetype");
-      font-display:swap;
+    @font-face {
+      font-family: "AshwoodCondensed";
+      src: url("../../assets/fonts/Ashwood Condensed WF Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
     }
-    @font-face{
-      font-family:"Buttergone";
-      src:url("../../assets/fonts/Buttergone OTF.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"WoodblockSans";
-      src:url("../../assets/fonts/Woodblock-Sans-.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"Bartender";
-      src:url("../../assets/fonts/Bartender-BoldSansLetterpress.ttf") format("truetype");
-      font-weight:700;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"Newslab";
-      src:url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
-      font-display:swap;
+    @font-face {
+      font-family: "Newslab";
+      src: url("../../assets/fonts/Latinotype - Newslab.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
     }
 
-    :root{
-      /* Shared palette with earlier slides */
-      --bg:#030b16;
-      --bg-deep:#010915;
-      --bg-mid:#03172b;
-      --panel:#0b121b;
-      --panel2:#0a1018;
-
-      --ink:#f4f6fb;
-      --muted:rgba(244,246,251,.72);
-
-      --accent-red:#f40012;
-      --accent-teal:#7dc3b8;
-      --accent-gold:#f0d07a;
-      --accent-warm:#ff9a3c;
-      --line:rgba(255,255,255,.14);
-      --line2:rgba(255,255,255,.08);
-
-      --shadow: 0 20px 46px rgba(0,0,0,.6);
-      --shadow-glow:
-        0 0 18px rgba(125,195,184,.12),
-        0 0 22px rgba(244,0,18,.10);
+    :root {
+      color-scheme: dark;
+      --bg: #030b16;
+      --panel: #060b16;
+      --panel-soft: #0b1120;
+      --ink: #fdfcff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --muted-accent: rgba(255, 255, 255, 0.92);
+      --accent-red: #ff2a54;
+      --accent-teal: #7dc3b8;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-glow: rgba(255, 31, 43, 0.5);
+      --card-shadow: 0 28px 65px rgba(0, 0, 0, 0.75);
+      --surface-gradient: radial-gradient(circle at 20% -10%, rgba(255, 31, 43, 0.15), transparent 55%), radial-gradient(circle at 70% 0%, rgba(125, 195, 184, 0.2), transparent 50%);
+      --focus-ring: 0 0 0 3px rgba(125, 195, 184, 0.45);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:
-        radial-gradient(1000px 560px at 18% 10%, rgba(244,0,18,.08), transparent 60%),
-        radial-gradient(1000px 620px at 70% 20%, rgba(125,195,184,.10), transparent 58%),
-        linear-gradient(180deg, rgba(3,11,22,.98) 0%, rgba(1,9,15,1) 100%);
-      color:var(--ink);
-      overflow:hidden;
-      font-family: Newslab, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    * {
+      box-sizing: border-box;
     }
 
-    .frame{
-      min-height:100vh;
-      width:100%;
-      display:flex;
-      justify-content:center;
-      padding: clamp(24px, 2.6vw, 36px);
-      padding-bottom: clamp(72px, 6vw, 140px);
-      position:relative;
-      z-index:0;
-      overflow:hidden;
-      background-color: #03172b;
-      background-image:
-        linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 48%, rgba(0, 0, 0, 0) 72%),
-        radial-gradient(circle at 18% 24%, rgba(125, 195, 184, 0.07), transparent 58%),
-        radial-gradient(circle at 78% 18%, rgba(244, 0, 18, 0.035), transparent 62%),
-        radial-gradient(circle at 52% 110%, rgba(0, 0, 0, 0.62), transparent 60%),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.22));
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      width: 100%;
+      background: transparent;
+      color: var(--ink);
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    .frame-top-line{
-      position:absolute;
-      top:0;
-      left:0;
-      right:0;
-      height:2px;
-      background: linear-gradient(90deg,
-        rgba(255,255,255,0.2),
-        rgba(255,255,255,1) 45%,
-        rgba(255,255,255,1) 55%,
-        rgba(255,255,255,0.2));
-      box-shadow:
-        0 0 6px rgba(255,255,255,0.9),
-        0 0 18px rgba(255,255,255,0.85),
-        0 0 36px rgba(255,255,255,0.7),
-        0 0 60px rgba(255,255,255,0.55),
-        0 0 90px rgba(255,255,255,0.35);
-      filter: saturate(120%);
-      pointer-events:none;
-      z-index:2;
-    }
-    .frame-top-line::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      top:-8px;
-      height:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
-      filter: blur(12px);
-      opacity:0.9;
-      pointer-events:none;
+    body {
+      padding: 0;
     }
 
-    .frame::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        /* top-down noir overlay pour calmer la photo */
-        linear-gradient(180deg,
-          rgba(0,0,0,.62) 0%,
-          rgba(0,0,0,.36) 24%,
-          rgba(0,0,0,0) 60%),
-        /* base image bottom lift */
-        linear-gradient(0deg,
-          rgba(0,0,0,.78) 0%,
-          rgba(0,0,0,.48) 18%,
-          rgba(0,0,0,0) 46%),
-        /* soft top fade for the lower tile */
-        linear-gradient(180deg,
-          rgba(0,0,0,.26) 0%,
-          rgba(0,0,0,0) 26%),
-        url("../../assets/img/home/home-06-cta-bg.png");
-      background-size: 100% auto;           /* match CTA scale, avoid extra zoom */
-      background-position: center bottom;   /* keep the base texture anchored low while upright */
-      background-repeat: repeat-y;          /* tile upward if height exceeds one image */
-      opacity: 0.62;
-      mix-blend-mode: normal;
-      filter: contrast(1.16) saturate(1.08) brightness(0.78);
-      transform: scaleY(1);
-      transform-origin: center;
-      z-index:0;
+    main {
+      width: 100%;
     }
 
-    /* Flipped upper tile with subtle base fade */
-    .frame-bg-flip{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background-image: url("../../assets/img/home/home-06-cta-bg.png");
-      background-size: 100% auto;
-      background-position: center top;
-      background-repeat: no-repeat;
-      transform: scaleY(-1);
-      transform-origin: center top;
-      opacity: 0.48;
-      mix-blend-mode: normal;
-      filter: contrast(1.08) saturate(1.02) brightness(0.85);
-      mask-image: linear-gradient(180deg,
-        rgba(0,0,0,0.65) 0%,
-        rgba(0,0,0,0.22) 24%,
-        rgba(0,0,0,0) 52%);
-      -webkit-mask-image: linear-gradient(180deg,
-        rgba(0,0,0,0.65) 0%,
-        rgba(0,0,0,0.22) 24%,
-        rgba(0,0,0,0) 52%);
-      z-index:0;
-    }
-    .frame-bg-flip::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(42% 34% at 0% 0%, rgba(0,0,0,.55), transparent 62%),
-        radial-gradient(42% 34% at 100% 0%, rgba(0,0,0,.55), transparent 62%),
-        linear-gradient(180deg,
-          rgba(0,0,0,.28) 0%,
-          rgba(0,0,0,.16) 16%,
-          rgba(0,0,0,0) 42%);
-      mix-blend-mode: multiply;
-      opacity:.72;
-      z-index:1;
-    }
-
-    .frame::after{
-      content:"";
-      position:absolute;
-      inset:-40px;
-      pointer-events:none;
-      background:
-        /* CTA top glow + blur pass */
-        linear-gradient(180deg,
-          rgba(0,0,0,0.62) 0%,
-          rgba(0,0,0,0.45) 26%,
-          rgba(0,0,0,0.26) 52%,
-          rgba(0,0,0,0.12) 72%,
-          transparent 100%),
-        /* CTA radial + deepening pass */
-        radial-gradient(60% 80% at 50% 40%, rgba(0,0,0,.25), transparent 62%),
-        linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.68)),
-        /* existing sparkles/scanlines for continuity */
-        radial-gradient(circle at 10% 70%, rgba(255,255,255,.10), transparent 26%),
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.08), transparent 24%),
-        radial-gradient(circle at 65% 82%, rgba(255,255,255,.07), transparent 22%),
-        radial-gradient(circle at 80% 35%, rgba(255,255,255,.06), transparent 28%),
-        repeating-linear-gradient(180deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,0) 1px 3px);
-      mix-blend-mode: soft-light;
-      opacity:.46;
-      filter: blur(20px);
-      z-index:0;
-    }
-
-    .wrap{
-      width: min(1240px, calc(100vw - clamp(72px, 7vw, 168px)));
-      max-width: 100%;
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-      position:relative;
-      z-index:1;
-      padding-top:60px;
-    }
-
-    header{
-      padding-top:16px;
-    }
-
-    .latest-title{
-      margin:10px 0 0 0;
-      position:relative;
-      z-index:2;
-      font-family: AshwoodCondensed, AshwoodExtraBold, sans-serif;
-      font-size:92px;
-      line-height:.9;
-      letter-spacing:.01em;
-      text-transform:uppercase;
-      opacity:0;
-      transform: translateY(14px);
-      transition: opacity .45s ease, transform .45s ease;
-      will-change: transform, opacity;
-    }
-    .latest-title.is-visible{
-      opacity:1;
-      transform: translateY(0);
-    }
-
-    .latest-title-line{
-      display:inline-block;
-      color:rgba(255,255,255,0.96);
-      text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 10px rgba(244, 0, 18, 0.35);
+    .latest-section {
+      position: relative;
+      padding: clamp(28px, 4vw, 48px) clamp(20px, 4vw, 48px) clamp(22px, 3vw, 34px);
+      background: transparent;
       overflow: visible;
-      will-change: transform;
+    }
+
+    .latest-bottom-fade {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: clamp(56px, 5vw, 92px);
+      background: linear-gradient(180deg, rgba(3, 11, 22, 0) 0%, rgba(3, 11, 22, 0.68) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .latest-surface {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: clamp(12px, 2.8vw, 32px);
+      background: transparent;
+      border-radius: clamp(18px, 1.8vw, 28px);
+      border: 0;
+      box-shadow: none;
+    }
+
+    .latest-surface::after {
+      content: none;
+    }
+
+    .latest-surface__glow {
+      display: none;
+    }
+
+    .latest-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-transform: uppercase;
+      max-width: 780px;
+    }
+
+    .latest-kicker {
+      font-size: 12px;
+      letter-spacing: 0.68em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .latest-title {
+      font-family: "AshwoodCondensed", "Adrenaline", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(48px, 6vw, 72px);
+      line-height: 1.02;
+      letter-spacing: 0.06em;
+      margin: 0;
+      color: #fff;
+      text-transform: none;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .latest-title-line{
+      display:block;
+      overflow: visible;
       white-space: nowrap;
+      text-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.65),
+        0 0 16px rgba(255, 31, 43, 0.45);
     }
     .lt-letter{
       display:inline-block;
@@ -296,11 +160,9 @@
     .lt-letter::before{
       content:"";
       position:absolute;
-      left:50%;
-      top:52%;
+      left:50%; top:52%;
       transform: translate(-50%, -50%) scale(calc(1 + (var(--scale, 1) - 1) * 1.4));
-      width: 1.22em;
-      height: 1.08em;
+      width: 1.22em; height: 1.08em;
       pointer-events:none;
       border-radius: 50%;
       background:
@@ -317,452 +179,492 @@
     }
     .latest-title-line:hover .lt-letter{ filter: saturate(1.05); }
 
-    .titleAccent{
-      display:inline-block;
-      margin-left:12px;
-      color:rgba(244,246,251,.92);
-      position:relative;
+    .latest-copy {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 720px;
+      letter-spacing: 0.02em;
+      text-transform: none;
     }
 
-    .subtitle{
-      margin:14px 0 0 0;
-      color:var(--muted);
-      font-size:16px;
-      letter-spacing:.01em;
-      max-width:760px;
-      opacity:0;
-      transform: translateY(12px);
-      transition: opacity .42s ease, transform .42s ease;
-      will-change: transform, opacity;
-    }
-    .subtitle.is-visible{
-      opacity:1;
-      transform: translateY(0);
+    .latest-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(12px, 2.4vw, 20px);
+      margin-top: clamp(12px, 2.5vw, 18px);
+      justify-content: flex-start;
+      position: relative;
+      z-index: 2;
     }
 
-    .latest-actions{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      column-gap:18px;
-      flex-wrap:wrap;
-      margin:22px 0 14px;
-      width:100%;
-      background:none;
-      border:0;
-      box-shadow:none;
-    }
-    .latest-actions .cta{
-      margin-left:auto;
-      flex-shrink:0;
+    .latest-filter-btn {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.92);
+      cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+      font-weight: 700;
     }
 
-    .latest-filters{
-      flex:1 1 auto;
-      min-width:0;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:0;
-      padding:0;
-      border:0;
-      border-radius:0;
-      background:none;
-      box-shadow:none;
-      backdrop-filter:none;
-      -webkit-backdrop-filter:none;
-    }
-    .latest-filter-btn{
-      --filter-accent: rgba(244,0,18,.85);
-      --filter-bg: linear-gradient(135deg, rgba(244,0,18,.55), rgba(3,6,10,.32));
-      padding:10px 20px;
-      border-radius:0;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      color:rgba(244,246,251,.9);
-      font: 800 11px/1 Newslab, system-ui, sans-serif;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      position:relative;
-      overflow:hidden;
-      transition: color .2s ease, border-color .2s ease, transform .2s ease;
-    }
-    .latest-filter-btn[data-filter="event"]{
-      --filter-accent: rgba(125,195,184,.9);
-      --filter-bg: linear-gradient(135deg, rgba(125,195,184,.65), rgba(3,6,10,.32));
-    }
-    .latest-filter-btn[data-filter="deal"]{
-      --filter-accent: rgba(240,208,122,.9);
-      --filter-bg: linear-gradient(135deg, rgba(240,208,122,.65), rgba(3,6,10,.32));
-    }
-    .latest-filter-btn[data-filter="new"]{
-      --filter-accent: rgba(244,0,18,.9);
-      --filter-bg: linear-gradient(135deg, rgba(244,0,18,.85), rgba(3,6,10,.32));
-    }
-    .latest-filter-btn[data-filter="all"]{
-      --filter-accent: rgba(255,255,255,.7);
-      --filter-bg: linear-gradient(135deg, rgba(255,255,255,.65), rgba(3,6,10,.32));
-    }
-    .latest-filter-btn::after{
-      content:"";
-      position:absolute;
-      inset:-3px;
-      border:1px solid transparent;
-      border-radius:0;
-      box-shadow:none;
-      opacity:0;
-      transition: opacity .36s ease, border-color .36s ease, box-shadow .36s ease;
-    }
-    .latest-filter-btn:hover,
-    .latest-filter-btn:focus-visible{
-      color:#fff;
-      border-color: var(--filter-accent);
-      box-shadow:
-        0 0 16px var(--filter-accent),
-        0 0 32px rgba(255,255,255,.08);
-    }
-    .latest-filter-btn:hover::after,
-    .latest-filter-btn:focus-visible::after{
-      opacity:1;
-      border-color: var(--filter-accent);
-      box-shadow:
-        0 0 28px var(--filter-accent),
-        0 0 48px rgba(255,255,255,.12);
-    }
-    .latest-filter-btn[data-active="true"]{
-      border-color: var(--filter-accent);
-      color:#fff;
-      box-shadow:
-        0 0 12px var(--filter-accent),
-        0 0 32px rgba(125,195,184,.28);
-      background: var(--filter-bg);
+    .latest-filter-btn[data-active="true"] {
       transform: translateY(-1px);
     }
-    .latest-filter-btn[data-active="true"]::after{
-      opacity:1;
-      border-color: var(--filter-accent);
+
+    .latest-filter-btn[data-active="true"][data-filter-key="all"] {
+      border-color: rgba(255, 255, 255, 0.85);
+      background: #ffffff;
+      color: #03060b;
       box-shadow:
-        0 0 24px var(--filter-accent),
-        0 0 44px rgba(125,195,184,.22);
-    }
-    .latest-filter-btn:active{
-      transform: translateY(0);
+        0 10px 24px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(255, 255, 255, 0.25);
     }
 
-    /* Cards frame */
-    .gridFrame{
-      position:relative;
-      border-top:0;
-      border-bottom:0;
-      padding:20px 0 32px 0;
-    }
-    .gridFrame::before{ content:none; }
-    .gridFrame::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      height:2px;
-      background: linear-gradient(90deg, transparent, rgba(244,0,18,.55), rgba(125,195,184,.55), transparent);
-      opacity:.65;
-      filter: blur(.5px);
-      pointer-events:none;
-      bottom:-14px;
-    }
-
-    /* Keep words intact across the section */
-    .gridFrame,
-    .gridFrame *{
-      white-space: normal;
-      word-break: keep-all;
-      overflow-wrap: break-word;
-      hyphens: none;
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap:18px;
-      align-items:stretch;
-    }
-
-    .card{
-      --card-accent: rgba(125,195,184,.55);
-      --card-accent-2: rgba(244,0,18,.45);
-      --card-ty: 14px;
-      position:relative;
-      min-height:360px;
-      border:1px solid rgba(255,255,255,.06);
-      background:
-        linear-gradient(165deg, rgba(14,21,29,.94) 0%, rgba(6,10,14,.98) 62%, rgba(3,6,10,1) 100%),
-        var(--panel);
-      overflow:hidden;
-      border-radius:0;
-      display:flex;
-      flex-direction:column;
+    .latest-filter-btn[data-active="true"][data-filter-key="events"] {
+      border-color: rgba(255, 31, 43, 0.9);
+      background: var(--accent-red);
+      color: #130a0f;
       box-shadow:
-        0 20px 46px rgba(0,0,0,.62),
-        0 0 28px rgba(0,0,0,.22);
-      isolation:isolate;
-      transform: translateZ(0) translateY(var(--card-ty));
-      opacity:0;
+        0 14px 32px rgba(255, 31, 43, 0.35),
+        0 0 18px rgba(255, 31, 43, 0.25);
+    }
+
+    .latest-filter-btn[data-active="true"][data-filter-key="give-use"] {
+      border-color: rgba(125, 195, 184, 0.95);
+      background: #7dc3b8;
+      color: #0f1a16;
+      box-shadow:
+        0 14px 32px rgba(125, 195, 184, 0.35),
+        0 0 18px rgba(125, 195, 184, 0.25);
+    }
+
+    .latest-filter-btn[data-active="true"][data-filter-key="new"] {
+      border-color: rgba(240, 208, 122, 0.9);
+      background: #f0d07a;
+      color: #2c1c05;
+      box-shadow:
+        0 14px 32px rgba(240, 208, 122, 0.35),
+        0 0 18px rgba(240, 208, 122, 0.25);
+    }
+
+    .latest-filter-btn:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 3px rgba(3, 11, 22, 1),
+        0 0 18px rgba(125, 195, 184, 0.65);
+    }
+
+    .latest-filter-btn:not([data-active="true"]):hover {
+      border-color: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .latest-carousel {
+      position: relative;
+      margin: clamp(30px, 4vw, 44px) auto 0;
+      width: 100%;
+      max-width: min(1440px, 100%);
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: clamp(18px, 2.9vw, 34px);
+      padding-inline: clamp(12px, 2vw, 28px);
+      box-sizing: border-box;
+      z-index: 3;
+      justify-items: center;
+    }
+
+    .latest-carousel__nav {
+      width: clamp(46px, 4vw, 56px);
+      height: clamp(46px, 4vw, 56px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      border: 1px solid rgba(125, 195, 184, 0.65);
+      background: rgba(3, 11, 22, 0.35);
+      color: #eef2f5;
+      font-size: clamp(24px, 2.8vw, 32px);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow:
+        0 0 12px rgba(125, 195, 184, 0.25);
       transition:
-        transform .32s ease,
-        border-color .32s ease,
-        box-shadow .32s ease,
-        opacity .32s ease;
-      will-change: transform, opacity;
+        transform 0.18s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+      backdrop-filter: blur(10px);
     }
-    .card:nth-child(2){
-      --card-accent: rgba(244,0,18,.6);
-      --card-accent-2: rgba(240,208,122,.45);
+
+    .latest-carousel__nav:disabled {
+      opacity: 0.35;
+      cursor: default;
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(3, 11, 22, 0.2);
+      box-shadow: none;
     }
-    .card:nth-child(3){
-      --card-accent: rgba(240,208,122,.6);
-      --card-accent-2: rgba(125,195,184,.5);
-    }
-    .card:nth-child(4){
-      --card-accent: rgba(255,154,60,.6);
-      --card-accent-2: rgba(240,208,122,.45);
-    }
-    .card:nth-child(5){
-      --card-accent: rgba(125,195,184,.55);
-      --card-accent-2: rgba(244,0,18,.55);
-    }
-    .card.is-visible{
-      --card-ty: 0px;
-      opacity:1;
-    }
-    .card:hover{
-      --card-ty: -6px;
-      border-color: rgba(255,255,255,.22);
+
+    .latest-carousel__nav:not(:disabled):hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.85);
       box-shadow:
-        0 26px 62px rgba(0,0,0,.68),
-        0 0 32px var(--card-accent),
-        0 0 44px var(--card-accent-2);
+        0 0 12px rgba(0, 0, 0, 0.4),
+        0 0 32px rgba(125, 195, 184, 0.5);
     }
 
-    .card-media{
-      position:relative;
-      width:100%;
-      aspect-ratio: 4 / 3;
-      overflow:hidden;
-    }
-
-    .card-media::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(60% 50% at 60% 30%, rgba(244,0,18,.18), transparent 55%),
-        radial-gradient(60% 50% at 30% 70%, rgba(125,195,184,.18), transparent 55%);
-      mix-blend-mode: screen;
-      opacity:.55;
-      pointer-events:none;
-      transition: opacity .4s ease;
-    }
-
-    .card:hover .card-media::after{
-      opacity:.85;
-    }
-
-    .cardImg{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter: saturate(.98) contrast(1.08) brightness(.94);
-      transform: scale(1.03);
-      transition: transform .6s ease, filter .6s ease;
-    }
-    .card:hover .cardImg{
-      transform: scale(1.07);
-      filter: saturate(1.06) contrast(1.12) brightness(1.02);
-    }
-
-    .card-info{
-      padding:18px 20px 22px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      flex:1;
-      background:
-        linear-gradient(180deg, rgba(3,6,10,.95), rgba(3,6,10,.8));
-      border-top:1px solid rgba(255,255,255,.04);
-    }
-    .card-info .meta{
-      margin-top:auto;
-    }
-
-    .tags{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .tag{
-      position:relative;
-      padding:6px 12px 5px 24px;
-      border:1px solid rgba(255,255,255,.16);
-      background:
-        linear-gradient(140deg, rgba(10,15,22,.9), rgba(4,7,10,.9));
-      color:rgba(244,246,251,.92);
-      font: 800 10.5px/1 Newslab, system-ui, sans-serif;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      border-radius:999px;
+    .latest-carousel__nav:focus-visible {
+      outline: none;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        0 8px 18px rgba(0,0,0,.35);
-      text-shadow: 0 1px 0 rgba(0,0,0,.6);
-    }
-    .tag::before{
-      content:"";
-      position:absolute;
-      left:10px;
-      top:50%;
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background: var(--tag-dot, rgba(125,195,184,.9));
-      box-shadow: 0 0 10px var(--tag-dot, rgba(125,195,184,.9));
-      transform: translateY(-50%);
-    }
-    .tag.event{
-      --tag-dot: rgba(125,195,184,.95);
-      border-color: rgba(125,195,184,.65);
-      color: rgba(220,255,250,.92);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        inset 0 0 10px rgba(125,195,184,.10),
-        0 8px 18px rgba(0,0,0,.35),
-        0 0 12px rgba(125,195,184,.16);
-    }
-    .tag.deal{
-      --tag-dot: rgba(240,208,122,.95);
-      border-color: rgba(240,208,122,.65);
-      color: rgba(255,241,210,.92);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        inset 0 0 10px rgba(240,208,122,.10),
-        0 8px 18px rgba(0,0,0,.35),
-        0 0 12px rgba(240,208,122,.12);
-    }
-    .tag.new{
-      --tag-dot: rgba(244,0,18,.95);
-      border-color: rgba(244,0,18,.62);
-      color: rgba(255,215,220,.92);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        inset 0 0 10px rgba(244,0,18,.10),
-        0 8px 18px rgba(0,0,0,.35),
-        0 0 12px rgba(244,0,18,.18);
+        0 0 0 3px rgba(3, 11, 22, 0.9),
+        0 0 16px rgba(125, 195, 184, 0.55);
     }
 
-    .headline{
-      margin:0;
-      font-family: "Bartender", "WoodblockSans", "Buttergone", "AshwoodCondensed", serif;
-      font-size: clamp(18px, 1.45vw, 24px);
-      line-height:1.25;
-      letter-spacing:.03em;
-      text-transform:uppercase;
-      color:#ffffff;
-      font-weight:500;
+    .latest-carousel__viewport {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      overflow: visible;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      box-sizing: border-box;
+    }
+
+    .latest-carousel__viewport::before,
+    .latest-carousel__viewport::after {
+      content: none;
+    }
+
+    .latest-carousel__track {
+      position: relative;
+      display: flex;
+      gap: clamp(20px, 2.6vw, 32px);
+      align-items: stretch;
+      padding: clamp(6px, 1.6vw, 12px) clamp(12px, 2.3vw, 20px);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+    }
+
+    .latest-carousel__track::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .latest-carousel__track::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .latest-carousel__track::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-clip: padding-box;
+    }
+
+    .latest-carousel__track::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .latest-card {
+      flex: 0 0 clamp(280px, 26vw, 360px);
+      background: rgba(3, 11, 22, 0.32);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 12px 26px rgba(0, 0, 0, 0.52),
+        0 0 12px rgba(125, 195, 184, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
+      position: relative;
+      min-height: clamp(360px, 34vw, 440px);
+      scroll-snap-align: start;
+      isolation: isolate;
+      overflow: visible;
+    }
+
+    .latest-card::after,
+    .latest-card::before {
+      content: none;
+    }
+
+    .latest-card__media {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      border: 1px solid rgba(125, 195, 184, 0.7);
+      box-shadow:
+        0 0 18px rgba(125, 195, 184, 0.28),
+        0 12px 28px rgba(0, 0, 0, 0.45);
+      background: rgba(3, 11, 22, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .latest-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .latest-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .latest-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .latest-card__tag {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .latest-card__tag--event {
+      border-color: rgba(255, 31, 43, 0.9);
+      color: var(--accent-red);
+    }
+
+    .latest-card__tag--deal {
+      border-color: rgba(125, 195, 184, 0.9);
+      color: var(--accent-teal);
+    }
+
+    .latest-card__tag--new {
+      border-color: rgba(255, 223, 124, 0.9);
+      color: #f0d07a;
+    }
+
+    .latest-card__tag--give {
+      border-color: rgba(255, 223, 124, 0.9);
+      color: #f0d07a;
+    }
+
+    .latest-card__title {
+      margin: 0;
+      font-size: clamp(18px, 2vw, 24px);
+      letter-spacing: 0.02em;
+      color: #fefefe;
+      line-height: 1.4;
+    }
+
+    .latest-card__copy {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 14px;
+      line-height: 1.5;
+      flex: 1;
+      white-space: normal;
+    }
+
+    .latest-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .latest-card__rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    }
+
+    .latest-card__micro {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .latest-cta {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: clamp(22px, 3.4vw, 34px);
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .latest-cta__btn {
+      border: 0;
+      background: transparent;
+      padding: 0;
+    }
+
+    /* Reuse primary CTA pill button styling */
+    .btn-pill {
+      --btn-bg: linear-gradient(to bottom, #303030, #121212);
+      --btn-glow: rgba(255, 255, 255, 0.18);
+      --btn-shadow: rgba(0, 0, 0, 0.7);
+      text-decoration: none;
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      border-radius: 40px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--btn-bg);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      white-space: nowrap;
+      min-height: 48px;
       text-shadow:
-        0 0 6px rgba(255,255,255,.9),
-        0 0 18px rgba(255,255,255,.55),
-        0 4px 14px rgba(0,0,0,.55);
+        0 1px 0 rgba(0, 0, 0, 0.75),
+        0 0 3px rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        border-color 0.18s ease-out,
+        letter-spacing 0.2s ease-out;
+      cursor: pointer;
     }
 
-    .summary{
-      margin:0;
-      color:rgba(244,246,251,.82);
-      font-size:13.2px;
-      line-height:1.5;
-      text-shadow: 0 6px 16px rgba(0,0,0,.55);
+    .btn-pill::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0.6;
+      pointer-events: none;
     }
 
-    .meta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding-top:12px;
+    .btn-pill::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, var(--btn-glow), transparent 70%);
+      opacity: 0;
+      filter: blur(14px);
+      transition:
+        opacity 0.25s ease-out,
+        filter 0.25s ease-out;
+      pointer-events: none;
+      z-index: -1;
     }
-    .meta .rule{
-      height:2px;
-      flex:1;
-      background:
-        linear-gradient(90deg, var(--card-accent), rgba(255,255,255,.12), var(--card-accent-2));
-      opacity:.9;
+
+    .btn-pill:hover {
+      transform: translateY(-1px) scale(1.01);
+      letter-spacing: 0.08em;
+      border-color: rgba(255, 255, 255, 0.45);
       box-shadow:
-        0 0 8px rgba(125,195,184,.18),
-        0 0 8px rgba(244,0,18,.12);
-    }
-    .meta .micro{
-      font: 800 10.5px/1 Newslab, system-ui, sans-serif;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:rgba(244,246,251,.78);
-      white-space:nowrap;
-      text-shadow: 0 0 8px rgba(125,195,184,.16);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .latest-title,
-      .subtitle{
-        opacity:1;
-        transform:none;
-        transition:none;
-      }
-      .lt-letter{
-        transition:none;
-        transform:none !important;
-      }
-      .lt-letter::before{
-        filter: blur(10px);
-      }
-      .card,
-      .cardImg{
-        --card-ty: 0 !important;
-        opacity:1;
-        transition:none;
-        transform: translateZ(0);
-      }
-      .card:hover{
-        transform: translateZ(0);
-      }
-      .card:hover .cardImg{
-        transform:none;
-      }
-      .card:hover::before{
-        transform:none;
-      }
-      .latest-filter-btn{
-        transition:none;
-      }
+        0 10px 25px rgba(0, 0, 0, 0.8),
+        0 0 18px rgba(255, 255, 255, 0.25);
     }
 
-    /* CTA */
-    .cta{
+    .btn-pill:hover::after {
+      opacity: 0.85;
+      filter: blur(22px);
+    }
+
+    .btn-pill:focus-visible {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow:
+        var(--focus-ring),
+        0 0 18px rgba(244, 0, 18, 0.35);
+    }
+
+    .btn-label {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-order {
+      --btn-bg:
+        linear-gradient(130deg, rgba(244, 0, 18, 0.4), transparent 40%),
+        linear-gradient(to bottom, #F40012 0%, #C21126 100%);
+      --btn-glow: rgba(244, 0, 18, 0.55);
+      color: #FFFFFF;
+      border-color: rgba(255, 180, 176, 0.85);
+    }
+
+    .btn-order:hover {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.85),
+        0 0 34px rgba(244, 0, 18, 0.45);
+    }
+
+    .btn-icon-order {
+      background-image: url("../../assets/img/home/order.png");
+    }
+
+    /* Slide 3 CTA — reused here for consistent styling */
+    .menu-cta{
       --glow: rgba(244, 0, 18, 0.68);
       --border: rgba(244, 0, 18, 0.95);
-      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: "Newslab", "Nunito Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       display:inline-flex;
       align-items:center;
-      justify-content:center;
       gap:10px;
-      padding:12px 22px;
-      min-height:46px;
-      border-radius:999px;
-      border:1px solid var(--border);
+      padding: 12px 22px;
+      min-height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
       background: transparent;
       color:#ff1f2b;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      font-weight:800;
-      font-size:13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      font-size: clamp(12px, 1.05vw, 14px);
       text-decoration:none;
       box-shadow:
         0 6px 18px rgba(0,0,0,0.65),
@@ -770,38 +672,27 @@
         0 0 36px rgba(244, 0, 18, 0.32),
         inset 0 0 12px rgba(244, 0, 18, 0.30);
       text-shadow: 0 0 10px rgba(244, 0, 18, 0.24);
-      cursor:pointer;
       position:relative;
       overflow:hidden;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       -webkit-tap-highlight-color: transparent;
       transition: transform .16s ease, box-shadow .16s ease, letter-spacing .18s ease, border-color .16s ease, color .18s ease;
+      cursor:pointer;
     }
-    .cta::before{
-      content:"";
-      position:absolute;
-      inset:2px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      pointer-events:none;
-      opacity:.85;
+    .menu-cta::before{
+      content:""; position:absolute; inset:2px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10); pointer-events:none; opacity:.85;
     }
-    .cta::after{
-      content:"";
-      position:absolute;
-      inset:-30%;
-      border-radius:999px;
-      pointer-events:none;
+    .menu-cta::after{
+      content:""; position:absolute; inset:-30%; border-radius:999px; pointer-events:none;
       background: radial-gradient(circle at 50% 50%, rgba(244, 0, 18, 0.7), transparent 70%);
-      opacity:0;
-      filter: blur(18px);
-      transition: opacity .22s ease, filter .22s ease;
+      opacity:0; filter: blur(18px); transition: opacity .22s ease, filter .22s ease;
       z-index:-1;
     }
-    .cta:hover{
+    .menu-cta:hover{
       transform: translateY(-1px) scale(1.01);
-      letter-spacing:.08em;
+      letter-spacing: .08em;
       border-color: rgba(255, 120, 126, 1);
       box-shadow:
         0 8px 20px rgba(0,0,0,0.55),
@@ -810,234 +701,283 @@
         inset 0 0 16px rgba(244, 0, 18, 0.36);
       color: #ffd5d9;
     }
-    .cta:hover::after{ opacity:.85; filter: blur(22px); }
-    .cta:active{ transform: translateY(0); }
-    .cta:focus{ outline:none; }
-    .cta:focus-visible{
+    .menu-cta:hover::after{ opacity:.85; filter: blur(22px); }
+    .menu-cta:active{ transform: translateY(0); }
+    .menu-cta:focus{ outline: none; }
+    .menu-cta:focus-visible{
       box-shadow:
         0 0 0 2px rgba(3,11,22,1),
         0 0 0 4px rgba(255, 120, 126, 0.85),
         0 14px 28px rgba(0,0,0,0.55);
     }
-    .cta .arrow{
-      display:inline-block;
-      transition: transform .16s ease;
-    }
-    .cta:hover .arrow{ transform: translateX(2px); }
+    .menu-cta .arrow{ display:inline-block; transition: transform .16s ease; }
+    .menu-cta:hover .arrow{ transform: translateX(2px); }
 
-    /* Desktop tightening for 1440px shell */
-    @media (max-width: 1360px){
-      .wrap{
-        width: min(1160px, calc(100vw - clamp(64px, 6vw, 144px)));
+    @media (max-width: 1024px) {
+      .latest-section {
+        padding-inline: clamp(14px, 6vw, 32px);
       }
-      .cards{
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-    @media (max-width: 1140px){
-      .wrap{
-        width: min(1040px, calc(100vw - clamp(56px, 6vw, 132px)));
-      }
-      .cards{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .latest-actions{
-        gap: 12px;
+
+      .latest-carousel__nav {
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
       }
     }
 
-    /* Responsive fallback (not primary) */
-    @media (max-width: 1024px){
-      body{ overflow:auto; }
-      .wrap{ width: min(1040px, 100%); }
-      .gridFrame{
-        overflow-x:auto;
-        padding:26px 0 68px;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-x: contain;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.08);
+    @media (max-width: 768px) {
+      .latest-surface {
+        border-radius: 18px;
+        padding: clamp(18px, 5vw, 28px);
       }
-      .gridFrame::-webkit-scrollbar{ height:10px; }
-      .gridFrame::-webkit-scrollbar-thumb{
-        background: rgba(255,255,255,.22);
-        border-radius:999px;
+
+      .latest-carousel {
+        flex-wrap: nowrap;
       }
-      .gridFrame::-webkit-scrollbar-track{
-        background: rgba(255,255,255,.08);
+
+      .latest-carousel__track {
+        gap: clamp(16px, 4vw, 24px);
+        padding: 10px clamp(12px, 4vw, 18px);
       }
-      .cards{
-        display:flex;
-        gap:18px;
-        width:max-content;
+
+      .latest-card {
+        min-height: clamp(340px, 68vw, 400px);
+        flex: 0 0 min(320px, 85vw);
       }
-      .card{
-        flex:0 0 clamp(230px, 24vw, 280px);
-        min-height:340px;
+
+      .latest-filters {
+        gap: 8px;
       }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0 !important;
+        animation-delay: 0 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0 !important;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
   </style>
 </head>
 <body>
-  <main class="frame" role="main" aria-label="The Latest - What’s Hot Right Now">
-    <div class="frame-bg-flip" aria-hidden="true"></div>
-    <div class="frame-top-line" aria-hidden="true"></div>
-    <section class="wrap">
-      <header>
-        <h1 class="latest-title">
-          <span class="latest-title-line">What’s Hot</span>
-          <span class="latest-title-line titleAccent">Right Now.</span>
-        </h1>
+  <main class="latest-section" role="main" aria-labelledby="the-latest-title">
+    <div class="latest-bottom-fade" aria-hidden="true"></div>
+    <div class="latest-surface">
+      <div class="latest-surface__glow" aria-hidden="true"></div>
+      <header class="latest-header">
+      <p class="latest-kicker">The Latest</p>
+      <h1 class="latest-title" id="the-latest-title">
+        <span class="latest-title-line">What’s Hot</span>
+        <span class="latest-title-line">Right Now.</span>
+      </h1>
+      <p class="latest-copy">The news, events, and moments you don’t want to miss. Scroll through the freshest updates in neon detail.</p>
+        <div class="latest-filters" role="tablist" aria-label="Filter what’s hot">
+        <button class="latest-filter-btn" type="button" role="tab" aria-selected="true" data-filter="all" data-active="true">All</button>
+        <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="events" data-active="false">Events</button>
+        <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="give-use" data-active="false">Give &amp; Use</button>
+        <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="new" data-active="false">New</button>
+      </div>
+    </header>
 
-        <p class="subtitle">The deals, events, and moments you don’t want to miss.</p>
-
-        <div class="latest-actions">
-          <div class="latest-filters" role="tablist" aria-label="Filter what's hot">
-            <button class="latest-filter-btn" type="button" role="tab" aria-selected="true" data-filter="all" data-active="true">All</button>
-            <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="event" data-active="false">Events</button>
-            <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="deal" data-active="false">Deals</button>
-            <button class="latest-filter-btn" type="button" role="tab" aria-selected="false" data-filter="new" data-active="false">New</button>
-          </div>
-
-          <button class="cta" type="button" aria-label="See what’s on near you">
-            See What’s On Near You <span class="arrow" aria-hidden="true">→</span>
-          </button>
-        </div>
-      </header>
-
-      <div class="gridFrame" aria-label="The Latest cards">
-        <div class="cards">
-          <!-- Card 1 -->
-          <article class="card" data-type="event new" aria-label="Pre-Party Dine-In – Vanderbilt @ Aertson">
-            <div class="card-media">
-              <img class="cardImg lazy-asset"
-                   alt="Group of friends enjoying dinner indoors"
+    <div class="latest-carousel" aria-label="Latest drop carousel">
+      <button class="latest-carousel__nav" type="button" data-carousel-nav="prev" aria-label="Scroll the carousel backwards">‹</button>
+      <div class="latest-carousel__viewport">
+        <div class="latest-carousel__track" data-carousel-track>
+          <article class="latest-card" role="group" aria-label="Pre-Party Dine-In – Vanderbilt @ Aertson" data-category="events new" data-type="event new">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
+                   alt="Friends enjoying dinner indoors"
                    loading="lazy"
+                   decoding="async"
                    data-src="../../assets/img/home/the-latest/pre-party-dine-in.png"
                    data-fallback="https://images.pexels.com/photos/8921578/pexels-photo-8921578.jpeg" />
             </div>
-            <div class="card-info">
-              <div class="tags">
-                <span class="tag event">Event</span>
-                <span class="tag new">New</span>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--event">Event</span>
+                <span class="latest-card__tag latest-card__tag--new">New</span>
               </div>
-              <h3 class="headline">Pre-Party Dine-In – Vanderbilt @<br>Aertson</h3>
-              <p class="summary">
-                Party Fowl invites guests to preview the new Vanderbilt location with a free dine-in meal and a sneak-peek at the bar. Boozy slushies and hot-chicken vibes (drinks available for purchase).
-              </p>
-              <div class="meta" aria-hidden="true">
-                <div class="rule"></div>
-                <div class="micro">Limited Preview</div>
+              <h3 class="latest-card__title">Pre-Party Dine-In – Vanderbilt @ Aertson</h3>
+              <p class="latest-card__copy">Party Fowl invites guests to preview the new Vanderbilt location with a free dine-in meal and a sneak-peek at the bar. Boozy slushies and NASHVILLE HOT CHICKEN vibes (drinks available for purchase).</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Limited Preview</span>
               </div>
             </div>
           </article>
 
-          <!-- Card 2 -->
-          <article class="card" data-type="event new" aria-label="Pre-Party To-Go – Vanderbilt @ Aertson">
-            <div class="card-media">
-              <img class="cardImg lazy-asset"
+          <article class="latest-card" role="group" aria-label="Pre-Party To-Go – Vanderbilt @ Aertson" data-category="events new" data-type="event new">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
                    alt="Takeout container with crispy chicken"
                    loading="lazy"
+                   decoding="async"
                    data-src="../../assets/img/home/the-latest/pre-party-to-go.png"
                    data-fallback="https://images.pexels.com/photos/30635702/pexels-photo-30635702.jpeg" />
             </div>
-            <div class="card-info">
-              <div class="tags">
-                <span class="tag event">Event</span>
-                <span class="tag new">New</span>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--event">Event</span>
+                <span class="latest-card__tag latest-card__tag--new">New</span>
               </div>
-              <h3 class="headline">Pre-Party To-Go – Vanderbilt @<br>Aertson</h3>
-              <p class="summary">
-                Complimentary hot-chicken meals packed to enjoy at home. Reserve your pickup by calling (615) 610-0750.
-              </p>
-              <div class="meta" aria-hidden="true">
-                <div class="rule"></div>
-                <div class="micro">Reserve Ahead</div>
+              <h3 class="latest-card__title">Pre-Party To-Go – Vanderbilt @ Aertson</h3>
+              <p class="latest-card__copy">Complimentary NASHVILLE HOT CHICKEN meals packed to enjoy at home. Reserve your pickup by calling (615) 610-0750.</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Reserve Ahead</span>
               </div>
             </div>
           </article>
 
-          <!-- Card 3 -->
-          <article class="card" data-type="deal" aria-label="Happy Hour – All Day, Every Day">
-            <div class="card-media">
-              <img class="cardImg lazy-asset"
-                   alt="Colorful cocktails in a bar"
+          <article class="latest-card" role="group" aria-label="Happy Hour – All Day, Every Day" data-category="give-use" data-type="deal">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
+                   alt="Colorful cocktails on a neon-lit bar"
                    loading="lazy"
+                   decoding="async"
                    data-src="../../assets/img/home/the-latest/happy-hour.png"
                    data-fallback="https://images.pexels.com/photos/31553344/pexels-photo-31553344.png" />
             </div>
-            <div class="card-info">
-              <div class="tags">
-                <span class="tag deal">Deal</span>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--deal">Deal</span>
               </div>
-              <h3 class="headline">Happy Hour – All Day, Every Day</h3>
-              <p class="summary">
-                Running now through the end of the year: $2 domestic light beers, $3 single wells, $4 house wines and $5 house margaritas. All day, every day.
-              </p>
-              <div class="meta" aria-hidden="true">
-                <div class="rule"></div>
-                <div class="micro">Happening Now</div>
+              <h3 class="latest-card__title">Happy Hour – All Day, Every Day</h3>
+              <p class="latest-card__copy">Running now through the end of the year: $2 domestic light beers, $3 single wells, $4 house wines and $5 house margaritas. All day, every day.</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Happening Now</span>
               </div>
             </div>
           </article>
 
-          <!-- Card 4 -->
-          <article class="card" data-type="deal" aria-label="Cheap Chick Monday & Kids Eat Free">
-            <div class="card-media">
-              <img class="cardImg lazy-asset"
-                   alt="A child eating fried chicken at a table"
+          <article class="latest-card" role="group" aria-label="Cheap Chick Monday &amp; Kids Eat Free" data-category="give-use" data-type="deal">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
+                   alt="Child happily eating hot chicken at a table"
                    loading="lazy"
+                   decoding="async"
                    data-src="../../assets/img/home/the-latest/cheap-chick-monday.png"
                    data-fallback="https://images.pexels.com/photos/12788473/pexels-photo-12788473.jpeg" />
             </div>
-            <div class="card-info">
-              <div class="tags">
-                <span class="tag deal">Deal</span>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--deal">Deal</span>
               </div>
-              <h3 class="headline">Cheap Chick Monday &amp; Kids Eat Free</h3>
-              <p class="summary">
-                Mondays (5 pm – close): $2 domestic drafts and an $8 two-tender basket. Kids eat free with the purchase of an adult entrée — a perfect family night.
-              </p>
-              <div class="meta" aria-hidden="true">
-                <div class="rule"></div>
-                <div class="micro">Mondays</div>
+              <h3 class="latest-card__title">Cheap Chick Monday &amp; Kids Eat Free</h3>
+              <p class="latest-card__copy">Mondays (5 pm – close): $2 domestic drafts and an $8 two-tender basket. Kids eat free with the purchase of an adult entrée — a perfect family night.</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Mondays</span>
               </div>
             </div>
           </article>
 
-          <!-- Card 5 -->
-          <article class="card" data-type="event deal" aria-label="Local Love / College Night – Wednesdays">
-            <div class="card-media">
-              <img class="cardImg lazy-asset"
+          <article class="latest-card" role="group" aria-label="Local Love / College Night – Wednesdays" data-category="events give-use" data-type="event deal">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
                    alt="Friends toasting drinks and smiling"
                    loading="lazy"
+                   decoding="async"
                    data-src="../../assets/img/home/the-latest/local-love-college-night.png"
                    data-fallback="https://images.pexels.com/photos/6174132/pexels-photo-6174132.jpeg" />
             </div>
-            <div class="card-info">
-              <div class="tags">
-                <span class="tag event">Event</span>
-                <span class="tag deal">Deal</span>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--event">Event</span>
+                <span class="latest-card__tag latest-card__tag--deal">Deal</span>
               </div>
-              <h3 class="headline">Local Love / College Night – Wednesdays</h3>
-              <p class="summary">
-                Wednesdays (5 pm – close): $4 shotskis, $5 burgers and $6 boozy slushies. Rep your school colours and bring the zero-chill energy.
-              </p>
-              <div class="meta" aria-hidden="true">
-                <div class="rule"></div>
-                <div class="micro">Wednesdays</div>
+              <h3 class="latest-card__title">Local Love / College Night – Wednesdays</h3>
+              <p class="latest-card__copy">Wednesdays (5 pm – close): $4 shotskis, $5 burgers and $6 boozy slushies. Rep your school colours and bring the zero-chill energy.</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Wednesdays</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="latest-card" role="group" aria-label="Give Back Nights – Community Feed" data-category="give-use new" data-type="give new">
+            <div class="latest-card__media">
+              <img class="lazy-asset"
+                   alt="Volunteers sharing hot food from the kitchen"
+                   loading="lazy"
+                   decoding="async"
+                   data-src="https://images.pexels.com/photos/273660/pexels-photo-273660.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   data-fallback="https://images.pexels.com/photos/273660/pexels-photo-273660.jpeg?auto=compress&cs=tinysrgb&w=1200" />
+            </div>
+            <div class="latest-card__body">
+              <div class="latest-card__tags">
+                <span class="latest-card__tag latest-card__tag--give">Give</span>
+                <span class="latest-card__tag latest-card__tag--new">New</span>
+              </div>
+              <h3 class="latest-card__title">Give Back Nights – Community Feed</h3>
+              <p class="latest-card__copy">Join our kitchen crew every Thursday as we cook community meals, donate proceeds, and rally local artists for late-night generosity.</p>
+              <div class="latest-card__meta" aria-hidden="true">
+                <span class="latest-card__rule"></span>
+                <span class="latest-card__micro">Thursdays</span>
               </div>
             </div>
           </article>
         </div>
       </div>
-    </section>
+      <button class="latest-carousel__nav" type="button" data-carousel-nav="next" aria-label="Scroll the carousel forwards">›</button>
+    </div>
+
+    <div class="latest-cta">
+      <a class="latest-cta__btn menu-cta" href="../../pages/locations.html" target="_top" aria-label="See what’s on near you">
+        <span class="btn-label">See What’s On Near You</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    </div>
   </main>
 
   <script>
     (function () {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const lazyImgs = Array.from(document.querySelectorAll('img.lazy-asset[data-src]'));
+      const track = document.querySelector('[data-carousel-track]');
+      const filters = Array.from(document.querySelectorAll('.latest-filter-btn'));
+      const cards = Array.from(document.querySelectorAll('.latest-card'));
+      const prevBtn = document.querySelector('[data-carousel-nav="prev"]');
+      const nextBtn = document.querySelector('[data-carousel-nav="next"]');
+      const header = document.querySelector('.latest-header');
+      const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!track || cards.length === 0 || filters.length === 0) return;
+
+      const FILTER_TAG_MAP = {
+        all: "all",
+        event: "events",
+        events: "events",
+        "give-use": "give-use",
+        give: "give-use",
+        deal: "give-use",
+        deals: "give-use",
+        new: "new"
+      };
+
+      const normalizeFilterValue = (value) => {
+        const key = (value || "").toString().trim().toLowerCase();
+        const cleaned = key.replace(/[\s&]+/g, "-").replace(/[^a-z0-9-]+/g, "");
+        return FILTER_TAG_MAP[cleaned] || FILTER_TAG_MAP[key] || cleaned || "all";
+      };
+
+      filters.forEach((filterBtn) => {
+        filterBtn.dataset.filterKey = normalizeFilterValue(filterBtn.dataset.filter);
+      });
 
       function loadImage(img) {
         if (!img || img.dataset.loaded === '1') return;
@@ -1052,80 +992,117 @@
         img.dataset.loaded = '1';
       }
 
+      const lazyImages = Array.from(document.querySelectorAll('img.lazy-asset[data-src]'));
       if ('IntersectionObserver' in window) {
-        const imgObserver = new IntersectionObserver((entries) => {
+        const io = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            const img = entry.target;
-            loadImage(img);
-            imgObserver.unobserve(img);
+            loadImage(entry.target);
+            io.unobserve(entry.target);
           });
         }, { rootMargin: '220px 0px', threshold: 0.01 });
-
-        lazyImgs.forEach((img) => imgObserver.observe(img));
+        lazyImages.forEach((img) => io.observe(img));
       } else {
-        lazyImgs.forEach(loadImage);
+        lazyImages.forEach(loadImage);
       }
 
-      const cards = Array.from(document.querySelectorAll('.card'));
-      const filters = Array.from(document.querySelectorAll('.latest-filter-btn'));
-      const title = document.querySelector('.latest-title');
-      const subtitle = document.querySelector('.subtitle');
-
       function setActiveFilter(btn) {
-        filters.forEach((b) => {
-          const active = b === btn;
-          b.dataset.active = active ? 'true' : 'false';
-          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        filters.forEach((filter) => {
+          const isActive = filter === btn;
+          filter.dataset.active = isActive ? 'true' : 'false';
+          filter.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
       }
 
       function applyFilter(filterValue) {
+        const activeFilter = normalizeFilterValue(filterValue || "all");
         cards.forEach((card) => {
-          const tags = (card.dataset.type || '').split(' ').filter(Boolean);
-          const visible = filterValue === 'all' || tags.includes(filterValue);
+          const rawCategories = card.dataset.category || card.dataset.type || "";
+          const categories = rawCategories
+            .split(/\s+/)
+            .map((token) => normalizeFilterValue(token))
+            .filter((token) => token && token !== "all");
+          const visible = activeFilter === "all" || categories.includes(activeFilter);
           card.hidden = !visible;
-          card.setAttribute('aria-hidden', visible ? 'false' : 'true');
+          card.setAttribute("aria-hidden", visible ? "false" : "true");
         });
-      }
-
-      if (filters.length) {
-        filters.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            setActiveFilter(btn);
-            applyFilter(btn.dataset.filter || 'all');
-          });
-        });
-
-        const initialFilter = filters.find((btn) => btn.dataset.active === 'true') || filters[0];
-        if (initialFilter) {
-          setActiveFilter(initialFilter);
-          applyFilter(initialFilter.dataset.filter || 'all');
+        updateNavState();
+        if (track) {
+          track.scrollTo({ left: 0, behavior: prefersReduce ? "auto" : "smooth" });
         }
       }
 
-      const revealTargets = [];
-      if (title) revealTargets.push(title);
-      if (subtitle) revealTargets.push(subtitle);
-      revealTargets.push(...cards);
+      filters.forEach((filterBtn) => {
+        filterBtn.addEventListener('click', () => {
+          setActiveFilter(filterBtn);
+          applyFilter(filterBtn.dataset.filterKey || 'all');
+        });
+      });
 
-      if ('IntersectionObserver' in window && !prefersReduced) {
+      const defaultFilter = filters.find((btn) => btn.dataset.active === 'true') || filters[0];
+      if (defaultFilter) {
+        setActiveFilter(defaultFilter);
+        applyFilter(defaultFilter.dataset.filterKey || 'all');
+      } else {
+        applyFilter('all');
+      }
+
+      function updateNavState() {
+        const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+        const atStart = track.scrollLeft <= 12;
+        const atEnd = track.scrollLeft >= maxScroll - 12;
+        if (prevBtn) {
+          prevBtn.disabled = atStart;
+          prevBtn.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+        }
+        if (nextBtn) {
+          nextBtn.disabled = atEnd;
+          nextBtn.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+        }
+      }
+
+      function scrollTrack(direction) {
+        const amount = Math.max(track.clientWidth * 0.65, 320);
+        track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => scrollTrack(-1));
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => scrollTrack(1));
+      }
+
+      track.addEventListener('scroll', () => {
+        if ('requestAnimationFrame' in window) {
+          window.requestAnimationFrame(updateNavState);
+        } else {
+          updateNavState();
+        }
+      });
+
+      updateNavState();
+
+      const revealTargets = [];
+      if (header) revealTargets.push(header);
+      revealTargets.push(...cards);
+      if ('IntersectionObserver' in window && !prefersReduce) {
         const revealObserver = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
             entry.target.classList.add('is-visible');
             revealObserver.unobserve(entry.target);
           });
-        }, { rootMargin: '18% 0px', threshold: 0.15 });
+        }, { threshold: 0.18, rootMargin: '0px 0px -12% 0px' });
 
-        revealTargets.forEach((el) => revealObserver.observe(el));
+        revealTargets.forEach((target) => target && revealObserver.observe(target));
       } else {
-        revealTargets.forEach((el) => el && el.classList.add('is-visible'));
+        revealTargets.forEach((target) => target && target.classList.add('is-visible'));
       }
     })();
   </script>
 
-  <!-- Title per-letter hover animation to match other slides -->
+  <!-- Title hover animation matching other slides -->
   <script>
     (function(){
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1138,7 +1115,6 @@
       function attachWave(titleEl){
         if (!titleEl || titleEl.dataset.splitLetters === '1') return;
         titleEl.dataset.splitLetters = '1';
-
         const raw = titleEl.textContent || '';
         titleEl.textContent = '';
         const frag = document.createDocumentFragment();
@@ -1173,42 +1149,69 @@
             const rot = idx < 0 ? 0 : (j < idx ? -1 : 1) * maxTilt * Math.exp(-d * 0.85) * (j === idx ? 0 : 1);
             const z = 50 - (idx < 0 ? 0 : d);
             const g = idx < 0 ? 0 : Math.max(0, Math.min(1, (boost / Math.max(0.0001, maxBoost)) * 1.0));
-            target[j].s=s; target[j].dy=dy; target[j].rot=rot; target[j].z=z; target[j].g=g;
+            target[j].s = s;
+            target[j].dy = dy;
+            target[j].rot = rot;
+            target[j].z = z;
+            target[j].g = g;
           }
         }
 
         function animate(){
-          let moving=false; const k=0.22;
+          let moving = false;
+          const k = 0.22;
           for(let j=0;j<N;j++){
-            const st=state[j], tg=target[j];
+            const st = state[j];
+            const tg = target[j];
             st.s += (tg.s - st.s) * k;
-            st.dy+= (tg.dy- st.dy)* k;
-            st.rot+=(tg.rot-st.rot)* k;
-            st.z  += (tg.z - st.z) * k;
-            st.g  += (tg.g - st.g) * 0.28;
+            st.dy += (tg.dy - st.dy) * k;
+            st.rot += (tg.rot - st.rot) * k;
+            st.z += (tg.z - st.z) * k;
+            st.g += (tg.g - st.g) * 0.28;
+
             const el = letters[j];
             el.style.setProperty('--scale', st.s.toFixed(3));
-            el.style.setProperty('--dy', st.dy.toFixed(2)+'px');
-            el.style.setProperty('--rot', st.rot.toFixed(2)+'deg');
+            el.style.setProperty('--dy', st.dy.toFixed(2) + 'px');
+            el.style.setProperty('--rot', st.rot.toFixed(2) + 'deg');
             el.style.setProperty('--z', String(st.z.toFixed(0)));
             el.style.setProperty('--glow', st.g.toFixed(3));
-            if (Math.abs(tg.s-st.s)>0.002 || Math.abs(tg.dy-st.dy)>0.02 || Math.abs(tg.rot-st.rot)>0.02){ moving=true; }
+
+            if (Math.abs(tg.s - st.s) > 0.002 || Math.abs(tg.dy - st.dy) > 0.02 || Math.abs(tg.rot - st.rot) > 0.02) {
+              moving = true;
+            }
           }
-          if(moving||inside){ rafId=requestAnimationFrame(animate); } else { rafId=0; }
+          if (moving || inside) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            rafId = 0;
+          }
         }
-        function ensure(){ if(!rafId) rafId=requestAnimationFrame(animate); }
+
+        function ensure(){ if (!rafId) rafId = requestAnimationFrame(animate); }
 
         function nearestIndexFromClientX(x){
-          let best=-1, bestD=Infinity; for(let j=0;j<N;j++){
+          let best = -1;
+          let bestDist = Infinity;
+          for(let j=0;j<N;j++){
             const r = letters[j].getBoundingClientRect();
-            const cx = r.left + r.width/2; const d = Math.abs(x-cx);
-            if(d<bestD){ bestD=d; best=j; }
-          } return best;
+            const cx = r.left + r.width / 2;
+            const d = Math.abs(x - cx);
+            if (d < bestDist){ bestDist = d; best = j; }
+          }
+          return best;
         }
 
-        titleEl.addEventListener('pointerenter', () => { inside=true; });
-        titleEl.addEventListener('pointermove', (e) => { inside=true; computeTargets(nearestIndexFromClientX(e.clientX)); ensure(); });
-        titleEl.addEventListener('pointerleave', () => { inside=false; computeTargets(-1); ensure(); });
+        titleEl.addEventListener('pointerenter', () => { inside = true; });
+        titleEl.addEventListener('pointermove', (e) => {
+          inside = true;
+          computeTargets(nearestIndexFromClientX(e.clientX));
+          ensure();
+        });
+        titleEl.addEventListener('pointerleave', () => {
+          inside = false;
+          computeTargets(-1);
+          ensure();
+        });
 
         computeTargets(-1);
       }
